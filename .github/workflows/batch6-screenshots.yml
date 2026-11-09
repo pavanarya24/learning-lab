@@ -1,0 +1,31 @@
+name: Batch 6 screenshots (one-off)
+on:
+  workflow_dispatch:
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download arXiv screenshots
+        run: |
+          set -e
+          mkdir -p images
+          curl -fsSL --retry 3 -o images/arxiv-ofi-foundation.png "https://v1.screenshot.11ty.dev/https%3A%2F%2Farxiv.org%2Fabs%2F2610.28753/opengraph/"
+          curl -fsSL --retry 3 -o images/arxiv-causal-impact.png "https://v1.screenshot.11ty.dev/https%3A%2F%2Farxiv.org%2Fabs%2F2610.12537/opengraph/"
+          curl -fsSL --retry 3 -o images/arxiv-eod-reversal.png "https://v1.screenshot.11ty.dev/https%3A%2F%2Farxiv.org%2Fabs%2F2611.09286/opengraph/"
+          curl -fsSL --retry 3 -o images/arxiv-irreversibility.png "https://v1.screenshot.11ty.dev/https%3A%2F%2Farxiv.org%2Fabs%2F2610.16151/opengraph/"
+          file images/arxiv-*.png
+          for f in images/arxiv-*.png; do file "$f" | grep -q "PNG image" || { echo "$f is not a PNG"; exit 1; }; done
+          ls -l images/arxiv-*.png
+      - name: Commit screenshots and remove this workflow
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -q .github/workflows/batch6-screenshots.yml
+          git add images/arxiv-ofi-foundation.png images/arxiv-causal-impact.png images/arxiv-eod-reversal.png images/arxiv-irreversibility.png
+          git diff --cached --quiet && { echo "nothing to commit"; exit 1; }
+          git commit -m "Learning Lab — Batch 6 screenshots"
+          git push
