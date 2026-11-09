@@ -13,10 +13,15 @@ jobs:
           set -e
           mkdir -p images
           to_png() {
-            if command -v convert >/dev/null 2>&1; then convert "$1" "$2";
-            elif command -v magick >/dev/null 2>&1; then magick "$1" "$2";
-            elif command -v ffmpeg >/dev/null 2>&1; then ffmpeg -y -v error -i "$1" "$2";
-            else echo "no image converter available"; exit 1; fi
+            if command -v convert >/dev/null 2>&1; then convert "$1" "$2"; return 0; fi
+            if command -v magick >/dev/null 2>&1; then magick "$1" "$2"; return 0; fi
+            if command -v ffmpeg >/dev/null 2>&1; then ffmpeg -y -v error -i "$1" "$2"; return 0; fi
+            if python3 -c "import PIL" 2>/dev/null; then python3 -c "from PIL import Image; import sys; Image.open(sys.argv[1]).convert('RGB').save(sys.argv[2])" "$1" "$2"; return 0; fi
+            echo "no converter found; installing imagemagick..."
+            (sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick && convert "$1" "$2") && return 0
+            echo "apt install failed; installing pillow..."
+            python3 -m pip install --quiet pillow
+            python3 -c "from PIL import Image; import sys; Image.open(sys.argv[1]).convert('RGB').save(sys.argv[2])" "$1" "$2"
           }
           grab() {
             curl -fsSL --retry 3 -o "/tmp/$1.jpg" "https://v1.screenshot.11ty.dev/https%3A%2F%2Farxiv.org%2Fabs%2F$2/opengraph/"
