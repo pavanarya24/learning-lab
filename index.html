@@ -79,6 +79,22 @@ section{margin-bottom:56px}
 .flow .step{display:flex;gap:10px;align-items:flex-start;margin-top:8px;font-size:14px;color:var(--muted)}
 .flow .step b{color:var(--accent);font-family:'Space Mono',ui-monospace,monospace;font-weight:700}
 .flow .step span b{color:var(--text)}
+/* visual sketch diagrams — boxes + arrows, red + white only */
+.diagram{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.diagram .node{background:var(--panel2);border:1px solid var(--line2);padding:10px 12px;font-size:13px;color:var(--text);text-align:center;line-height:1.45}
+.diagram .node b{color:var(--text)}
+.diagram .node .lbl{display:block;font-family:'Space Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.diagram .node.q{border-color:var(--accent)}
+.diagram .node.q .lbl{color:var(--accent)}
+.diagram .node.yes{border-color:var(--accent)}
+.diagram .node.yes .lbl{color:var(--accent)}
+.diagram .node.no{color:var(--muted)}
+.diagram .node.out{border-color:var(--text)}
+.diagram .arr{text-align:center;color:var(--accent);font-family:'Space Mono',ui-monospace,monospace;font-size:16px;line-height:1.3;padding:1px 0}
+.diagram .branch{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.diagram .branch .node{font-size:12px}
+.diagram .note{margin-top:10px;font-size:13px;color:var(--muted);text-align:center}
+.diagram .note b{color:var(--accent)}
 
 /* batch filter + latest strip */
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 8px}
@@ -596,10 +612,16 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">PASS BOTH · OR REJECT</div>
         <p><b>Hypothesis:</b> a tape / LOB simulator — including the Tape Simulator and the Noble simulator from paper 28 — is accepted for training only if it passes <b>both</b> checks on the same symbols / days: (1) OFI is decodable from its generated message stream well above chance (paper 31 benchmark: R² ≈ 0.59 on real US large-caps, generalising to unseen stocks); (2) its path irreversibility ordering increment is close to the real 0.018 nats/event for NVDA, not near zero.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>Run the two benchmarks on one simulator candidate first — before any strategy is trained on it.</span></div>
-          <div class="step"><b>2 →</b><span>Passes OFI but fails irreversibility (like the queue-reactive sim: 0.0006 vs 0.018)? Rejected for training, however realistic its prices look.</span></div>
-          <div class="step"><b>3 →</b><span>Separately, ARE costs must not be regressed price-on-flow — paper 32 shows the naive estimator overstates impact by up to 68% when flow is informed; keep the double-costs sensitivity run and note the bias direction.</span></div>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Check 1</span>OFI decodable from the sim?<br><b>R² ≈ 0.59</b> benchmark</div>
+          <div class="arr">↓</div>
+          <div class="node q"><span class="lbl">Check 2</span>Irreversibility increment<br><b>≈ 0.018</b> nats / event?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Accept sim</b> for training</div>
+            <div class="node no"><span class="lbl">No</span><b>Reject sim</b><br>queue-reactive: 0.0006 vs 0.018</div>
+          </div>
+          <div class="note">+ Costs: never regress price-on-flow — naive bias <b>up to 68%</b></div>
         </div>
         <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data. Hypothesis only, NOT tested.</p>
       </div>
@@ -612,10 +634,14 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">NO BREAKOUT AFTER A BREAK</div>
         <p><b>Hypothesis:</b> run Bayesian Online Changepoint Detection over signed order flow / directional flow bias during the opening range; take an ORB breakout only when no changepoint has fired in the last N minutes (regime stable), and stand down for X minutes after a changepoint fires.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>Jebali applies BOCPD to NASDAQ equities signed flow; Moret &amp; Lillo show the same BOCPD-over-flow-bias signal restores profitability for a strategy that otherwise bleeds under persistent directional imbalance.</span></div>
-          <div class="step"><b>2 →</b><span>Pick one ARE ORB candidate; run it with and without the BOCPD gate on the same walk-forward folds.</span></div>
-          <div class="step"><b>3 →</b><span>Record whether the gate cuts the worst fold — the metric these sketches are judged by.</span></div>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Gate</span>BOCPD changepoint fired<br>in the last <b>N minutes</b>?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Take the ORB</b> breakout</div>
+            <div class="node no"><span class="lbl">No</span><b>Stand down X min</b></div>
+          </div>
+          <div class="note">Test: does the gate cut the <b>worst fold</b>?</div>
         </div>
         <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data. Hypothesis only, NOT tested.</p>
       </div>
@@ -630,10 +656,16 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">ALL GATES · HOLDOUT ×1</div>
         <p><b>Hypothesis:</b> a strategy is accepted only if it passes <b>all</b> gates at once — positive net P&amp;L after costs, a positive weekly-cluster bootstrap lower bound, survival at double costs, per-year stability, and a sample floor — and the final holdout is opened exactly once, after the receipt is written.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>Pre-register the full gate conjunction in ARE before running anything — no single-score acceptance.</span></div>
-          <div class="step"><b>2 →</b><span>Run discovery + validation; a survivor gets exactly one holdout look, receipt written first.</span></div>
-          <div class="step"><b>3 →</b><span>Fails the holdout? Frozen, not re-tuned — same rule as the frozen overlays.</span></div>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">All gates must pass</span>Net P&amp;L after costs · bootstrap lower bound &gt; 0 · survives <b>double costs</b> · per-year stability · sample floor</div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Holdout</span>Opened <b>exactly once</b> · receipt written first</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Accept</b></div>
+            <div class="node no"><span class="lbl">No</span><b>Freeze</b> — not re-tuned</div>
+          </div>
+          <div class="note">Warning case: Sharpe ~3 → <b>0.26</b> on holdout</div>
         </div>
         <p class="use"><b>ARE test —</b> take one existing ARE candidate through the conjunction + single holdout, and record whether it survives or joins the frozen list. The Zhang paper's warning case is a Sharpe near 3 falling to 0.26 on holdout.</p>
       </div>
@@ -646,10 +678,13 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">SKIP FIRST 3 MIN</div>
         <p><b>Hypothesis:</b> the first ~1 second after a scheduled release is the direct reaction; the next 16–137 s are the market echoing itself. ORB breakouts taken inside the echo window on release days are echo-chasing, not directional flow.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>On release days (CPI, payrolls, FOMC), skip ORB breakouts for the first 3 minutes after the release.</span></div>
-          <div class="step"><b>2 →</b><span>Take only the breakout that survives past the echo window — or a VWAP reclaim after it.</span></div>
-          <div class="step"><b>3 →</b><span>Compare follow-through vs the same ORB rule on non-release days, at double costs, worst fold kept.</span></div>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Release day?</span><b>CPI / payrolls / FOMC</b></div>
+          <div class="arr">↓</div>
+          <div class="node"><span class="lbl">Skip</span>First <b>3 minutes</b> after the release — echo window 16–137s</div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Then</span>Take the breakout that <b>survives the echo</b> · or a VWAP reclaim after it</div>
+          <div class="note">Compare follow-through vs <b>non-release days</b></div>
         </div>
         <p class="use"><b>ARE test —</b> pre-register in ARE. If confirmed, the release-day ORB filter becomes a standing rule; if not, drop it.</p>
       </div>
@@ -662,10 +697,14 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">70TH PERCENTILE</div>
         <p><b>Hypothesis:</b> a burst of active exact-match orders (limit orders repriced exactly onto the best opposite quote) during the opening range signals informed flow, and predicts 1–10 minute continuation in that direction.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>From the order-flow platform, count exact-match repricing events per minute in the opening range alongside depth imbalance.</span></div>
-          <div class="step"><b>2 →</b><span>Take the ORB breakout only when exact-match share is above its own 70th percentile and imbalance agrees.</span></div>
-          <div class="step"><b>3 →</b><span>Validate on US equities first — the paper is China data, and the mechanism may not transfer.</span></div>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Filter</span>Exact-match share &gt; <b>70th %ile</b><br>+ depth imbalance agrees?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Take the ORB</b> breakout</div>
+            <div class="node no"><span class="lbl">No</span><b>Skip</b></div>
+          </div>
+          <div class="note">Validate on <b>US tape first</b> — paper is China data</div>
         </div>
         <p class="use"><b>ARE test —</b> pre-register in ARE; validate the proxy on US tape before trusting it.</p>
       </div>
@@ -678,10 +717,16 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">WITHIN 0.1% OF ROUND</div>
         <p><b>Hypothesis:</b> ORB breakouts through round-number levels do <b>not</b> follow through better than breakouts elsewhere, once depth is accounted for — so stop treating round GEX / ORB levels as magnets.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>Split past ORB trades: breakout level within 0.1% of a round number vs not.</span></div>
-          <div class="step"><b>2 →</b><span>Compare follow-through (next 30-min move in breakout direction, at double costs) in ARE, worst fold kept.</span></div>
-          <div class="step"><b>3 →</b><span>If confirmed: drop the round-number widening / tightening habit; size purely on the GEX flip + entropy state.</span></div>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Split</span>Breakout level within <b>0.1%</b><br>of a round number?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Round</b> breakouts</div>
+            <div class="node no"><span class="lbl">No</span><b>Not round</b> breakouts</div>
+          </div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Compare</span>Next <b>30-min follow-through</b> · double costs</div>
+          <div class="note">No edge? Drop the round habit — size on <b>GEX flip + entropy</b> only</div>
         </div>
         <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data.</p>
       </div>
@@ -694,11 +739,13 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">3 REQ / MORNING · $0</div>
         <p><b>Hypothesis:</b> a gamma flip computed from the free morning chain predicts the day's magnet / pinning behaviour as well as THE MAP's levels do.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>Each morning before the open, pull QQQ, SPY and GLD chains (3 of the 100 daily requests).</span></div>
-          <div class="step"><b>2 →</b><span>Nearest 0DTE / weekly expiry; gamma per strike from the quotes endpoint.</span></div>
-          <div class="step"><b>3 →</b><span>Find the call wall (max call gamma), put wall (max put gamma) and zero-gamma flip.</span></div>
-          <div class="step"><b>4 →</b><span>Trade only ORB / VWAP setups that agree with the flip side; log every day's walls vs THE MAP's and score which one called the high / low better.</span></div>
+        <div class="diagram">
+          <div class="node"><span class="lbl">Step 1 · Morning</span>Pull <b>QQQ / SPY / GLD</b> chains<br>3 of 100 daily requests</div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Step 2</span><b>Call wall · put wall · zero-gamma flip</b></div>
+          <div class="arr">↓</div>
+          <div class="node"><span class="lbl">Step 3</span>Trade only setups that <b>agree with the flip</b></div>
+          <div class="note">Log every day vs <b>THE MAP</b> — score which called high / low better</div>
         </div>
         <p class="use"><b>First check —</b> confirm the quotes endpoint returns Greeks on the free key before writing the puller. Cost: $0.</p>
       </div>
@@ -711,10 +758,14 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">|z| &gt; 2</div>
         <p><b>Hypothesis:</b> Managed Money net-position z-score extremes flag stretched positioning.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>Weekly: Managed Money net position z-score (3-year window) for GC and NQ / ES.</span></div>
-          <div class="step"><b>2 →</b><span>z &gt; +2 or z &lt; −2 <b>and</b> price diverges from positioning → flag a swing-reversal watch.</span></div>
-          <div class="step"><b>3 →</b><span>Entries still come from ORB / VWAP / GEX levels — COT only sets the weekly bias.</span></div>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Signal</span>Managed Money z-score <b>|z| &gt; 2</b><br>3-year window + price diverges?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Swing-reversal watch</b><br>entries still ORB / VWAP / GEX</div>
+            <div class="node no"><span class="lbl">No</span>No bias change</div>
+          </div>
+          <div class="note">COT is <b>context, not timing</b> — 3-day lag</div>
         </div>
         <p class="use"><b>ARE test —</b> pre-register in ARE. COT is context, not timing (3-day lag).</p>
       </div>
@@ -727,10 +778,14 @@ footer .note b{color:var(--accent)}
         <span class="badge">Hypothesis — not tested</span>
         <div class="key">5TH %ILE → ~3× MOVE</div>
         <p><b>Hypothesis:</b> when 1-second order-flow entropy falls below its 5th percentile during the opening range, the next 5-minute move is ~3× larger than average.</p>
-        <div class="flow">
-          <div class="step"><b>1 →</b><span>Compute entropy live from tape (order-flow platform already classifies trades Lee-Ready).</span></div>
-          <div class="step"><b>2 →</b><span>Entropy below the 5th percentile? Take the ORB breakout, with wider targets.</span></div>
-          <div class="step"><b>3 →</b><span>Entropy high? Skip the ORB trade — choppy, no edge.</span></div>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Signal</span>1-sec order-flow entropy<br>below its <b>5th %ile</b>?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Take ORB</b> · wider targets</div>
+            <div class="node no"><span class="lbl">No</span><b>Skip</b> · choppy, no edge</div>
+          </div>
+          <div class="note">Next 5-min move ~<b>3× larger</b> on collapse days</div>
         </div>
         <p class="use"><b>ARE test —</b> walk-forward on NQ (Dukascopy index CFD ticks) and SPY / QQQ, Monte Carlo reshuffle, worst fold kept.</p>
       </div>
