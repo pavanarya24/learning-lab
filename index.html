@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Learning Lab — Underrated Free Quant Sources</title>
-<meta name="description" content="Underrated free quant data providers and research papers, turned into real-time trading strategies. 35 sources, 10 sketches, $0 spent.">
+<meta name="description" content="Underrated free quant data providers and research papers, turned into real-time trading strategies. 37 sources, 10 sketches, 0 verified strategies, $0 spent.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@ header p.sub b{color:var(--text)}
 .meta{margin-top:18px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 .meta b{color:var(--accent)}
 /* stat cards */
-.stats{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin:32px 0}
+.stats{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;margin:32px 0}
 .stat{background:var(--panel);border:1px solid var(--line);padding:16px 14px}
 .stat .num{font-family:'Space Mono',ui-monospace,monospace;font-size:30px;font-weight:700;color:var(--accent);line-height:1.1;white-space:nowrap}
 .stat .lbl{font-family:'Space Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:8px}
@@ -60,6 +60,7 @@ section{margin-bottom:56px}
 .sec-head p{margin-left:auto;font-size:13px;color:var(--dim);text-align:right}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 .card{background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+.card.wide{grid-column:1/-1}
 .card img{width:100%;height:172px;object-fit:cover;object-position:top center;display:block;border-bottom:1px solid var(--line);background:var(--panel2)}
 .card a.img-link{display:block}
 .card-body{padding:16px;display:flex;flex-direction:column;flex:1}
@@ -128,27 +129,29 @@ footer .note b{color:var(--accent)}
 <div class="wrap">
 
 <header>
-  <p class="eyebrow">Continuous learning · Batch 1 + Batch 2 + Batch 3 + Batch 4 + Batch 5 + Batch 6 + Batch 7 · 9 Nov 2026</p>
+  <p class="eyebrow">Continuous learning · Batch 1 + Batch 2 + Batch 3 + Batch 4 + Batch 5 + Batch 6 + Batch 7 + Batch 8 · 10 Nov 2026</p>
   <h1>Learning <span class="red">Lab</span></h1>
   <p class="sub">Underrated <b>free</b> quant data providers and research papers — <b>not</b> Google's sponsored first page — turned into <b>real-time trading strategies</b>. Focus: FX, gold, US equities, index futures. Setups: ORB, 9 EMA / VWAP, dealer gamma (GEX).</p>
-  <p class="meta">Source: <b>underrated-quant-sources.md</b> · All items checked 7–9 Nov 2026 against the provider's own docs · Free tiers change — recheck pricing before building</p>
+  <p class="meta">Source: <b>underrated-quant-sources.md</b> · All items checked 7–10 Nov 2026 against the provider's own docs · Free tiers change — recheck pricing before building</p>
 </header>
 
 <div class="stats">
-  <div class="stat"><div class="num">35</div><div class="lbl">Sources</div></div>
+  <div class="stat"><div class="num">37</div><div class="lbl">Sources</div></div>
   <div class="stat"><div class="num">10</div><div class="lbl">Sketches</div></div>
-  <div class="stat"><div class="num">7</div><div class="lbl">Batches</div></div>
+  <div class="stat"><div class="num">8</div><div class="lbl">Batches</div></div>
+  <div class="stat"><div class="num">0</div><div class="lbl">Verified</div></div>
   <div class="stat"><div class="num">$0</div><div class="lbl">Spent</div></div>
   <div class="stat"><div class="num">2.89×</div><div class="lbl">Entropy move</div></div>
   <div class="stat"><div class="num">$73.2M</div><div class="lbl">GLD net GEX</div></div>
   <div class="stat"><div class="num">100/day</div><div class="lbl">Free options API</div></div>
 </div>
 
-<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>AI-ETF switching Sharpe <b>5.65 vs 0.02</b> · 14-mo window only</span><i>◆</i><span>OFI R² ≈ <b>0.59</b> · <b>Batch 6</b></span><i>◆</i><span>Naive impact bias <b>up to 68%</b></span><i>◆</i><span>EOD reversal <b>3.13 bps → 0</b> in 2020–22</span><i>◆</i><span>Irreversibility <b>0.018 vs 0.0006</b> · sim fails</span><i>◆</i><span>BOCPD regime gate · <b>Batch 5</b></span><i>◆</i><span>H0 ≈ <b>3/4</b> ties flow + impact</span><i>◆</i><span>LOB simulator · latency races</span><i>◆</i><span>Regimes in the Order Flow · <b>NASDAQ</b></span><i>◆</i><span>Dukascopy tick data back to 1997</span><i>◆</i><span>HistData free M1 + tick FX</span><i>◆</i><span>TrueFX real ECN ticks</span><i>◆</i><span>Stooq free daily OHLC</span><i>◆</i><span>SquawkFlow GLD <b>378 / 373 / 371</b></span><i>◆</i><span>PropTraderz free GEX NQ · ES · GC</span><i>◆</i><span>MarketData.app <b>100 req/day</b></span><i>◆</i><span>Massive free Basic EOD options</span><i>◆</i><span>COT Fri <b>3:30pm ET</b></span><i>◆</i><span>Meaterm free COT charts</span><i>◆</i><span>Entropy <b>2.89×</b></span><i>◆</i><span>Push-response asymmetry</span><i>◆</i><span>Round numbers don't hold</span><i>◆</i><span>Exact-match predicts <b>100ms–10min</b></span><i>◆</i><span>Alpaca free IEX</span><i>◆</i><span>Tiingo 30+ yrs EOD</span><i>◆</i><span>Databento <b>$125 credits</b></span><i>◆</i><span>Quantpedia 1,000+ strategies</span><i>◆</i><span>OpenBB Cboe <b>no key · no cap</b></span><i>◆</i><span>FRED <b>800,000+ series</b></span><i>◆</i><span>Nasdaq Data Link free datasets</span><i>◆</i><span>News echo <b>1s + 16–137s</b></span><i>◆</i><span>Rule-breaking agents <b>2,627 trades</b></span><i>◆</i><span>Bounded LLM loop · holdout opened once</span><i>◆</i><span>Wallet identity · Spearman <b>0.52</b></span><i>◆</i><span>AI-ETF switching Sharpe <b>5.65 vs 0.02</b> · 14-mo window only</span><i>◆</i><span>Dukascopy tick data back to 1997</span><i>◆</i><span>HistData free M1 + tick FX</span><i>◆</i><span>TrueFX real ECN ticks</span><i>◆</i><span>Stooq free daily OHLC</span><i>◆</i><span>SquawkFlow GLD <b>378 / 373 / 371</b></span><i>◆</i><span>PropTraderz free GEX NQ · ES · GC</span><i>◆</i><span>MarketData.app <b>100 req/day</b></span><i>◆</i><span>Massive free Basic EOD options</span><i>◆</i><span>COT Fri <b>3:30pm ET</b></span><i>◆</i><span>Meaterm free COT charts</span><i>◆</i><span>Entropy <b>2.89×</b></span><i>◆</i><span>Push-response asymmetry</span><i>◆</i><span>Round numbers don't hold</span><i>◆</i><span>Exact-match predicts <b>100ms–10min</b></span><i>◆</i><span>Alpaca free IEX</span><i>◆</i><span>Tiingo 30+ yrs EOD</span><i>◆</i><span>Databento <b>$125 credits</b></span><i>◆</i><span>Quantpedia 1,000+ strategies</span><i>◆</i><span>OpenBB Cboe <b>no key · no cap</b></span><i>◆</i><span>FRED <b>800,000+ series</b></span><i>◆</i><span>Nasdaq Data Link free datasets</span><i>◆</i><span>News echo <b>1s + 16–137s</b></span><i>◆</i><span>Rule-breaking agents <b>2,627 trades</b></span><i>◆</i><span>Bounded LLM loop · holdout opened once</span><i>◆</i><span>Wallet identity · Spearman <b>0.52</b></span><i>◆</i></div></div>
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Sketch 10 ARE test: <b>FAIL 0/5 gates</b> · Batch 8</span><i>◆</i><span>AI-ETF switching Sharpe <b>5.65 vs 0.02</b> · 14-mo window only</span><i>◆</i><span>OFI R² ≈ <b>0.59</b> · <b>Batch 6</b></span><i>◆</i><span>Naive impact bias <b>up to 68%</b></span><i>◆</i><span>EOD reversal <b>3.13 bps → 0</b> in 2020–22</span><i>◆</i><span>Irreversibility <b>0.018 vs 0.0006</b> · sim fails</span><i>◆</i><span>BOCPD regime gate · <b>Batch 5</b></span><i>◆</i><span>H0 ≈ <b>3/4</b> ties flow + impact</span><i>◆</i><span>LOB simulator · latency races</span><i>◆</i><span>Regimes in the Order Flow · <b>NASDAQ</b></span><i>◆</i><span>Dukascopy tick data back to 1997</span><i>◆</i><span>HistData free M1 + tick FX</span><i>◆</i><span>TrueFX real ECN ticks</span><i>◆</i><span>Stooq free daily OHLC</span><i>◆</i><span>SquawkFlow GLD <b>378 / 373 / 371</b></span><i>◆</i><span>PropTraderz free GEX NQ · ES · GC</span><i>◆</i><span>MarketData.app <b>100 req/day</b></span><i>◆</i><span>Massive free Basic EOD options</span><i>◆</i><span>COT Fri <b>3:30pm ET</b></span><i>◆</i><span>Meaterm free COT charts</span><i>◆</i><span>Entropy <b>2.89×</b></span><i>◆</i><span>Push-response asymmetry</span><i>◆</i><span>Round numbers don't hold</span><i>◆</i><span>Exact-match predicts <b>100ms–10min</b></span><i>◆</i><span>Alpaca free IEX</span><i>◆</i><span>Tiingo 30+ yrs EOD</span><i>◆</i><span>Databento <b>$125 credits</b></span><i>◆</i><span>Quantpedia 1,000+ strategies</span><i>◆</i><span>OpenBB Cboe <b>no key · no cap</b></span><i>◆</i><span>FRED <b>800,000+ series</b></span><i>◆</i><span>Nasdaq Data Link free datasets</span><i>◆</i><span>News echo <b>1s + 16–137s</b></span><i>◆</i><span>Rule-breaking agents <b>2,627 trades</b></span><i>◆</i><span>Bounded LLM loop · holdout opened once</span><i>◆</i><span>Wallet identity · Spearman <b>0.52</b></span><i>◆</i><span>Sketch 10 ARE test: <b>FAIL 0/5 gates</b> · Batch 8</span><i>◆</i><span>AI-ETF switching Sharpe <b>5.65 vs 0.02</b> · 14-mo window only</span><i>◆</i><span>Dukascopy tick data back to 1997</span><i>◆</i><span>HistData free M1 + tick FX</span><i>◆</i><span>TrueFX real ECN ticks</span><i>◆</i><span>Stooq free daily OHLC</span><i>◆</i><span>SquawkFlow GLD <b>378 / 373 / 371</b></span><i>◆</i><span>PropTraderz free GEX NQ · ES · GC</span><i>◆</i><span>MarketData.app <b>100 req/day</b></span><i>◆</i><span>Massive free Basic EOD options</span><i>◆</i><span>COT Fri <b>3:30pm ET</b></span><i>◆</i><span>Meaterm free COT charts</span><i>◆</i><span>Entropy <b>2.89×</b></span><i>◆</i><span>Push-response asymmetry</span><i>◆</i><span>Round numbers don't hold</span><i>◆</i><span>Exact-match predicts <b>100ms–10min</b></span><i>◆</i><span>Alpaca free IEX</span><i>◆</i><span>Tiingo 30+ yrs EOD</span><i>◆</i><span>Databento <b>$125 credits</b></span><i>◆</i><span>Quantpedia 1,000+ strategies</span><i>◆</i><span>OpenBB Cboe <b>no key · no cap</b></span><i>◆</i><span>FRED <b>800,000+ series</b></span><i>◆</i><span>Nasdaq Data Link free datasets</span><i>◆</i><span>News echo <b>1s + 16–137s</b></span><i>◆</i><span>Rule-breaking agents <b>2,627 trades</b></span><i>◆</i><span>Bounded LLM loop · holdout opened once</span><i>◆</i><span>Wallet identity · Spearman <b>0.52</b></span><i>◆</i></div></div>
 
 <div class="filters" role="group" aria-label="Filter by batch">
   <button data-filter="all" class="active">All batches</button>
-  <button data-filter="7">Batch 7 · Latest</button>
+  <button data-filter="8">Batch 8 · Latest</button>
+  <button data-filter="7">Batch 7</button>
   <button data-filter="6">Batch 6</button>
   <button data-filter="5">Batch 5</button>
   <button data-filter="4">Batch 4</button>
@@ -159,17 +162,43 @@ footer .note b{color:var(--accent)}
 </div>
 
 <section class="latest" id="latest">
-  <p class="eyebrow">New today · 9 Nov 2026</p>
-  <h2>Latest — <span>Batch 7</span></h2>
+  <p class="eyebrow">New today · 10 Nov 2026</p>
+  <h2>Latest — <span>Batch 8</span></h2>
   <ul>
-    <li><b>35 · Investing in AI Stocks: Machine-Learning Forecasts, Portfolio Strategies, and Stress Tests</b> — 5-day bagging switching on BUG / CLOU / BLOK / BOTZ posts a reported Sharpe of 5.65 vs 0.02 for equal-weight — on a single 14-month test window only. <a href="#paper-35">See card ↓</a></li>
-    <li><b>Sketch 10 · 5-day bagging switching rule for the four AI ETFs</b> — hold only the ETFs whose 5-day forecast is positive; re-test on a longer window in ARE before trusting it. Hypothesis only, not tested. <a href="#sketch-10">See card ↓</a></li>
+    <li><b>Verified Strategies — new section</b> — the 5-gate bar is live, and the first test is in: Sketch 10 <b>FAILED all 5 gates</b>. 0 verified so far. <a href="#verified">See section ↓</a></li>
+    <li><b>37 · ETF Database</b> — free ETF factsheets (holdings, expense ratio, volume) for every US-listed ETF. <a href="#source-37">See card ↓</a></li>
+    <li><b>36 · Portfolio Visualizer</b> — free backtesting and optimisation, no signup for basic use. <a href="#source-36">See card ↓</a></li>
+    <li><b>Sketch 10 ARE test — FAIL</b> — 24 walk-forward folds, 200 bps costs: Sharpe −1.01, max drawdown −88.99%, worst fold −26.68%. Frozen, not re-tuned. <a href="#verified-sketch-10">See card ↓</a></li>
   </ul>
 </section>
 
 <section id="data">
-  <div class="sec-head"><span class="idx">01</span><h2>Data</h2><p>Free data providers · 7 sources</p></div>
+  <div class="sec-head"><span class="idx">01</span><h2>Data</h2><p>Free data providers · 9 sources</p></div>
   <div class="cards">
+
+    <article class="card" id="source-37">
+      <div class="card-body">
+        <p class="no">37 · Batch 8 · Free</p>
+        <h3>ETF Database</h3>
+        <div class="key">ETF FACTSHEETS · FREE</div>
+        <p>Free ETF factsheets — holdings, expense ratio, volume, dividend yield — plus a screener, head-to-head comparison and category tools, for every US-listed ETF, including BUG / CLOU / BLOK / BOTZ. Verified loading in the browser 9 Nov 2026.</p>
+        <p class="use"><b>Use —</b> check any ETF's holdings and expense ratio before it enters a test universe; the screener finds alternatives to a paper's tickers.</p>
+        <p class="src"><a href="https://etfdb.com/" target="_blank" rel="noopener">etfdb.com ↗</a></p>
+        <p class="use"><b>Screenshot —</b> unavailable: etfdb.com shows its bot-verification page to screenshot renderers, so no real render could be captured; the site itself loads fine in a browser.</p>
+      </div>
+    </article>
+
+    <article class="card" id="source-36">
+      <a href="https://www.portfoliovisualizer.com/" target="_blank" rel="noopener" class="img-link"><img src="images/portfolio-visualizer.png" alt="Portfolio Visualizer website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">36 · Batch 8 · Free · $0</p>
+        <h3>Portfolio Visualizer</h3>
+        <div class="key">FREE BACKTEST · NO SIGNUP</div>
+        <p>Backtest portfolios of ETFs, funds and stocks; factor analysis, efficient frontier, Monte Carlo and drawdown stats. The core backtest and optimisation tools work without an account; paid tiers add more history and features. Checked 10 Nov 2026 (HTTP 200). A first visit shows a User Agreement modal — that is what the screenshot shows.</p>
+        <p class="use"><b>Use —</b> run any Lab sketch through its backtester as a second opinion before ARE; its drawdown and rolling-return views are the quickest sanity check on a paper's numbers.</p>
+        <p class="src"><a href="https://www.portfoliovisualizer.com/" target="_blank" rel="noopener">portfoliovisualizer.com ↗</a></p>
+      </div>
+    </article>
 
     <article class="card">
       <a href="https://databento.com/pricing" target="_blank" rel="noopener" class="img-link"><img src="images/databento.png" alt="Databento pricing website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
@@ -826,14 +855,52 @@ footer .note b{color:var(--accent)}
   </div>
 </section>
 
+<section id="verified">
+  <div class="sec-head"><span class="idx">06</span><h2>Verified Strategies</h2><p>0 verified · 5 gates · pre-registered</p></div>
+  <div class="cards">
+
+    <article class="card wide" id="verified-standard">
+      <div class="card-body">
+        <p class="no">The bar · Batch 8</p>
+        <h3>What "verified" means here</h3>
+        <div class="key">5 GATES · ALL MUST PASS</div>
+        <p>A strategy is verified only if it passes <b>all five gates at once</b>, on a test written down <b>before</b> the test runs: (1) out-of-sample Sharpe ≥ 1.0; (2) max drawdown ≤ 15%; (3) worst walk-forward fold return ≥ −5%; (4) Monte Carlo p &lt; 0.05 (1,000 block-bootstraps); (5) positive total return net of <b>double costs</b> (200 bps a switch). Walk-forward, worst fold kept, final 3-month fold is a holdout opened once. A pass is still a backtest — not a promise of future returns, and not financial advice.</p>
+        <p class="use"><b>Live count —</b> 0 verified. The first candidate was tested 9 Nov 2026 and failed (below). The queue: Sketch 6 (news-echo ORB), then Sketch 8 (BOCPD regime gate).</p>
+      </div>
+    </article>
+
+    <article class="card wide" id="verified-sketch-10">
+      <div class="card-body">
+        <p class="no">Candidate 1 · Sketch 10 · Batch 8 · FAILED 0/5</p>
+        <h3>5-day bagging switching, AI ETFs — NOT verified</h3>
+        <span class="badge">Failed — frozen, not re-tuned</span>
+        <div class="key">SHARPE −1.01 · MAX DD −88.99%</div>
+        <p>Pre-registered 9 Nov 2026, 23:47 IST; run 23:51 IST. 24 walk-forward folds of 3 months, Nov 2020 → Nov 2026, BUG / CLOU / BLOK / BOTZ, technical features only, weekly rebalance, 200 bps a switch. <b>Results:</b> total return −86.94%, Sharpe −1.01, max drawdown −88.99%, worst fold −26.68% (Nov 2021–Jan 2022), Monte Carlo p = 0.487, holdout fold (Aug–Nov 2026) −0.05%. Classifier right 51.4% of the time — near chance. Gross before costs +118.48% (Sharpe 0.60): the signal roughly tracks the market, but the technical-only variant flips holdings almost weekly and 200 bps a switch compounds that churn into −87% net. The paper's 5.65 Sharpe was one 14-month window — exactly the limitation its author flagged.</p>
+        <p class="use"><b>What next —</b> frozen. No deployment kit, no re-tune with different gates. Full per-fold table, Monte Carlo and reproducibility notes: <span class="mono">verified/sketch-10-test-report.md</span> (pre-registration: <span class="mono">verified/sketch-10-preregistration.md</span>).</p>
+      </div>
+    </article>
+
+    <article class="card wide" id="verified-warning">
+      <div class="card-body">
+        <p class="no">Deployment · Batch 8</p>
+        <h3>Your own account only — never a prop account</h3>
+        <div class="key">PROP FIRMS BAN THIRD-PARTY TRADING</div>
+        <p>Every verified strategy here is for <b>your own trading account only</b>. Prop firms ban third-party trading outright — verified 8 Nov 2026 across FTMO, The5ers, Topstep, Apex Trader Funding, FundedNext and E8 Markets — and FundedNext charges a <b>$25,000 contractual penalty per breach</b>. No copier, no signals into someone else's account, no passing or managing a funded account for anyone. Not financial advice; a passed backtest is not a promise of future returns.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
 <footer>
   <h2>Next to check</h2>
   <ul>
     <li><b>OpenBB Cboe chain pull</b> — re-verify <span class="mono">obb.cboe.options.chains(symbol="QQQ")</span> on a non-sandbox machine before writing the puller (the sandbox blocks cdn.cboe.com).</li>
     <li><b>arXiv q-fin.TR new listings, weekly</b> — Dutta (10 Oct) and Naja (19 Oct) were both under a month old when found; the loop should scan weekly.</li>
+    <li><b>Verification queue</b> — Sketch 6 (news-echo ORB) is next for the ARE test, then Sketch 8 (BOCPD regime gate). Sketch 10 failed all 5 gates on 9 Nov 2026 and is frozen.</li>
   </ul>
-  <p class="note">All items were checked 7–9 Nov 2026 against the provider's own docs or a dated comparison that cites them — not Google's sponsored first page. <b>Free tiers change; recheck the vendor's pricing page before building on any of these.</b> Nothing here is tested: the ten sketches are hypotheses to pre-register in ARE and run walk-forward + Monte Carlo on before any live use.</p>
-  <p class="top"><a href="#top">Back to top ↑</a> · Learning Lab · 9 Nov 2026 · $0 spent</p>
+  <p class="note">All items were checked 7–10 Nov 2026 against the provider's own docs or a dated comparison that cites them — not Google's sponsored first page. <b>Free tiers change; recheck the vendor's pricing page before building on any of these.</b> Nothing here is tested except what passes the Verified Strategies section's 5 gates: the ten sketches are hypotheses to pre-register in ARE and run walk-forward + Monte Carlo on before any live use. Sketch 10 was tested 9 Nov 2026 and failed all 5 gates — it stays a hypothesis.</p>
+  <p class="top"><a href="#top">Back to top ↑</a> · Learning Lab · 10 Nov 2026 · $0 spent</p>
 </footer>
 
 </div>
@@ -897,7 +964,7 @@ footer .note b{color:var(--accent)}
         var visible=s.querySelectorAll('article.card:not(.hidden)').length;
         s.classList.toggle('hidden-sec', visible===0);
       });
-      if(latest) latest.style.display = (f==='all'||f==='7') ? '' : 'none';
+      if(latest) latest.style.display = (f==='all'||f==='8') ? '' : 'none';
       if(f!=='all'){
         var first=document.querySelector('article.card:not(.hidden)');
         if(first) first.scrollIntoView({behavior:'smooth',block:'start'});
