@@ -64,7 +64,7 @@ section{margin-bottom:56px}
 .card img{width:100%;height:172px;object-fit:cover;object-position:top center;display:block;border-bottom:1px solid var(--line);background:var(--panel2)}
 .card a.img-link{display:block}
 .card-body{padding:16px;display:flex;flex-direction:column;flex:1}
-.card .no{font-family:'Space Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.card .no{font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
 .card h3{font-size:19px;margin:6px 0 4px}
 .card .key{font-family:'Space Mono',ui-monospace,monospace;font-size:22px;font-weight:700;color:var(--accent);margin:8px 0}
 .card p{font-size:14px;color:var(--muted)}
@@ -99,7 +99,7 @@ section{margin-bottom:56px}
 
 /* batch filter + latest strip */
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 8px}
-.filters button{background:var(--bg);color:var(--text);border:1px solid var(--line2);font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;cursor:pointer}
+.filters button{background:var(--bg);color:var(--text);border:1px solid var(--line2);font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:12px 16px;cursor:pointer}
 .filters button:hover{border-color:var(--accent)}
 .filters button.active{border-color:var(--accent);color:var(--accent)}
 .filters .hint{font-family:'Space Mono',ui-monospace,monospace;font-size:12px;color:var(--dim);align-self:center;margin-left:auto}
@@ -122,6 +122,13 @@ footer li b{color:var(--text)}
 footer .note{margin-top:20px;font-size:13px;color:var(--dim);line-height:1.6}
 footer .note b{color:var(--accent)}
 .top{margin-top:28px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+/* Apple HIG: visible keyboard focus + motion optional (accessibility.md, motion.md) */
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .ticker-track{animation:none}
+  #stars{display:none}
+}
 </style>
 </head>
 <body id="top">
