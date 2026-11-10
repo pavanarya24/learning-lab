@@ -3,225 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Lab 2.0 — preview</title>
-<meta name="description" content="Learning Lab — free quant data, research papers and trading strategies, tested honestly. Step inside.">
+<title>Learning Lab — one finding, tested</title>
+<meta name="description" content="Learning Lab — free quant data, research papers and trading strategies, tested honestly. One finding a day, followed through to a trade.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0e;--panel:#131318;--panel2:#1c1c22;--line:#26262e;--line2:#3a3a44;--text:#f5f5f7;--muted:#a1a1a6;--dim:#86868b;--accent:#ff2b2b;--radius:14px}
+:root{--ink:#070b14;--ink2:#0c1222;--panel:#0d1322;--line:rgba(154,167,199,.18);--cream:#f2ede3;--mist:#9aa7c7;--dim:#6b7896;--gold:#d1a75f;--signal:#7aa2ff;--radius:16px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
-#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.55}
-.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 20px 64px}
-a{color:var(--text);text-decoration:none}
-a:hover{color:var(--accent)}
-.mono{font-family:'Space Mono',ui-monospace,'SF Mono',Menlo,monospace}
-h1,h2,h3{font-family:'Space Grotesk','Arial Black',sans-serif;line-height:1.05;letter-spacing:-.01em}
-.eyebrow{font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-/* ---- the door ---- */
-#door{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#door .panel{position:absolute;top:0;bottom:0;width:50.5%;background:linear-gradient(180deg,#0a0a0e,#131318);transition:transform 1s cubic-bezier(.7,0,.3,1);z-index:1}
-#door .panel.left{left:0;border-right:1px solid var(--accent)}
-#door .panel.right{right:0;border-left:1px solid var(--accent)}
-#door.open .panel.left{transform:translateX(-102%)}
-#door.open .panel.right{transform:translateX(102%)}
-#door .door-inner{position:relative;z-index:2;text-align:center;padding:0 24px;transition:opacity .5s ease}
-#door.open .door-inner{opacity:0}
-#door .door-inner h1{font-size:clamp(44px,8vw,88px);font-weight:700;text-transform:uppercase;margin:14px 0 10px}
-#door .door-inner h1 .red{color:var(--accent)}
-#door .door-inner p{font-size:17px;color:var(--muted);max-width:520px;margin:0 auto}
-#door .door-inner p b{color:var(--text)}
-#door .enter{margin-top:28px;background:var(--accent);color:#fff;border:0;border-radius:999px;font-family:'Space Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;padding:16px 30px;cursor:pointer}
-#door .enter:hover{background:#ff4545}
-#door .skip{display:block;margin-top:16px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;color:var(--dim);background:none;border:0;cursor:pointer;text-decoration:underline}
-/* ---- hero: the tape room ---- */
-#hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;border-bottom:1px solid var(--line)}
-#hero-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-#hero .hero-overlay{position:relative;z-index:2;width:100%;max-width:1120px;margin:0 auto;padding:96px 20px 48px}
-#hero h1{font-size:clamp(52px,9vw,104px);font-weight:700;text-transform:uppercase;margin:14px 0 10px;text-shadow:0 2px 24px rgba(0,0,0,.8)}
-#hero h1 .red{color:var(--accent)}
-#hero p.sub{font-size:19px;color:var(--muted);max-width:720px;text-shadow:0 1px 12px rgba(0,0,0,.8)}
-#hero p.sub b{color:var(--text)}
-.meta{margin-top:18px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-.meta b{color:var(--text)}
-.stats{display:flex;flex-wrap:wrap;background:rgba(19,19,24,.85);border:1px solid var(--line);border-radius:var(--radius);margin:28px 0 20px;padding:6px 0;backdrop-filter:blur(6px)}
-.stat{flex:1 1 120px;padding:12px 18px;border-left:1px solid var(--line)}
+body{background:var(--ink);color:var(--cream);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--cream);text-decoration:none}
+a:hover{color:var(--gold)}
+.mono{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace}
+.kicker{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--signal)}
+h1,h2,h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;line-height:1.05;letter-spacing:-.01em}
+h1 em,h2 em{color:var(--gold);font-style:italic}
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:68px;background:rgba(7,11,20,.75);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .word{font-family:'Instrument Serif',Georgia,serif;font-size:22px;letter-spacing:.02em}
+nav .word b{color:var(--gold);font-weight:400;font-style:italic}
+nav .links{display:flex;gap:26px;font-size:14px;color:var(--mist)}
+nav .links a:hover{color:var(--cream)}
+nav .cta{border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:9px 18px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+nav .cta:hover{background:var(--gold);color:var(--ink)}
+@media(max-width:760px){nav .links{display:none}}
+/* hero — the thread, scroll-scrubbed */
+#hero-scroll{position:relative;height:320vh}
+#hero{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
+#thread-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hero .hero-inner{position:relative;z-index:2;width:100%;max-width:1150px;margin:0 auto;padding:90px 24px 40px}
+#hero h1{font-size:clamp(48px,7.4vw,96px);max-width:820px}
+#hero .hero-sub{margin-top:20px;font-size:18px;color:var(--mist);max-width:560px;line-height:1.6}
+#hero .hero-sub b{color:var(--cream)}
+#hero .hero-meta{margin-top:22px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+#hero .hero-meta b{color:var(--cream)}
+#hero .scroll-hint{position:absolute;left:24px;bottom:26px;z-index:2;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+#hero .stage-dots{position:absolute;right:28px;bottom:26px;z-index:2;display:flex;gap:8px}
+#hero .stage-dots i{width:8px;height:8px;border-radius:50%;background:var(--dim);opacity:.5}
+#hero .stage-dots i.on{background:var(--gold);opacity:1}
+/* stats strip */
+.stats{display:flex;flex-wrap:wrap;gap:0;background:rgba(13,19,34,.8);border:1px solid var(--line);border-radius:var(--radius);margin:34px 0 0;padding:8px 0;backdrop-filter:blur(6px)}
+.stat{flex:1 1 120px;padding:12px 20px;border-left:1px solid var(--line)}
 .stat:first-child{border-left:0}
-.stat .num{font-family:'Space Mono',ui-monospace,monospace;font-size:26px;font-weight:700;color:var(--accent);line-height:1.1;white-space:nowrap}
-.stat .lbl{font-family:'Space Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:6px}
-/* regime dial */
-.dial{background:rgba(19,19,24,.85);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;backdrop-filter:blur(6px);max-width:640px}
-.dial .dial-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.dial .dial-top b{font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
-.dial .dial-state{font-family:'Space Mono',ui-monospace,monospace;font-size:13px;font-weight:700;color:var(--accent);text-align:right}
-.dial input[type=range]{width:100%;margin:14px 0 6px;accent-color:var(--accent);cursor:pointer}
-.dial .dial-ends{display:flex;justify-content:space-between;font-family:'Space Mono',ui-monospace,monospace;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
-.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.btn{display:inline-block;border-radius:999px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:13px 20px;border:1px solid var(--line2);background:rgba(19,19,24,.85);color:var(--text);cursor:pointer}
-.btn:hover{border-color:var(--text)}
-.btn.red{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn.red:hover{background:#ff4545}
-/* tour */
-.tour{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:40px 0}
-.tour .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
-.tour .step .n{font-family:'Space Mono',ui-monospace,monospace;font-size:12px;color:var(--accent);letter-spacing:.14em}
-.tour .step h3{font-size:18px;margin:8px 0 6px}
-.tour .step p{font-size:14px;color:var(--muted)}
-.tour .step p b{color:var(--text)}
+.stat .num{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:26px;font-weight:500;color:var(--gold);line-height:1.1;white-space:nowrap}
+.stat .lbl{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mist);margin-top:6px}
+.wrap{position:relative;z-index:1;max-width:1150px;margin:0 auto;padding:0 24px 64px}
+/* demo — one sketch, working */
+#demo{padding:110px 0 40px}
+#demo .sec-head{margin-bottom:18px}
+.demo-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.demo-head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
+.demo-head .t{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}
+.demo-head .t b{color:var(--gold)}
+.demo-controls{display:flex;gap:8px}
+.demo-controls button{background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;cursor:pointer}
+.demo-controls button:hover{border-color:var(--gold);color:var(--gold)}
+.demo-controls button.primary{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.demo-controls button.primary:hover{background:#e0bc7d;color:var(--ink)}
+#echo-canvas{width:100%;height:340px;display:block}
+.demo-foot{display:grid;grid-template-columns:1fr 240px;gap:0;border-top:1px solid var(--line)}
+@media(max-width:760px){.demo-foot{grid-template-columns:1fr}}
+.demo-status{padding:16px 20px;font-size:14px;color:var(--mist)}
+.demo-status b{color:var(--gold)}
+.demo-tape{border-left:1px solid var(--line);padding:12px 16px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:var(--mist);line-height:1.9}
+.demo-tape .tk b{color:var(--cream)}
+.demo-tape .tk .up{color:var(--gold)}
+.demo-note{padding:14px 20px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+.demo-note b{color:var(--mist)}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:90px 0 30px}
+.steps .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.steps .step .n{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:var(--gold);letter-spacing:.14em}
+.steps .step h3{font-size:26px;margin:10px 0 8px}
+.steps .step p{font-size:15px;color:var(--mist)}
+.steps .step p b{color:var(--cream)}
 /* ticker */
-.ticker{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);overflow:hidden;white-space:nowrap;padding:12px 0;margin-bottom:40px}
+.ticker{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);overflow:hidden;white-space:nowrap;padding:12px 0;margin:30px 0 70px}
 .ticker-track{display:inline-block;animation:tick 90s linear infinite;will-change:transform}
 .ticker:hover .ticker-track{animation-play-state:paused}
-.ticker span{font-family:'Space Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.ticker b{color:var(--accent);font-weight:700}
-.ticker i{color:var(--accent);font-style:normal;margin:0 14px}
+.ticker span{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)}
+.ticker b{color:var(--gold);font-weight:500}
+.ticker i{color:var(--gold);font-style:normal;margin:0 14px}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-/* map */
-#map{margin-bottom:48px}
-#map .map-box{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
-#map-canvas{width:100%;height:62vh;min-height:380px;display:block;touch-action:none;cursor:grab}
-#map-canvas:active{cursor:grabbing}
-#map .map-caption{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;padding:14px 18px;border-top:1px solid var(--line);font-family:'Space Mono',ui-monospace,monospace;font-size:12px;color:var(--muted)}
-#map .map-caption b{color:var(--text)}
-#map .map-caption .picked{color:var(--accent)}
-.map-note{font-size:13px;color:var(--dim);padding:16px 18px}
-/* sticky search + filters */
-.findbar{position:sticky;top:0;z-index:20;background:rgba(10,10,14,.92);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:24px}
-.findbar input[type=search]{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line2);border-radius:999px;padding:13px 18px;font-size:15px;font-family:'Inter',system-ui,sans-serif;outline:none}
-.findbar input[type=search]:focus{border-color:var(--accent)}
+/* findbar */
+.findbar{position:sticky;top:68px;z-index:20;background:rgba(7,11,20,.92);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:28px}
+.findbar input[type=search]{width:100%;background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:999px;padding:13px 18px;font-size:15px;font-family:'Inter',system-ui,sans-serif;outline:none}
+.findbar input[type=search]:focus{border-color:var(--gold)}
 .findbar input[type=search]::placeholder{color:var(--dim)}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}
-.filters button{background:var(--panel);color:var(--text);border:1px solid var(--line2);border-radius:999px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:12px 18px;cursor:pointer}
-.filters button:hover{border-color:var(--text)}
-.filters button.active{background:var(--text);color:#000;border-color:var(--text)}
-.filters .hint{font-family:'Space Mono',ui-monospace,monospace;font-size:12px;color:var(--dim);align-self:center;margin-left:auto}
-.findbar .count{margin-top:10px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;color:var(--dim)}
-/* sections + cards (same tokens as the approved redesign) */
-section{margin-bottom:56px}
-.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:20px}
-.sec-head h2{font-size:30px;font-weight:700;text-transform:uppercase}
-.sec-head p{margin-left:auto;font-size:13px;color:var(--dim);text-align:right}
+.filters button{background:var(--panel);color:var(--cream);border:1px solid var(--line);border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;cursor:pointer}
+.filters button:hover{border-color:var(--cream)}
+.filters button.active{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.findbar .count{margin-top:10px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:var(--dim)}
+/* sections + cards */
+section{margin-bottom:70px}
+.sec-head{margin-bottom:22px}
+.sec-head h2{font-size:clamp(34px,4.4vw,52px);margin:8px 0 6px}
+.sec-head p{font-size:15px;color:var(--mist);max-width:640px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;transition:transform .2s ease,border-color .2s ease}
-.card:hover{transform:translateY(-2px);border-color:var(--line2)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease,border-color .25s ease}
+.card:hover{transform:translateY(-3px);border-color:rgba(209,167,95,.5)}
 .card.wide{grid-column:1/-1}
-.card img{width:100%;height:172px;object-fit:cover;object-position:top center;display:block;border-bottom:1px solid var(--line);background:var(--panel2)}
+.card img{width:100%;height:172px;object-fit:cover;object-position:top center;display:block;border-bottom:1px solid var(--line);background:var(--ink2)}
+.card.wide img{height:340px}
 .card a.img-link{display:block}
-.card-body{padding:18px;display:flex;flex-direction:column;flex:1}
-.card .no{font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
-.card h3{font-size:19px;margin:6px 0 4px}
-.card .key{font-family:'Space Mono',ui-monospace,monospace;font-size:21px;font-weight:700;color:var(--accent);margin:8px 0}
-.card p{font-size:15px;color:var(--muted)}
-.card p b{color:var(--text)}
-.card .use{margin-top:10px;font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
-.card .use b{color:var(--accent);font-family:'Space Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
-.card .src{margin-top:auto;padding-top:14px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px}
-.card .src a{color:var(--text);border-bottom:1px solid var(--accent)}
-.card .src a:hover{color:var(--accent)}
-.card.flash{outline:2px solid var(--accent);outline-offset:2px}
-.badge{display:inline-block;font-family:'Space Mono',ui-monospace,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:3px 10px;margin-bottom:8px}
-.badge.white{color:var(--text);border-color:var(--text)}
+.card-body{padding:20px;display:flex;flex-direction:column;flex:1}
+.card .no{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.card h3{font-size:24px;margin:8px 0 4px}
+.card .key{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:19px;font-weight:500;color:var(--gold);margin:10px 0}
+.card p{font-size:15px;color:var(--mist)}
+.card p b{color:var(--cream)}
+.card .use{margin-top:12px;font-size:14px;color:var(--mist);border-top:1px solid var(--line);padding-top:12px}
+.card .use b{color:var(--gold);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.card .src{margin-top:auto;padding-top:14px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px}
+.card .src a{color:var(--cream);border-bottom:1px solid var(--gold)}
+.card .src a:hover{color:var(--gold)}
+.card.flash{outline:2px solid var(--gold);outline-offset:2px}
+.badge{display:inline-block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.badge.white{color:var(--cream);border-color:var(--cream)}
 .flow{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
-.flow .step{display:flex;gap:10px;align-items:flex-start;margin-top:8px;font-size:14px;color:var(--muted)}
-.flow .step b{color:var(--accent);font-family:'Space Mono',ui-monospace,monospace;font-weight:700}
-.flow .step span b{color:var(--text)}
+.flow .step{display:flex;gap:10px;align-items:flex-start;margin-top:8px;font-size:14px;color:var(--mist)}
+.flow .step b{color:var(--gold);font-family:'JetBrains Mono',ui-monospace,monospace}
+.flow .step span b{color:var(--cream)}
 .diagram{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
-.diagram .node{background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text);text-align:center;line-height:1.45}
-.diagram .node b{color:var(--text)}
-.diagram .node .lbl{display:block;font-family:'Space Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
-.diagram .node.q{border-color:var(--accent)}
-.diagram .node.q .lbl{color:var(--accent)}
-.diagram .node.yes{border-color:var(--accent)}
-.diagram .node.yes .lbl{color:var(--accent)}
-.diagram .node.no{color:var(--muted)}
-.diagram .node.out{border-color:var(--text)}
-.diagram .arr{text-align:center;color:var(--accent);font-family:'Space Mono',ui-monospace,monospace;font-size:16px;line-height:1.3;padding:1px 0}
+.diagram .node{background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--cream);text-align:center;line-height:1.45}
+.diagram .node b{color:var(--cream)}
+.diagram .node .lbl{display:block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.diagram .node.q{border-color:var(--gold)}
+.diagram .node.q .lbl{color:var(--gold)}
+.diagram .node.yes{border-color:var(--gold)}
+.diagram .node.yes .lbl{color:var(--gold)}
+.diagram .node.no{color:var(--mist)}
+.diagram .node.out{border-color:var(--cream)}
+.diagram .arr{text-align:center;color:var(--gold);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:16px;line-height:1.3;padding:1px 0}
 .diagram .branch{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .diagram .branch .node{font-size:12px}
-.diagram .note{margin-top:10px;font-size:13px;color:var(--muted);text-align:center}
-.diagram .note b{color:var(--accent)}
-.latest{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radius);background:var(--panel);padding:20px 22px;margin-bottom:40px}
-.latest h2{font-size:22px;text-transform:uppercase}
-.latest h2 span{color:var(--accent)}
+.diagram .note{margin-top:10px;font-size:13px;color:var(--mist);text-align:center}
+.diagram .note b{color:var(--gold)}
+.latest{border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--radius);background:var(--panel);padding:22px 24px;margin-bottom:60px}
+.latest h2{font-size:28px}
+.latest h2 span{color:var(--gold)}
 .latest ul{list-style:none;margin-top:10px}
-.latest li{padding:8px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--muted)}
+.latest li{padding:9px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--mist)}
 .latest li:last-child{border-bottom:0}
-.latest li b{color:var(--text)}
-.latest li a{color:var(--text);border-bottom:1px solid var(--accent)}
-.latest li a:hover{color:var(--accent)}
+.latest li b{color:var(--cream)}
+.latest li a{color:var(--cream);border-bottom:1px solid var(--gold)}
+.latest li a:hover{color:var(--gold)}
 .card.hidden{display:none}
 section.hidden-sec{display:none}
-footer{border-top:1px solid var(--line);padding-top:28px;margin-top:8px}
-footer h2{font-size:22px;text-transform:uppercase;margin-bottom:12px}
+/* feedback — narrow, quiet, personal */
+#feedback{max-width:760px;margin:0 auto 80px;text-align:center}
+#feedback .fb-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:36px 32px;text-align:left}
+#feedback h2{font-size:clamp(34px,4.4vw,50px);text-align:center;margin:8px 0}
+#feedback .fb-sub{text-align:center;color:var(--mist);margin-bottom:24px}
+#feedback .pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+#feedback .pills button{background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;cursor:pointer}
+#feedback .pills button.active{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+#feedback label{display:block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist);margin:14px 0 6px}
+#feedback textarea,#feedback input{width:100%;background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:12px;padding:13px 14px;font-size:15px;font-family:'Inter',system-ui,sans-serif;outline:none}
+#feedback textarea:focus,#feedback input:focus{border-color:var(--gold)}
+#feedback .send{margin-top:18px;width:100%;background:var(--gold);color:var(--ink);border:0;border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:15px;cursor:pointer}
+#feedback .send:hover{background:#e0bc7d}
+#feedback .fb-note{margin-top:14px;font-size:13px;color:var(--dim);text-align:center}
+footer{border-top:1px solid var(--line);padding-top:32px;margin-top:8px}
+footer h2{font-size:26px;margin-bottom:12px}
 footer ul{list-style:none}
-footer li{padding:8px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:15px}
-footer li b{color:var(--text)}
+footer li{padding:9px 0;border-bottom:1px solid var(--line);color:var(--mist);font-size:15px}
+footer li b{color:var(--cream)}
 footer .note{margin-top:20px;font-size:13px;color:var(--dim);line-height:1.6}
-footer .note b{color:var(--accent)}
-.top{margin-top:28px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-/* feedback tab */
-#idea-fab{position:fixed;right:18px;bottom:18px;z-index:60;background:var(--accent);color:#fff;border:0;border-radius:999px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:14px 20px;cursor:pointer;box-shadow:0 8px 28px rgba(255,43,43,.35)}
-#idea-fab:hover{background:#ff4545}
-#idea-panel{position:fixed;right:18px;bottom:76px;z-index:60;width:min(360px,calc(100vw - 36px));background:var(--panel);border:1px solid var(--line2);border-radius:var(--radius);padding:20px;display:none;box-shadow:0 16px 48px rgba(0,0,0,.6)}
-#idea-panel.open{display:block}
-#idea-panel h3{font-size:18px;margin-bottom:6px}
-#idea-panel p{font-size:14px;color:var(--muted);margin-bottom:12px}
-#idea-panel label{display:block;font-family:'Space Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:10px 0 5px}
-#idea-panel textarea,#idea-panel input,#idea-panel select{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;font-size:14px;font-family:'Inter',system-ui,sans-serif;outline:none}
-#idea-panel textarea:focus,#idea-panel input:focus,#idea-panel select:focus{border-color:var(--accent)}
-#idea-panel .send{margin-top:14px;width:100%;background:var(--accent);color:#fff;border:0;border-radius:999px;font-family:'Space Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:13px;cursor:pointer}
-#idea-panel .close-x{position:absolute;top:10px;right:14px;background:none;border:0;color:var(--dim);font-size:20px;cursor:pointer}
-a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+footer .note b{color:var(--gold)}
+.top{margin-top:28px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+/* ask the lab */
+#ask-fab{position:fixed;right:18px;bottom:18px;z-index:60;background:var(--gold);color:var(--ink);border:0;border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 20px;cursor:pointer;box-shadow:0 8px 28px rgba(209,167,95,.35)}
+#ask-fab:hover{background:#e0bc7d}
+#ask-panel{position:fixed;right:18px;bottom:76px;z-index:60;width:min(340px,calc(100vw - 36px));background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:none;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+#ask-panel.open{display:block}
+#ask-panel h3{font-size:20px;margin-bottom:4px}
+#ask-panel p{font-size:14px;color:var(--mist);margin-bottom:12px}
+#ask-panel .chip{display:block;width:100%;text-align:left;background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px;margin-top:8px;cursor:pointer}
+#ask-panel .chip:hover{border-color:var(--gold);color:var(--gold)}
+#ask-panel .close-x{position:absolute;top:8px;right:14px;background:none;border:0;color:var(--dim);font-size:20px;cursor:pointer}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .ticker-track{animation:none}
-  #stars{display:none}
-  .card{transition:none}
-  .card:hover{transform:none}
-  #door .panel{transition:none}
+  .reveal{opacity:1;transform:none;transition:none}
 }
 </style>
 </head>
 <body>
-<div id="door" role="dialog" aria-label="Enter the Learning Lab">
-  <div class="panel left"></div><div class="panel right"></div>
-  <div class="door-inner">
-    <div class="eyebrow">A trader&rsquo;s research room</div>
-    <h1>Learning <span class="red">Lab</span></h1>
-    <p>Free quant data, research papers and trading strategies — <b>tested honestly</b>, updated daily. Step inside.</p>
-    <button class="enter" id="enter-btn">Open the door &rarr;</button>
-    <button class="skip" id="skip-btn">Skip the door — straight to the library</button>
-  </div>
-</div>
+<nav>
+  <a class="word" href="#hero-scroll">Learning <b>Lab</b></a>
+  <div class="links"><a href="#demo">The idea</a><a href="#library">Library</a><a href="#tapelab">Tape Lab</a><a href="#verified">Verified</a></div>
+  <a class="cta" href="#feedback">Drop an idea</a>
+</nav>
 
-<button id="idea-fab" type="button">+ Drop your idea</button>
-<div id="idea-panel" role="dialog" aria-label="Drop your idea">
-  <button class="close-x" id="idea-close" type="button" aria-label="Close">&times;</button>
-  <h3>Can&rsquo;t find what you need?</h3>
-  <p>Tell us what data, market or tool you want — the most-wanted requests get hunted for the next batch.</p>
-  <form id="idea-form">
-    <label for="idea-what">What are you looking for?</label>
-    <textarea id="idea-what" rows="3" placeholder="e.g. free gold tick data, a GEX dashboard for NQ&hellip;" required></textarea>
-    <label for="idea-market">Market</label>
-    <select id="idea-market"><option>FX</option><option>Gold</option><option>US equities</option><option>Index futures</option><option>Other / not sure</option></select>
-    <label for="idea-email">Your email (optional)</label>
-    <input id="idea-email" type="email" placeholder="you@example.com">
-    <button class="send" type="submit">Send idea</button>
-  </form>
-  <p style="margin-top:10px;font-size:12px;color:var(--dim)">Sends through your email app to aryapavan0369@gmail.com — nothing is stored on this page.</p>
-</div>
-
-<section id="hero">
-  <canvas id="hero-canvas" aria-hidden="true"></canvas>
-  <div class="hero-overlay">
-    <div class="eyebrow">A trader&rsquo;s research room</div>
-    <h1>Learning <span class="red">Lab</span></h1>
-    <p class="sub">Underrated <b>free</b> quant data providers and research papers — <b>not</b> Google's sponsored first page — turned into <b>real-time trading strategies</b>. Focus: FX, gold, US equities, index futures. Setups: ORB, 9 EMA / VWAP, dealer gamma (GEX).</p>
-    <p class="meta">Source: <b>underrated-quant-sources.md</b> · All items checked 7–10 Nov 2026 against the provider's own docs · Free tiers change — recheck pricing before building</p>
-    <div class="stats">
+<div id="hero-scroll">
+  <section id="hero">
+    <canvas id="thread-canvas" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <div class="kicker">A trader&rsquo;s research room · Updated daily</div>
+      <h1 id="hero-title">A finding <em>arrives.</em></h1>
+      <p class="hero-sub" id="hero-sub">Every day, one underrated source — free data, a research paper, a tool. Nothing sponsored, nothing paid.</p>
+      <p class="hero-meta">Source: <b>underrated-quant-sources.md</b> · All items checked 7–10 Nov 2026 against the provider's own docs · Free tiers change — recheck pricing before building</p>
+      <div class="stats">
   <div class="stat"><div class="num">45</div><div class="lbl">Sources</div></div>
   <div class="stat"><div class="num">12</div><div class="lbl">Sketches</div></div>
   <div class="stat"><div class="num">10</div><div class="lbl">Batches</div></div>
@@ -233,39 +221,39 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 </div>
 
 
-    <div class="dial">
-      <div class="dial-top"><b>Market stress — drag it</b><span class="dial-state" id="regime-state">CALM — ORB GATE OPEN · TRADE THE RANGE</span></div>
-      <input type="range" id="regime" min="0" max="100" value="30" aria-label="Market stress level">
-      <div class="dial-ends"><span>&larr; Calm</span><span>Stressed &rarr;</span></div>
     </div>
-    <div class="hero-cta">
-      <a class="btn red" href="#tour">Start here — 30 seconds</a>
-      <a class="btn" href="#map">Explore the map</a>
-      <a class="btn" href="#tapelab">Try Tape Lab free</a>
-    </div>
-  </div>
-</section>
+    <div class="scroll-hint">Scroll — the thread follows &darr;</div>
+    <div class="stage-dots"><i class="on"></i><i></i><i></i><i></i></div>
+  </section>
+</div>
 
 <div class="wrap">
-  <div class="tour" id="tour">
-    <div class="step"><span class="n">01 · WHAT IS THIS</span><h3>A daily research log</h3><p>Every day: underrated <b>free data</b>, a <b>research paper</b>, and a <b>strategy sketch</b> — for FX, gold, US equities and index futures. Nothing sponsored, nothing paid.</p></div>
-    <div class="step"><span class="n">02 · FIND YOUR SETUP</span><h3>Search, don&rsquo;t scroll</h3><p>Use the search and filters below — by <b>setup</b> (ORB / GEX / VWAP / execution) or <b>market</b> (FX / gold / equities / futures). Your two or three cards, in two clicks.</p></div>
-    <div class="step"><span class="n">03 · TRY ONE THING TODAY</span><h3>Sketch 6 is live tonight</h3><p><b>CPI lands Tue 10 Nov, 7:00pm IST.</b> Sketch 6 says: skip ORB breakouts in the first 3 minutes, trade the echo. That is the one thing to try today.</p></div>
+  <section id="demo" class="reveal">
+    <div class="sec-head"><span class="kicker">Watch one work</span><h2>Sketch 6, <em>live.</em></h2><p>The CPI echo: skip the first 3 minutes, trade the echo 16–137 seconds after the print. Press play and watch the tape.</p></div>
+    <div class="demo-box">
+      <div class="demo-head"><span class="t">Sketch 6 · News-echo ORB · <b>Tonight 7:00 PM IST</b></span>
+        <div class="demo-controls"><button class="primary" id="echo-play" type="button">&#9654; Play</button><button id="echo-restart" type="button">Restart</button></div>
+      </div>
+      <canvas id="echo-canvas"></canvas>
+      <div class="demo-foot">
+        <div class="demo-status" id="echo-status"><b>Pre-open.</b> The range is forming — nothing to do yet.</div>
+        <div class="demo-tape" id="echo-tape"><div class="tk">Press play.</div></div>
+      </div>
+      <div class="demo-note"><b>Illustrative replay</b> of the Sketch 6 idea — generated prices, not real ticks. The rule, with its gates, is Sketch 6 in the Strategies section below.</div>
+    </div>
+  </section>
+
+  <div class="steps reveal">
+    <div class="step"><span class="n">01 · FIND</span><h3>We find it.</h3><p>Underrated, <b>free</b> data and papers — from small creators and quiet corners, never the sponsored top of Google.</p></div>
+    <div class="step"><span class="n">02 · SKETCH</span><h3>We sketch it.</h3><p>Every finding becomes an <b>IF/THEN rule</b> you could test — drawn out, boxes and arrows, before a rupee is risked.</p></div>
+    <div class="step"><span class="n">03 · TEST</span><h3>We test it.</h3><p>Pre-registered, walk-forward, Monte Carlo. <b>Five gates</b> — or it stays frozen, in public, with the failure on the page. Sketch 10 did.</p></div>
   </div>
 
   <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Regimes are a continuum, not labels <b>R²_OOS 0.7483</b> · <b>Batch 10</b></span><i>◆</i><span>Impact decays <b>50–60%</b> · <b>Batch 10</b></span><i>◆</i><span>Invariant execution transfers <b>zero-shot</b> · Batch 9</span><i>◆</i><span>Sketch 10 ARE test: <b>FAIL 0/5 gates</b> · Batch 8</span><i>◆</i><span>AI-ETF switching Sharpe <b>5.65 vs 0.02</b> · 14-mo window only</span><i>◆</i><span>OFI R² ≈ <b>0.59</b> · <b>Batch 6</b></span><i>◆</i><span>Naive impact bias <b>up to 68%</b></span><i>◆</i><span>EOD reversal <b>3.13 bps → 0</b> in 2020–22</span><i>◆</i><span>Irreversibility <b>0.018 vs 0.0006</b> · sim fails</span><i>◆</i><span>BOCPD regime gate · <b>Batch 5</b></span><i>◆</i><span>H0 ≈ <b>3/4</b> ties flow + impact</span><i>◆</i><span>LOB simulator · latency races</span><i>◆</i><span>Regimes in the Order Flow · <b>NASDAQ</b></span><i>◆</i><span>Dukascopy tick data back to 1997</span><i>◆</i><span>HistData free M1 + tick FX</span><i>◆</i><span>TrueFX real ECN ticks</span><i>◆</i><span>Stooq free daily OHLC</span><i>◆</i><span>SquawkFlow GLD <b>378 / 373 / 371</b></span><i>◆</i><span>PropTraderz free GEX NQ · ES · GC</span><i>◆</i><span>MarketData.app <b>100 req/day</b></span><i>◆</i><span>Massive free Basic EOD options</span><i>◆</i><span>COT Fri <b>3:30pm ET</b></span><i>◆</i><span>Meaterm free COT charts</span><i>◆</i><span>Entropy <b>2.89×</b></span><i>◆</i><span>Push-response asymmetry</span><i>◆</i><span>Round numbers don't hold</span><i>◆</i><span>Exact-match predicts <b>100ms–10min</b></span><i>◆</i><span>Alpaca free IEX</span><i>◆</i><span>Tiingo 30+ yrs EOD</span><i>◆</i><span>Databento <b>$125 credits</b></span><i>◆</i><span>Quantpedia 1,000+ strategies</span><i>◆</i><span>OpenBB Cboe <b>no key · no cap</b></span><i>◆</i><span>FRED <b>800,000+ series</b></span><i>◆</i><span>Nasdaq Data Link free datasets</span><i>◆</i><span>News echo <b>1s + 16–137s</b></span><i>◆</i><span>Rule-breaking agents <b>2,627 trades</b></span><i>◆</i><span>Bounded LLM loop · holdout opened once</span><i>◆</i><span>Wallet identity · Spearman <b>0.52</b></span><i>◆</i><span>Regimes are a continuum, not labels <b>R²_OOS 0.7483</b> · <b>Batch 10</b></span><i>◆</i><span>Impact decays <b>50–60%</b> · <b>Batch 10</b></span><i>◆</i><span>Invariant execution transfers <b>zero-shot</b> · Batch 9</span><i>◆</i><span>Sketch 10 ARE test: <b>FAIL 0/5 gates</b> · Batch 8</span><i>◆</i><span>AI-ETF switching Sharpe <b>5.65 vs 0.02</b> · 14-mo window only</span><i>◆</i><span>Dukascopy tick data back to 1997</span><i>◆</i><span>HistData free M1 + tick FX</span><i>◆</i><span>TrueFX real ECN ticks</span><i>◆</i><span>Stooq free daily OHLC</span><i>◆</i><span>SquawkFlow GLD <b>378 / 373 / 371</b></span><i>◆</i><span>PropTraderz free GEX NQ · ES · GC</span><i>◆</i><span>MarketData.app <b>100 req/day</b></span><i>◆</i><span>Massive free Basic EOD options</span><i>◆</i><span>COT Fri <b>3:30pm ET</b></span><i>◆</i><span>Meaterm free COT charts</span><i>◆</i><span>Entropy <b>2.89×</b></span><i>◆</i><span>Push-response asymmetry</span><i>◆</i><span>Round numbers don't hold</span><i>◆</i><span>Exact-match predicts <b>100ms–10min</b></span><i>◆</i><span>Alpaca free IEX</span><i>◆</i><span>Tiingo 30+ yrs EOD</span><i>◆</i><span>Databento <b>$125 credits</b></span><i>◆</i><span>Quantpedia 1,000+ strategies</span><i>◆</i><span>OpenBB Cboe <b>no key · no cap</b></span><i>◆</i><span>FRED <b>800,000+ series</b></span><i>◆</i><span>Nasdaq Data Link free datasets</span><i>◆</i><span>News echo <b>1s + 16–137s</b></span><i>◆</i><span>Rule-breaking agents <b>2,627 trades</b></span><i>◆</i><span>Bounded LLM loop · holdout opened once</span><i>◆</i><span>Wallet identity · Spearman <b>0.52</b></span><i>◆</i></div></div>
 
 
 
-  <section id="map">
-    <div class="sec-head"><h2>The map</h2><p>Every source, one view — drag to orbit, click a node</p></div>
-    <div class="map-box">
-      <canvas id="map-canvas"></canvas>
-      <div class="map-caption"><span><b>Drag</b> to orbit · <b>Scroll</b> to zoom · <b>Click a node</b> to open its card</span><span class="picked" id="picked"></span></div>
-    </div>
-  </section>
-
-  <div class="findbar">
+  <div class="findbar" id="library">
     <input type="search" id="lab-search" placeholder="Search the Lab — try &lsquo;GEX&rsquo;, &lsquo;gold&rsquo;, &lsquo;ORB&rsquo;, &lsquo;replay&rsquo;&hellip;" aria-label="Search the Learning Lab">
     <div class="filters" id="batch-filters">
       <button data-filter="all" class="active">All batches</button>
@@ -279,7 +267,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
       <button data-filter="all" class="active">All markets</button>
       <button data-filter="fx">FX</button><button data-filter="gold">Gold</button><button data-filter="equities">Equities</button><button data-filter="futures">Futures</button>
     </div>
-    <div class="count" id="result-count">Showing 61 of 61 cards</div>
+    <div class="count" id="result-count">Showing 62 of 62 cards</div>
   </div>
 
   <section class="latest" id="latest">
@@ -297,7 +285,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 
   
 <section id="tapelab">
-  <div class="sec-head"><h2>Our tool — Tape Lab</h2><p>Built by us, free to try</p></div>
+  <div class="sec-head"><span class="kicker">Our tool</span><h2>Tape Lab — <em>read the tape</em></h2><p>Built by us, free to try</p></div>
   <div class="cards">
     <article class="card wide" id="tapelab" data-batch="10" data-setup="execution" data-asset="multi">
       <a class="img-link" href="https://tape-simulator-five.vercel.app" target="_blank" rel="noopener"><img src="../images/tape-simulator.png" alt="Tape Lab — tape-reading trainer"></a>
@@ -1174,6 +1162,29 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 
   </div>
 </section>
+
+  <section id="feedback" class="reveal">
+    <div class="kicker" style="text-align:center;display:block">Feedback</div>
+    <h2>Tell us what to <em>find.</em></h2>
+    <p class="fb-sub">Something missing? A market, a dataset, a tool you can&rsquo;t find for free? Say it here, in your own words.</p>
+    <div class="fb-card">
+      <div class="pills">
+        <button type="button" data-type="Data" class="active">Data</button>
+        <button type="button" data-type="Paper">Paper</button>
+        <button type="button" data-type="Tool">Tool</button>
+        <button type="button" data-type="Something else">Something else</button>
+      </div>
+      <form id="fb-form">
+        <label for="fb-what">What should the Lab find next?</label>
+        <textarea id="fb-what" rows="3" placeholder="I wish it covered&hellip;" required></textarea>
+        <label for="fb-email">Want a reply? Leave an email (optional)</label>
+        <input id="fb-email" type="email" placeholder="you@example.com">
+        <button class="send" type="submit">Send</button>
+      </form>
+      <p class="fb-note">Arya reads every note. The most-wanted requests get hunted for the next batch.</p>
+    </div>
+  </section>
+
   <footer>
   <h2>Next to check</h2>
   <ul>
@@ -1184,201 +1195,232 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   <p class="note">All items were checked 7–10 Nov 2026 against the provider's own docs or a dated comparison that cites them — not Google's sponsored first page. <b>Free tiers change; recheck the vendor's pricing page before building on any of these.</b> Nothing here is tested except what passes the Verified Strategies section's 5 gates: the twelve sketches are hypotheses to pre-register in ARE and run walk-forward + Monte Carlo on before any live use. Sketch 10 was tested 9 Nov 2026 and failed all 5 gates — it stays a hypothesis.</p>
   <p class="top"><a href="#top">Back to top ↑</a> · Learning Lab · 10 Nov 2026 · $0 spent</p>
 </footer>
-  <p class="top"><a href="#hero">Back to the top &uarr;</a> &nbsp;·&nbsp; <a href="#" onclick="document.getElementById('idea-panel').classList.add('open');return false;">Drop your idea</a></p>
+  <p class="top"><a href="#hero-scroll">Back to the top &uarr;</a></p>
 </div>
-<script type="module">
-/* ---------- shared state ---------- */
+
+<button id="ask-fab" type="button">&#9679; Ask the Lab</button>
+<div id="ask-panel" role="dialog" aria-label="Ask the Lab">
+  <button class="close-x" id="ask-close" type="button" aria-label="Close">&times;</button>
+  <h3>Ask the Lab</h3>
+  <p>Hey — I&rsquo;m the thread that runs this page. Where do you want to go?</p>
+  <button class="chip" type="button" data-goto="#demo">Show me one idea working</button>
+  <button class="chip" type="button" data-goto="#library">Show me the library</button>
+  <button class="chip" type="button" data-goto="#verified">What does &ldquo;Verified&rdquo; mean?</button>
+  <button class="chip" type="button" data-goto="#tapelab">What is Tape Lab?</button>
+  <button class="chip" type="button" data-goto="#feedback">I can&rsquo;t find what I need</button>
+</div>
+
+<script>
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-function webglOK(){ try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch(e){ return false; } }
-const HAS_3D = webglOK() && !REDUCED;
 
-/* ---------- the door ---------- */
-const door = document.getElementById('door');
-function removeDoor(){ if (door) door.remove(); }
-if (!HAS_3D) { removeDoor(); }
-else {
-  document.getElementById('enter-btn').addEventListener('click', () => {
-    door.classList.add('open');
-    setTimeout(() => { removeDoor(); startHero(); }, 950);
-  });
-  document.getElementById('skip-btn').addEventListener('click', () => { removeDoor(); startHero(); });
+/* ---------- the thread — scroll-scrubbed hero ---------- */
+const STAGES = [
+  { h: 'A finding <em>arrives.</em>', s: 'Every day, one underrated source — free data, a research paper, a tool. Nothing sponsored, nothing paid.' },
+  { h: 'We <em>sketch</em> it.', s: 'The finding becomes a rule you can test. An IF/THEN, not a claim — drawn out, boxes and arrows, before a rupee is risked.' },
+  { h: 'We <em>test</em> it.', s: 'Pre-registered. Walk-forward. Monte Carlo. Five gates — or it stays frozen, in public, with the failure on the page.' },
+  { h: 'It becomes a <em>trade.</em>', s: 'Only then does it earn the name Verified. Everything else stays honestly labelled — hypothesis, not tested.' }
+];
+const heroTitle = document.getElementById('hero-title');
+const heroSub = document.getElementById('hero-sub');
+const dots = [...document.querySelectorAll('#hero .stage-dots i')];
+const threadCanvas = document.getElementById('thread-canvas');
+const tctx = threadCanvas.getContext('2d');
+let TW = 0, TH = 0;
+function sizeThread(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  TW = threadCanvas.clientWidth; TH = threadCanvas.clientHeight;
+  threadCanvas.width = TW * dpr; threadCanvas.height = TH * dpr;
+  tctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
-
-/* ---------- three.js loader (local vendor first, CDN fallback) ---------- */
-async function loadThree(){
-  try { return await import('./vendor/three.module.js'); }
-  catch(e){ return await import('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js'); }
+sizeThread();
+window.addEventListener('resize', () => { sizeThread(); drawThread(heroProgress()); });
+function heroProgress(){
+  const sc = document.getElementById('hero-scroll');
+  const r = sc.getBoundingClientRect();
+  const total = r.height - window.innerHeight;
+  return Math.max(0, Math.min(1, -r.top / total));
 }
-let heroStarted = false, mapStarted = false;
-function startHero(){ if (!heroStarted && HAS_3D) { heroStarted = true; initHero(); initMap(); } }
-if (HAS_3D) {
-  /* if the visitor scrolls past the hero without entering, the door is already gone only after a click;
-     so also start 3D once the door is dismissed — startHero is called from the door buttons. */
+function drawThread(p){
+  tctx.clearRect(0, 0, TW, TH);
+  const y0 = TH * 0.62, amp = TH * 0.10;
+  // faint stars
+  tctx.fillStyle = 'rgba(242,237,227,0.35)';
+  for (let i = 0; i < 40; i++) {
+    const x = ((i * 97.3) % 100) / 100 * TW, y = ((i * 57.7) % 100) / 100 * TH * 0.5;
+    tctx.fillRect(x, y, 1.5, 1.5);
+  }
+  // the thread
+  tctx.beginPath();
+  for (let x = 0; x <= TW; x += 8) {
+    const t = x / TW;
+    const y = y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
+    if (x === 0) tctx.moveTo(x, y); else tctx.lineTo(x, y);
+  }
+  tctx.strokeStyle = 'rgba(209,167,95,0.55)';
+  tctx.lineWidth = 1.5;
+  tctx.stroke();
+  // stations: data → paper → sketch → test → trade
+  const labels = ['DATA', 'PAPER', 'SKETCH', 'TEST', 'TRADE'];
+  for (let i = 0; i < 5; i++) {
+    const t = 0.08 + i * 0.21;
+    const x = t * TW;
+    const y = y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
+    const lit = p >= t - 0.02;
+    tctx.beginPath(); tctx.arc(x, y, lit ? 5 : 3.5, 0, Math.PI * 2);
+    tctx.fillStyle = lit ? '#d1a75f' : 'rgba(154,167,199,0.5)';
+    tctx.fill();
+    tctx.font = '11px "JetBrains Mono", monospace';
+    tctx.fillStyle = lit ? '#f2ede3' : '#6b7896';
+    tctx.textAlign = 'center';
+    tctx.fillText(labels[i], x, y + 22);
+  }
+  // the glowing point travelling the thread
+  const px = Math.max(0.02, Math.min(0.98, p)) * TW;
+  const t = px / TW;
+  const py = y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
+  const g = tctx.createRadialGradient(px, py, 0, px, py, 26);
+  g.addColorStop(0, 'rgba(209,167,95,0.9)');
+  g.addColorStop(1, 'rgba(209,167,95,0)');
+  tctx.beginPath(); tctx.arc(px, py, 26, 0, Math.PI * 2); tctx.fillStyle = g; tctx.fill();
+  tctx.beginPath(); tctx.arc(px, py, 6, 0, Math.PI * 2); tctx.fillStyle = '#d1a75f'; tctx.fill();
 }
-
-/* ---------- hero: the tape room ---------- */
-let regimeVol = 0.4;
-async function initHero(){
-  let THREE;
-  try { THREE = await loadThree(); } catch(e){ document.getElementById('hero-canvas').style.display = 'none'; return; }
-  const canvas = document.getElementById('hero-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x0a0a0e, 0.016);
-  const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
-  camera.position.set(0, 7, 42);
-  camera.lookAt(0, 2, 0);
-  // candlestick skyline — the visual language of trading itself
-  const candles = [];
-  const red = new THREE.MeshBasicMaterial({ color: 0xff2b2b });
-  const white = new THREE.MeshBasicMaterial({ color: 0xf5f5f7 });
-  const wickMat = new THREE.MeshBasicMaterial({ color: 0x86868b });
-  const group = new THREE.Group();
-  let seed = 42;
-  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-  for (let i = 0; i < 110; i++) {
-    const x = -30 + (i % 11) * 6 + (rnd() - 0.5) * 2;
-    const z = -4 - Math.floor(i / 11) * 3.2 - rnd() * 1.5;
-    const h = 1 + rnd() * 7;
-    const body = new THREE.Mesh(new THREE.BoxGeometry(1.5, h, 1.5), rnd() > 0.45 ? red : white);
-    body.position.set(x, h / 2, z);
-    const wick = new THREE.Mesh(new THREE.BoxGeometry(0.12, h + 1.6, 0.12), wickMat);
-    wick.position.set(x, h / 2, z);
-    group.add(body); group.add(wick);
-    candles.push({ mesh: body, base: h, phase: rnd() * Math.PI * 2, speed: 0.4 + rnd() * 0.8 });
-  }
-  scene.add(group);
-  // particles
-  const pGeo = new THREE.BufferGeometry();
-  const pCount = 420, pArr = new Float32Array(pCount * 3);
-  for (let i = 0; i < pCount; i++) { pArr[i*3] = (rnd()-0.5)*70; pArr[i*3+1] = rnd()*16; pArr[i*3+2] = -30 + rnd()*30; }
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pArr, 3));
-  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xf5f5f7, size: 0.09, transparent: true, opacity: 0.7 })));
-  // EURUSD / XAUUSD / NQ tape line on the horizon
-  const tapeGeo = new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(-34, 0.05, -6), new THREE.Vector3(34, 0.05, -6)]);
-  scene.add(new THREE.Line(tapeGeo, new THREE.LineBasicMaterial({ color: 0xff2b2b })));
-  function resize(){
-    const w = canvas.clientWidth, hgt = canvas.clientHeight;
-    renderer.setSize(w, hgt, false);
-    camera.aspect = w / hgt; camera.updateProjectionMatrix();
-  }
-  resize();
-  window.addEventListener('resize', resize);
-  let fly = 0, t = 0, visible = true;
-  new IntersectionObserver(en => { visible = en[0].isIntersecting; }).observe(canvas);
-  (function animate(){
-    requestAnimationFrame(animate);
-    if (!visible) return;
-    t += 0.016;
-    if (fly < 1) { fly = Math.min(1, fly + 0.012); camera.position.z = 42 - 16 * (1 - Math.pow(1 - fly, 3)); camera.lookAt(0, 2, 0); }
-    for (const c of candles) {
-      const s = 1 + 0.22 * regimeVol * Math.sin(t * c.speed * (0.6 + regimeVol) + c.phase);
-      c.mesh.scale.y = s;
-    }
-    group.rotation.y = Math.sin(t * 0.05) * 0.02;
-    renderer.render(scene, camera);
-  })();
-  // regime dial — paper 42: one stress coordinate drives the market
-  const dial = document.getElementById('regime');
-  const state = document.getElementById('regime-state');
-  function applyDial(){
-    const v = +dial.value;
-    regimeVol = 0.3 + (v / 100) * 0.9;
-    scene.fog.density = 0.008 + (v / 100) * 0.028;
-    state.textContent = v < 33 ? 'CALM — ORB GATE OPEN · TRADE THE RANGE'
-      : v < 67 ? 'WATCHING — HALF SIZE · WAIT FOR THE BREAK'
-      : 'STRESSED — ORB GATE CLOSED · STAND ASIDE';
-  }
-  dial.addEventListener('input', applyDial);
-  applyDial();
-}
-
-/* ---------- constellation map ---------- */
-const NODES = [{"id": "source-45", "title": "FX Replay \u2014 Browser Market Replay", "section": "data", "batch": 10, "pos": [4.78, 0.7, 1.46]}, {"id": "source-44", "title": "TradeZoro \u2014 Free Futures Charts, GEX + Replay", "section": "data", "batch": 10, "pos": [4.99, 1.15, -0.35]}, {"id": "source-41", "title": "Barchart \u2014 Unusual Options Activity", "section": "data", "batch": 9, "pos": [5.62, -0.2, -1.61]}, {"id": "source-40", "title": "Finviz \u2014 Free Stock Screener", "section": "data", "batch": 9, "pos": [5.65, -1.65, -1.51]}, {"id": "source-37", "title": "ETF Database", "section": "data", "batch": 8, "pos": [6.7, 0.65, 0.0]}, {"id": "source-36", "title": "Portfolio Visualizer", "section": "data", "batch": 8, "pos": [6.41, -1.8, 1.96]}, {"id": "data-7", "title": "Databento", "section": "data", "batch": 2, "pos": [11.65, -1.9, 1.85]}, {"id": "data-8", "title": "Tiingo \u2014 Starter", "section": "data", "batch": 2, "pos": [11.77, 2.55, -0.82]}, {"id": "data-9", "title": "Alpaca \u2014 Basic", "section": "data", "batch": 2, "pos": [11.09, 1.3, -4.04]}, {"id": "data-10", "title": "Stooq", "section": "data", "batch": 1, "pos": [12.63, 2.75, -0.66]}, {"id": "data-11", "title": "TrueFX", "section": "data", "batch": 1, "pos": [12.42, 2.95, 2.41]}, {"id": "data-12", "title": "HistData.com", "section": "data", "batch": 1, "pos": [12.03, 1.4, -3.91]}, {"id": "data-13", "title": "Dukascopy Bank archive", "section": "data", "batch": 1, "pos": [12.63, 0.95, -0.66]}, {"id": "gex-1", "title": "OpenBB Cboe provider", "section": "gex", "batch": 3, "pos": [6.12, 0.5, 9.08]}, {"id": "gex-2", "title": "SquawkFlow \u2014 Unusual Options Flow API", "section": "gex", "batch": 2, "pos": [6.6, 1.85, 9.78]}, {"id": "gex-3", "title": "Massive (formerly Polygon.io)", "section": "gex", "batch": 2, "pos": [6.77, 1.4, 9.67]}, {"id": "gex-4", "title": "MarketData.app \u2014 Options Chain API", "section": "gex", "batch": 2, "pos": [3.45, 1.25, 11.28]}, {"id": "gex-5", "title": "PropTraderz PTZ GEX Levels", "section": "gex", "batch": 1, "pos": [7.26, 0.8, 10.36]}, {"id": "gex-6", "title": "SquawkFlow", "section": "gex", "batch": 1, "pos": [8.79, 2.7, 9.1]}, {"id": "positioning-1", "title": "Nasdaq Data Link (formerly Quandl)", "section": "positioning", "batch": 3, "pos": [-7.18, -1.4, 8.26]}, {"id": "positioning-2", "title": "FRED API", "section": "positioning", "batch": 3, "pos": [-5.64, -1.85, 9.39]}, {"id": "positioning-3", "title": "CFTC COT report", "section": "positioning", "batch": 1, "pos": [-5.74, 1.2, 11.27]}, {"id": "positioning-4", "title": "Meaterm", "section": "positioning", "batch": 1, "pos": [-2.85, 2.3, 12.33]}, {"id": "paper-43", "title": "Diffusive Market Impact: A Consistent Microfoundation", "section": "papers", "batch": 10, "pos": [-4.95, -0.1, 0.7]}, {"id": "paper-42", "title": "Latent Continuum of Regimes in Limit Order Book Dynamics", "section": "papers", "batch": 10, "pos": [-4.99, 1.7, 0.26]}, {"id": "paper-39", "title": "Price-Volume Correlations Are Always Zero", "section": "papers", "batch": 9, "pos": [-5.62, 2.85, 1.61]}, {"id": "paper-38", "title": "Does a Trading Policy Need to Know What It Trades? Microstructure Invariance and Zero-Shot Transfer of Execution Policies", "section": "papers", "batch": 9, "pos": [-5.5, 0.3, 2.0]}, {"id": "paper-35", "title": "Investing in AI Stocks: Machine-Learning Forecasts, Portfolio Strategies, and Stress Tests", "section": "papers", "batch": 7, "pos": [-7.49, 1.9, -0.92]}, {"id": "paper-34", "title": "Neural Estimation of Irreversibility in Real and Simulated Limit Order Book Paths", "section": "papers", "batch": 6, "pos": [-8.15, -0.95, -2.03]}, {"id": "paper-33", "title": "The End-of-Day Reversal After 2019: A Pre-Registered Test on S&amp;P 500 Stocks Excluding Heavily Traded Names", "section": "papers", "batch": 6, "pos": [-8.34, 2.55, 1.02]}, {"id": "paper-32", "title": "Market Impact Estimation via Causal Foundation Models", "section": "papers", "batch": 6, "pos": [-8.27, 2.35, -1.46]}, {"id": "paper-31", "title": "Understanding the Inner Workings of a State-Space Foundation Model for Limit Order Books", "section": "papers", "batch": 6, "pos": [-8.18, 2.75, 1.89]}, {"id": "paper-30", "title": "Deep Learning of Robust Market Making under Regime-Switching Order Flow", "section": "papers", "batch": 5, "pos": [-9.2, -0.85, -0.97]}, {"id": "paper-29", "title": "A unified theory of order flow, market impact, and volatility", "section": "papers", "batch": 5, "pos": [-9.14, 1.55, 1.45]}, {"id": "paper-28", "title": "Bridging the Reality Gap in Limit Order Book Simulation", "section": "papers", "batch": 5, "pos": [-9.11, 1.25, 1.61]}, {"id": "paper-27", "title": "Regimes in the Order Flow", "section": "papers", "batch": 5, "pos": [-8.69, 2.3, 3.16]}, {"id": "papers-14", "title": "Beyond Anonymous Order Flow: Wallet Identity as a Feature for Short-Horizon Return Prediction", "section": "papers", "batch": 4, "pos": [-9.55, 0.1, -3.29]}, {"id": "papers-15", "title": "Hard to Fool: A Bounded LLM Research Loop for Quantitative Finance, and What Two Dozen Campaigns Found", "section": "papers", "batch": 4, "pos": [-9.95, 0.65, -1.75]}, {"id": "papers-16", "title": "The Control Layer Behind Rule-Following Agents Trading Across Market Conditions", "section": "papers", "batch": 3, "pos": [-10.47, 2.2, 3.2]}, {"id": "papers-17", "title": "Exact Phase-Type Point Processes for Certified Measurement and Prediction of Event Streams", "section": "papers", "batch": 3, "pos": [-10.53, 0.15, -3.02]}, {"id": "papers-18", "title": "Tracking High-Frequency Trading Activity in China", "section": "papers", "batch": 2, "pos": [-11.71, 0.65, 1.44]}, {"id": "papers-19", "title": "Do Round Numbers Hold Prices?", "section": "papers", "batch": 2, "pos": [-11.76, -1.55, -1.03]}, {"id": "papers-20", "title": "Quantpedia \u2014 free Screener", "section": "papers", "batch": 2, "pos": [-11.76, 2.2, 1.03]}, {"id": "papers-21", "title": "Market Microstructure Knowledge Needed for Controlling an Intra-Day Trading Process", "section": "papers", "batch": 1, "pos": [-12.16, 1.25, -3.49]}, {"id": "papers-22", "title": "Push-response anomalies in high-frequency S&amp;P 500 price series", "section": "papers", "batch": 1, "pos": [-11.96, -0.75, -4.12]}, {"id": "papers-23", "title": "Hidden Order in Trades Predicts the Size of Price Moves", "section": "papers", "batch": 1, "pos": [-12.65, 2.1, -0.22]}, {"id": "sketch-12", "title": "Continuum-stress ORB filter", "section": "strategies", "batch": 10, "pos": [-2.8, 1.6, -4.15]}, {"id": "sketch-11", "title": "Invariant-units execution rule", "section": "strategies", "batch": 9, "pos": [-2.47, -1.5, -5.3]}, {"id": "sketch-10", "title": "5-day bagging switching rule for the four AI ETFs", "section": "strategies", "batch": 7, "pos": [-5.24, -0.5, -5.43]}, {"id": "sketch-9", "title": "OFI + irreversibility as the simulator acceptance test", "section": "strategies", "batch": 6, "pos": [-3.94, -0.4, -7.42]}, {"id": "sketch-8", "title": "BOCPD regime gate for the ORB", "section": "strategies", "batch": 5, "pos": [-1.76, 0.6, -9.08]}, {"id": "strategies-6", "title": "ARE acceptance as a conjunction, holdout opened once", "section": "strategies", "batch": 0, "pos": [-5.54, -0.65, -7.09]}, {"id": "strategies-7", "title": "News-echo ORB filter", "section": "strategies", "batch": 0, "pos": [-6.89, 0.1, -5.79]}, {"id": "strategies-8", "title": "Exact-match flow as a tape filter", "section": "strategies", "batch": 0, "pos": [-2.48, -0.5, -8.65]}, {"id": "strategies-9", "title": "Round-number ORB test", "section": "strategies", "batch": 0, "pos": [-6.47, -1.4, -6.25]}, {"id": "strategies-10", "title": "Own-GEX from MarketData.app", "section": "strategies", "batch": 0, "pos": [-1.87, 1.5, -8.8]}, {"id": "strategies-11", "title": "COT extremes as swing context", "section": "strategies", "batch": 0, "pos": [-6.47, 2.2, -6.25]}, {"id": "strategies-12", "title": "Entropy-collapse ORB filter", "section": "strategies", "batch": 0, "pos": [-5.16, -0.2, -7.37]}, {"id": "verified-standard", "title": "What \"verified\" means here", "section": "verified", "batch": 8, "pos": [2.07, -1.5, -6.37]}, {"id": "verified-sketch-10", "title": "5-day bagging switching, AI ETFs \u2014 NOT verified", "section": "verified", "batch": 8, "pos": [2.18, -1.5, -6.33]}, {"id": "verified-warning", "title": "Your own account only \u2014 never a prop account", "section": "verified", "batch": 8, "pos": [3.84, 0.4, -5.49]}, {"id": "tapelab", "title": "Tape Lab \u2014 our tape-reading trainer", "section": "tool", "batch": 10, "pos": [0, 4.2, 0], "tool": true}];
-async function initMap(){
-  const canvas = document.getElementById('map-canvas');
-  let THREE;
-  try { THREE = await loadThree(); } catch(e){ canvas.parentElement.innerHTML = '<p class="map-note">The 3D map needs a network connection for its 3D library — the full library is below, and everything still works.</p>'; return; }
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
-  camera.position.set(0, 4, 26);
-  const group = new THREE.Group();
-  scene.add(group);
-  const geo = new THREE.SphereGeometry(0.22, 12, 12);
-  const matWhite = new THREE.MeshBasicMaterial({ color: 0xf5f5f7 });
-  const matRed = new THREE.MeshBasicMaterial({ color: 0xff2b2b });
-  const meshes = [];
-  for (const n of NODES) {
-    const m = new THREE.Mesh(geo, n.tool ? matRed : matWhite);
-    m.position.set(n.pos[0], n.pos[1], n.pos[2]);
-    m.userData = n;
-    group.add(m); meshes.push(m);
-  }
-  // faint links between consecutive batches
-  const linePts = [];
-  const byBatch = [...NODES].sort((a, b) => a.batch - b.batch);
-  for (let i = 1; i < byBatch.length; i++) linePts.push(new THREE.Vector3(...byBatch[i-1].pos), new THREE.Vector3(...byBatch[i].pos));
-  const lineGeo = new THREE.BufferGeometry().setFromPoints(linePts);
-  group.add(new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ color: 0x26262e })));
-  function resize(){
-    const w = canvas.clientWidth, hgt = canvas.clientHeight;
-    renderer.setSize(w, hgt, false);
-    camera.aspect = w / hgt; camera.updateProjectionMatrix();
-  }
-  resize();
-  window.addEventListener('resize', resize);
-  let dragging = false, moved = 0, px = 0, py = 0, rotY = 0.6, rotX = 0.15, idle = true;
-  canvas.addEventListener('pointerdown', e => { dragging = true; moved = 0; px = e.clientX; py = e.clientY; idle = false; canvas.setPointerCapture(e.pointerId); });
-  canvas.addEventListener('pointermove', e => {
-    if (!dragging) return;
-    const dx = e.clientX - px, dy = e.clientY - py;
-    moved += Math.abs(dx) + Math.abs(dy);
-    rotY += dx * 0.005; rotX = Math.max(-0.5, Math.min(0.5, rotX + dy * 0.003));
-    px = e.clientX; py = e.clientY;
-  });
-  canvas.addEventListener('pointerup', e => {
-    dragging = false;
-    if (moved < 6) { // a click, not a drag
-      const r = canvas.getBoundingClientRect();
-      const mouse = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
-      const ray = new THREE.Raycaster();
-      ray.setFromCamera(mouse, camera);
-      const hit = ray.intersectObjects(meshes)[0];
-      if (hit) openCard(hit.object.userData);
+let lastStage = -1, ticking = false;
+function onScroll(){
+  if (ticking) return; ticking = true;
+  requestAnimationFrame(() => {
+    ticking = false;
+    const p = heroProgress();
+    drawThread(p);
+    const stage = Math.min(3, Math.floor(p * 4));
+    if (stage !== lastStage) {
+      lastStage = stage;
+      heroTitle.innerHTML = STAGES[stage].h;
+      heroSub.textContent = STAGES[stage].s;
+      dots.forEach((d, i) => d.classList.toggle('on', i <= stage));
     }
   });
-  canvas.addEventListener('wheel', e => { e.preventDefault(); camera.position.z = Math.max(14, Math.min(36, camera.position.z + e.deltaY * 0.02)); }, { passive: false });
-  const picked = document.getElementById('picked');
-  function openCard(n){
-    picked.textContent = '→ ' + n.title;
-    const el = document.getElementById(n.id);
-    if (el) {
-      el.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
-      el.classList.add('flash');
-      setTimeout(() => el.classList.remove('flash'), 1800);
-    }
-  }
-  let visible = true, t = 0;
-  new IntersectionObserver(en => { visible = en[0].isIntersecting; }).observe(canvas);
-  (function animate(){
-    requestAnimationFrame(animate);
-    if (!visible) return;
-    t += 0.016;
-    if (idle) rotY += 0.0009;
-    group.rotation.y = rotY; group.rotation.x = rotX;
-    renderer.render(scene, camera);
-  })();
 }
-if (!HAS_3D) {
-  const mb = document.getElementById('map');
-  if (mb) mb.innerHTML = '<div class="sec-head"><h2>The map</h2><p>Every source, one view</p></div><p class="map-note">The 3D map needs WebGL — your browser has it switched off, so here is the full library below instead. Nothing is missing.</p>';
-}
+if (REDUCED) { drawThread(1); heroTitle.innerHTML = STAGES[3].h; heroSub.textContent = STAGES[3].s; dots.forEach(d => d.classList.add('on')); }
+else { drawThread(0); window.addEventListener('scroll', onScroll, { passive: true }); onScroll(); }
 
-/* ---------- search + combined filters ---------- */
+/* ---------- the echo demo — Sketch 6, working ---------- */
+const echo = document.getElementById('echo-canvas');
+const ectx = echo.getContext('2d');
+let seed = 20261110;
+const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+const N = 320, prices = [];
+let px0 = 100;
+for (let i = 0; i < N; i++) {
+  px0 += (rnd() - 0.5) * 0.55;
+  if (i === 120) px0 += 3.4;            // CPI prints
+  if (i > 120 && i < 132) px0 -= 0.28;  // first-minute noise
+  if (i >= 132) px0 += 0.06;            // the echo drift
+  prices.push(px0);
+}
+const orbHi = Math.max(...prices.slice(100, 116));
+const orbLo = Math.min(...prices.slice(100, 116));
+const ECHO_FROM = 132, ECHO_TO = 196;
+const tapeEl = document.getElementById('echo-tape');
+const statusEl = document.getElementById('echo-status');
+let EW = 0, EH = 0, playhead = 0, playing = false, rafId = null;
+function sizeEcho(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  EW = echo.clientWidth; EH = echo.clientHeight;
+  echo.width = EW * dpr; echo.height = EH * dpr;
+  ectx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawEcho();
+}
+function drawEcho(){
+  ectx.clearRect(0, 0, EW, EH);
+  const padL = 46, padR = 16, padT = 18, padB = 26;
+  const w = EW - padL - padR, h = EH - padT - padB;
+  const lo = Math.min(...prices) - 0.6, hi = Math.max(...prices) + 0.6;
+  const X = i => padL + (i / (N - 1)) * w;
+  const Y = v => padT + (1 - (v - lo) / (hi - lo)) * h;
+  // echo window
+  ectx.fillStyle = 'rgba(209,167,95,0.10)';
+  ectx.fillRect(X(ECHO_FROM), padT, X(ECHO_TO) - X(ECHO_FROM), h);
+  ectx.fillStyle = '#d1a75f';
+  ectx.font = '11px "JetBrains Mono", monospace';
+  ectx.textAlign = 'left';
+  ectx.fillText('ECHO 16–137s', X(ECHO_FROM) + 6, padT + 16);
+  // ORB lines
+  ectx.strokeStyle = 'rgba(122,162,255,0.7)';
+  ectx.setLineDash([5, 4]); ectx.lineWidth = 1;
+  ectx.beginPath(); ectx.moveTo(padL, Y(orbHi)); ectx.lineTo(EW - padR, Y(orbHi)); ectx.stroke();
+  ectx.beginPath(); ectx.moveTo(padL, Y(orbLo)); ectx.lineTo(EW - padR, Y(orbLo)); ectx.stroke();
+  ectx.setLineDash([]);
+  ectx.fillStyle = '#7aa2ff';
+  ectx.fillText('ORB HIGH', padL + 4, Y(orbHi) - 6);
+  ectx.fillText('ORB LOW', padL + 4, Y(orbLo) + 14);
+  // CPI marker
+  ectx.strokeStyle = 'rgba(242,237,227,0.5)';
+  ectx.beginPath(); ectx.moveTo(X(120), padT); ectx.lineTo(X(120), padT + h); ectx.stroke();
+  ectx.fillStyle = '#f2ede3';
+  ectx.fillText('CPI 7:00 PM', X(120) + 6, padT + h - 6);
+  // price line up to playhead
+  const upto = Math.max(2, Math.floor(playhead));
+  ectx.beginPath();
+  for (let i = 0; i < upto; i++) { const x = X(i), y = Y(prices[i]); if (i === 0) ectx.moveTo(x, y); else ectx.lineTo(x, y); }
+  ectx.strokeStyle = '#f2ede3'; ectx.lineWidth = 1.8; ectx.stroke();
+  // playhead
+  if (upto > 1 && upto < N) {
+    const x = X(upto - 1), y = Y(prices[upto - 1]);
+    const g = ectx.createRadialGradient(x, y, 0, x, y, 14);
+    g.addColorStop(0, 'rgba(209,167,95,0.9)'); g.addColorStop(1, 'rgba(209,167,95,0)');
+    ectx.beginPath(); ectx.arc(x, y, 14, 0, Math.PI * 2); ectx.fillStyle = g; ectx.fill();
+    ectx.beginPath(); ectx.arc(x, y, 4, 0, Math.PI * 2); ectx.fillStyle = '#d1a75f'; ectx.fill();
+  }
+  // axes
+  ectx.fillStyle = '#6b7896';
+  ectx.fillText('6:30 PM', padL, EH - 8);
+  ectx.fillText('8:00 PM', EW - padR - 52, EH - 8);
+}
+function tapeRow(i){
+  const up = i > 0 && prices[i] >= prices[i - 1];
+  const t = 18 * 60 + 30 + Math.floor(i / (N - 1) * 90);
+  const hh = 18 + Math.floor(t / 60), mm = t % 60;
+  return '<div class="tk"><b>' + String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0') + '</b> · ' + prices[i].toFixed(2) + ' <span class="' + (up ? 'up' : '') + '">' + (up ? '▲' : '▼') + '</span></div>';
+}
+function setStatus(){
+  if (playhead < 100) statusEl.innerHTML = '<b>Pre-open.</b> The range is forming — nothing to do yet.';
+  else if (playhead < 120) statusEl.innerHTML = '<b>Opening range set.</b> High ' + orbHi.toFixed(2) + ' · Low ' + orbLo.toFixed(2) + '. CPI lands at 7:00 PM.';
+  else if (playhead < 132) statusEl.innerHTML = '<b>CPI printed.</b> First 3 minutes: noise. Sketch 6 says — do not chase the breakout.';
+  else if (playhead < ECHO_TO) statusEl.innerHTML = '<b>The echo.</b> 16–137 seconds after the print, the move continues in the direction of the pre-open drift.';
+  else statusEl.innerHTML = '<b>Done.</b> The echo window is closed. The full rule — with its gates — is Sketch 6 in the Strategies section.';
+}
+function stepEcho(){
+  if (!playing) return;
+  playhead = Math.min(N, playhead + 1.4);
+  drawEcho();
+  const start = Math.max(0, Math.floor(playhead) - 5);
+  let rows = '';
+  for (let i = Math.floor(playhead); i > start; i--) rows += tapeRow(i);
+  tapeEl.innerHTML = rows || '<div class="tk">Press play.</div>';
+  setStatus();
+  if (playhead >= N) { playing = false; document.getElementById('echo-play').textContent = '▶ Play again'; return; }
+  rafId = requestAnimationFrame(stepEcho);
+}
+document.getElementById('echo-play').addEventListener('click', function(){
+  if (playhead >= N) { playhead = 0; }
+  playing = !playing;
+  this.textContent = playing ? '❚❚ Pause' : '▶ Play';
+  if (playing) stepEcho();
+});
+document.getElementById('echo-restart').addEventListener('click', function(){
+  playing = false; playhead = 0;
+  document.getElementById('echo-play').textContent = '▶ Play';
+  drawEcho(); tapeEl.innerHTML = '<div class="tk">Press play.</div>'; setStatus();
+});
+sizeEcho();
+window.addEventListener('resize', sizeEcho);
+if (REDUCED) { playhead = N; drawEcho(); setStatus(); }
+
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---------- search + combined filters (fixed: only sections WITH cards can hide) ---------- */
 const cards = [...document.querySelectorAll('article.card')];
 const sections = [...document.querySelectorAll('section[id]')];
 const state = { batch: 'all', setup: 'all', asset: 'all', q: '' };
@@ -1395,8 +1437,9 @@ function applyFilters(){
     if (ok) shown++;
   }
   for (const s of sections) {
-    const any = [...s.querySelectorAll('article.card')].some(c => !c.classList.contains('hidden'));
-    s.classList.toggle('hidden-sec', !any);
+    const cs = [...s.querySelectorAll('article.card')];
+    if (!cs.length) continue; // sections without cards (hero extras) never hide
+    s.classList.toggle('hidden-sec', !cs.some(c => !c.classList.contains('hidden')));
   }
   if (countEl) countEl.textContent = 'Showing ' + shown + ' of ' + cards.length + ' cards';
 }
@@ -1418,23 +1461,36 @@ const searchInput = document.getElementById('lab-search');
 if (searchInput) searchInput.addEventListener('input', () => { state.q = searchInput.value.trim().toLowerCase(); applyFilters(); });
 applyFilters();
 
-/* ---------- feedback tab ---------- */
-const fab = document.getElementById('idea-fab');
-const panel = document.getElementById('idea-panel');
-if (fab && panel) {
-  fab.addEventListener('click', () => panel.classList.toggle('open'));
-  document.getElementById('idea-close').addEventListener('click', () => panel.classList.remove('open'));
-  document.getElementById('idea-form').addEventListener('submit', e => {
-    e.preventDefault();
-    const what = document.getElementById('idea-what').value.trim();
-    const market = document.getElementById('idea-market').value;
-    const email = document.getElementById('idea-email').value.trim();
-    const subject = encodeURIComponent('Learning Lab idea: ' + (what.slice(0, 60) || 'new request'));
-    const body = encodeURIComponent('What I am looking for:\n' + what + '\n\nMarket: ' + market + (email ? '\nMy email: ' + email : '') + '\n\n(sent from the Learning Lab — Drop your idea tab)');
-    window.location.href = 'mailto:aryapavan0369@gmail.com?subject=' + subject + '&body=' + body;
-    panel.classList.remove('open');
+/* ---------- ask the lab ---------- */
+const askFab = document.getElementById('ask-fab');
+const askPanel = document.getElementById('ask-panel');
+if (askFab && askPanel) {
+  askFab.addEventListener('click', () => askPanel.classList.toggle('open'));
+  document.getElementById('ask-close').addEventListener('click', () => askPanel.classList.remove('open'));
+  askPanel.addEventListener('click', e => {
+    const chip = e.target.closest('[data-goto]');
+    if (!chip) return;
+    askPanel.classList.remove('open');
+    const el = document.querySelector(chip.dataset.goto);
+    if (el) el.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' });
   });
 }
+
+/* ---------- feedback form ---------- */
+let fbType = 'Data';
+document.querySelectorAll('#feedback .pills button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#feedback .pills button').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  fbType = b.dataset.type;
+}));
+document.getElementById('fb-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const what = document.getElementById('fb-what').value.trim();
+  const email = document.getElementById('fb-email').value.trim();
+  const subject = encodeURIComponent('Learning Lab — find me: ' + fbType + ' — ' + (what.slice(0, 50) || 'new request'));
+  const body = encodeURIComponent('Type: ' + fbType + '\n\nWhat I want the Lab to find:\n' + what + (email ? '\n\nMy email: ' + email : '') + '\n\n(sent from the Learning Lab feedback card)');
+  window.location.href = 'mailto:aryapavan0369@gmail.com?subject=' + subject + '&body=' + body;
+});
 </script>
 </body>
 </html>
