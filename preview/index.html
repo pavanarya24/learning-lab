@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Lab — one finding, tested</title>
+<meta name="description" content="Learning Lab — free quant data, research papers and trading strategies, tested honestly. One finding a day, followed through to a trade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#070b14;--ink2:#0c1222;--panel:#0d1322;--line:rgba(154,167,199,.18);--cream:#f2ede3;--mist:#9aa7c7;--dim:#6b7896;--gold:#d1a75f;--signal:#7aa2ff;--radius:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--cream);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--cream);text-decoration:none}
+a:hover{color:var(--gold)}
+.mono{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace}
+.kicker{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--signal)}
+h1,h2,h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;line-height:1.05;letter-spacing:-.01em}
+h1 em,h2 em{color:var(--gold);font-style:italic}
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:68px;background:rgba(7,11,20,.75);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .word{font-family:'Instrument Serif',Georgia,serif;font-size:22px;letter-spacing:.02em}
+nav .word b{color:var(--gold);font-weight:400;font-style:italic}
+nav .links{display:flex;gap:26px;font-size:14px;color:var(--mist)}
+nav .links a:hover{color:var(--cream)}
+nav .cta{border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:9px 18px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+nav .cta:hover{background:var(--gold);color:var(--ink)}
+@media(max-width:760px){nav .links{display:none}}
+/* hero — the thread, scroll-scrubbed */
+#hero-scroll{position:relative;height:280vh}
+#hero{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
+#thread-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hero .hero-inner{position:relative;z-index:2;width:100%;max-width:1150px;margin:0 auto;padding:90px 24px 40px}
+#hero h1{font-size:clamp(48px,7.4vw,96px);max-width:820px}
+#hero .hero-sub{margin-top:20px;font-size:18px;color:var(--mist);max-width:560px;line-height:1.6}
+#hero .hero-sub b{color:var(--cream)}
+#hero .hero-meta{margin-top:22px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+#hero .hero-meta b{color:var(--cream)}
+#hero .scroll-hint{position:absolute;left:24px;bottom:26px;z-index:2;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+#hero .stage-dots{position:absolute;right:28px;bottom:26px;z-index:2;display:flex;gap:8px}
+#hero .stage-dots i{width:8px;height:8px;border-radius:50%;background:var(--dim);opacity:.5}
+#hero .stage-dots i.on{background:var(--gold);opacity:1}
+/* stats strip */
+.stats{display:flex;flex-wrap:wrap;gap:0;background:rgba(13,19,34,.8);border:1px solid var(--line);border-radius:var(--radius);margin:34px 0 0;padding:8px 0;backdrop-filter:blur(6px)}
+.stat{flex:1 1 120px;padding:12px 20px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat .num{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:26px;font-weight:500;color:var(--gold);line-height:1.1;white-space:nowrap}
+.stat .lbl{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mist);margin-top:6px}
+.wrap{position:relative;z-index:1;max-width:1150px;margin:0 auto;padding:0 24px 64px}
+/* demo — one sketch, working */
+#demo{padding:110px 0 40px}
+#demo .sec-head{margin-bottom:18px}
+.demo-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.demo-head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
+.demo-head .t{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}
+.demo-head .t b{color:var(--gold)}
+.demo-controls{display:flex;gap:8px}
+.demo-controls button{background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;cursor:pointer}
+.demo-controls button:hover{border-color:var(--gold);color:var(--gold)}
+.demo-controls button.primary{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.demo-controls button.primary:hover{background:#e0bc7d;color:var(--ink)}
+#echo-canvas{width:100%;height:340px;display:block}
+.demo-foot{display:grid;grid-template-columns:1fr 240px;gap:0;border-top:1px solid var(--line)}
+@media(max-width:760px){.demo-foot{grid-template-columns:1fr}}
+.demo-status{padding:16px 20px;font-size:14px;color:var(--mist)}
+.demo-status b{color:var(--gold)}
+.demo-tape{border-left:1px solid var(--line);padding:12px 16px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:var(--mist);line-height:1.9}
+.demo-tape .tk b{color:var(--cream)}
+.demo-tape .tk .up{color:var(--gold)}
+.demo-note{padding:14px 20px;border-top:1px solid var(--line);font-size:13px;color:var(--dim)}
+.demo-note b{color:var(--mist)}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:90px 0 30px}
+.steps .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.steps .step .n{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:var(--gold);letter-spacing:.14em}
+.steps .step h3{font-size:26px;margin:10px 0 8px}
+.steps .step p{font-size:15px;color:var(--mist)}
+.steps .step p b{color:var(--cream)}
+/* ticker */
+.ticker{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);overflow:hidden;white-space:nowrap;padding:12px 0;margin:30px 0 70px}
+.ticker-track{display:inline-block;animation:tick 90s linear infinite;will-change:transform}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker span{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)}
+.ticker b{color:var(--gold);font-weight:500}
+.ticker i{color:var(--gold);font-style:normal;margin:0 14px}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* findbar */
+.findbar{position:sticky;top:68px;z-index:20;background:rgba(7,11,20,.92);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:28px}
+.findbar input[type=search]{width:100%;background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:999px;padding:13px 18px;font-size:15px;font-family:'Inter',system-ui,sans-serif;outline:none}
+.findbar input[type=search]:focus{border-color:var(--gold)}
+.findbar input[type=search]::placeholder{color:var(--dim)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}
+.filters button{background:var(--panel);color:var(--cream);border:1px solid var(--line);border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;cursor:pointer}
+.filters button:hover{border-color:var(--cream)}
+.filters button.active{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.findbar .count{margin-top:10px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:var(--dim)}
+section[id],#demo,#tapelab,#feedback{scroll-margin-top:400px}
+#library{scroll-margin-top:84px}
+/* sections + cards */
+section{margin-bottom:70px}
+.sec-head{margin-bottom:22px}
+.sec-head h2{font-size:clamp(34px,4.4vw,52px);margin:8px 0 6px}
+.sec-head p{font-size:15px;color:var(--mist);max-width:640px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease,border-color .25s ease}
+.card:hover{transform:translateY(-3px);border-color:rgba(209,167,95,.5)}
+.card.wide{grid-column:1/-1}
+.card img{width:100%;height:172px;object-fit:cover;object-position:top center;display:block;border-bottom:1px solid var(--line);background:var(--ink2)}
+.card.wide img{height:340px}
+.card a.img-link{display:block}
+.card-body{padding:20px;display:flex;flex-direction:column;flex:1}
+.card .no{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.card h3{font-size:24px;margin:8px 0 4px}
+.card .key{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:19px;font-weight:500;color:var(--gold);margin:10px 0}
+.card p{font-size:15px;color:var(--mist)}
+.card p b{color:var(--cream)}
+.card .use{margin-top:12px;font-size:14px;color:var(--mist);border-top:1px solid var(--line);padding-top:12px}
+.card .use b{color:var(--gold);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.card .src{margin-top:auto;padding-top:14px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px}
+.card .src a{color:var(--cream);border-bottom:1px solid var(--gold)}
+.card .src a:hover{color:var(--gold)}
+.card.flash{outline:2px solid var(--gold);outline-offset:2px}
+.badge{display:inline-block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.badge.white{color:var(--cream);border-color:var(--cream)}
+.flow{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.flow .step{display:flex;gap:10px;align-items:flex-start;margin-top:8px;font-size:14px;color:var(--mist)}
+.flow .step b{color:var(--gold);font-family:'JetBrains Mono',ui-monospace,monospace}
+.flow .step span b{color:var(--cream)}
+.diagram{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.diagram .node{background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--cream);text-align:center;line-height:1.45}
+.diagram .node b{color:var(--cream)}
+.diagram .node .lbl{display:block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.diagram .node.q{border-color:var(--gold)}
+.diagram .node.q .lbl{color:var(--gold)}
+.diagram .node.yes{border-color:var(--gold)}
+.diagram .node.yes .lbl{color:var(--gold)}
+.diagram .node.no{color:var(--mist)}
+.diagram .node.out{border-color:var(--cream)}
+.diagram .arr{text-align:center;color:var(--gold);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:16px;line-height:1.3;padding:1px 0}
+.diagram .branch{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.diagram .branch .node{font-size:12px}
+.diagram .note{margin-top:10px;font-size:13px;color:var(--mist);text-align:center}
+.diagram .note b{color:var(--gold)}
+.latest{border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--radius);background:var(--panel);padding:22px 24px;margin-bottom:60px}
+.latest h2{font-size:28px}
+.latest h2 span{color:var(--gold)}
+.latest ul{list-style:none;margin-top:10px}
+.latest li{padding:9px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--mist)}
+.latest li:last-child{border-bottom:0}
+.latest li b{color:var(--cream)}
+.latest li a{color:var(--cream);border-bottom:1px solid var(--gold)}
+.latest li a:hover{color:var(--gold)}
+.card.hidden{display:none}
+section.hidden-sec{display:none}
+/* feedback — narrow, quiet, personal */
+#feedback{max-width:760px;margin:0 auto 80px;text-align:center}
+#feedback .fb-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:36px 32px;text-align:left}
+#feedback h2{font-size:clamp(34px,4.4vw,50px);text-align:center;margin:8px 0}
+#feedback .fb-sub{text-align:center;color:var(--mist);margin-bottom:24px}
+#feedback .pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+#feedback .pills button{background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;cursor:pointer}
+#feedback .pills button.active{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+#feedback label{display:block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist);margin:14px 0 6px}
+#feedback textarea,#feedback input{width:100%;background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:12px;padding:13px 14px;font-size:15px;font-family:'Inter',system-ui,sans-serif;outline:none}
+#feedback textarea:focus,#feedback input:focus{border-color:var(--gold)}
+#feedback .send{margin-top:18px;width:100%;background:var(--gold);color:var(--ink);border:0;border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:15px;cursor:pointer}
+#feedback .send:hover{background:#e0bc7d}
+#feedback .fb-note{margin-top:14px;font-size:13px;color:var(--dim);text-align:center}
+footer{border-top:1px solid var(--line);padding-top:32px;margin-top:8px}
+footer h2{font-size:26px;margin-bottom:12px}
+footer ul{list-style:none}
+footer li{padding:9px 0;border-bottom:1px solid var(--line);color:var(--mist);font-size:15px}
+footer li b{color:var(--cream)}
+footer .note{margin-top:20px;font-size:13px;color:var(--dim);line-height:1.6}
+footer .note b{color:var(--gold)}
+.top{margin-top:28px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+/* ask the lab */
+#ask-fab{position:fixed;right:18px;bottom:18px;z-index:60;background:var(--gold);color:var(--ink);border:0;border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 20px;cursor:pointer;box-shadow:0 8px 28px rgba(209,167,95,.35)}
+#ask-fab:hover{background:#e0bc7d}
+#ask-panel{position:fixed;right:18px;bottom:76px;z-index:60;width:min(340px,calc(100vw - 36px));background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:none;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+#ask-panel.open{display:block}
+#ask-panel h3{font-size:20px;margin-bottom:4px}
+#ask-panel p{font-size:14px;color:var(--mist);margin-bottom:12px}
+#ask-panel .chip{display:block;width:100%;text-align:left;background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px;margin-top:8px;cursor:pointer}
+#ask-panel .chip:hover{border-color:var(--gold);color:var(--gold)}
+#ask-panel .close-x{position:absolute;top:8px;right:14px;background:none;border:0;color:var(--dim);font-size:20px;cursor:pointer}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .ticker-track{animation:none}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="word" href="#hero-scroll">Learning <b>Lab</b></a>
+  <div class="links"><a href="#demo">The idea</a><a href="#library">Library</a><a href="#tapelab">Tape Lab</a><a href="#verified">Verified</a></div>
+  <a class="cta" href="#feedback">Drop an idea</a>
+</nav>
+
+<div id="hero-scroll">
+  <section id="hero">
+    <canvas id="thread-canvas" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <div class="kicker">A trader&rsquo;s research room · Updated daily</div>
+      <h1 id="hero-title">A finding <em>arrives.</em></h1>
+      <p class="hero-sub" id="hero-sub">Every day, one underrated source — free data, a research paper, a tool. Nothing sponsored, nothing paid.</p>
+      <p class="hero-meta">Source: <b>underrated-quant-sources.md</b> · All items checked 7–10 Nov 2026 against the provider's own docs · Free tiers change — recheck pricing before building</p>
+      <div class="stats">
+  <div class="stat"><div class="num">45</div><div class="lbl">Sources</div></div>
+  <div class="stat"><div class="num">12</div><div class="lbl">Sketches</div></div>
+  <div class="stat"><div class="num">10</div><div class="lbl">Batches</div></div>
+  <div class="stat"><div class="num">0</div><div class="lbl">Verified</div></div>
+  <div class="stat"><div class="num">$0</div><div class="lbl">Spent</div></div>
+  <div class="stat"><div class="num">2.89×</div><div class="lbl">Entropy move</div></div>
+  <div class="stat"><div class="num">$73.2M</div><div class="lbl">GLD net GEX</div></div>
+  <div class="stat"><div class="num">100/day</div><div class="lbl">Free options API</div></div>
+</div>
+
+
+    </div>
+    <div class="scroll-hint">Scroll — the thread follows &darr;</div>
+    <div class="stage-dots"><i class="on"></i><i></i><i></i><i></i></div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section id="demo" class="reveal">
+    <div class="sec-head"><span class="kicker">Watch one work</span><h2>Sketch 6, <em>live.</em></h2><p>The CPI echo: skip the first 3 minutes, trade the echo 16–137 seconds after the print. Press play and watch the tape.</p></div>
+    <div class="demo-box">
+      <div class="demo-head"><span class="t">Sketch 6 · News-echo ORB · <b>Tonight 7:00 PM IST</b></span>
+        <div class="demo-controls"><button class="primary" id="echo-play" type="button">&#9654; Play</button><button id="echo-restart" type="button">Restart</button></div>
+      </div>
+      <canvas id="echo-canvas"></canvas>
+      <div class="demo-foot">
+        <div class="demo-status" id="echo-status"><b>Pre-open.</b> The range is forming — nothing to do yet.</div>
+        <div class="demo-tape" id="echo-tape"><div class="tk">Press play.</div></div>
+      </div>
+      <div class="demo-note"><b>Illustrative replay</b> of the Sketch 6 idea — generated prices, not real ticks. The rule, with its gates, is Sketch 6 in the Strategies section below.</div>
+    </div>
+  </section>
+
+  <div class="steps reveal">
+    <div class="step"><span class="n">01 · FIND</span><h3>We find it.</h3><p>Underrated, <b>free</b> data and papers — from small creators and quiet corners, never the sponsored top of Google.</p></div>
+    <div class="step"><span class="n">02 · SKETCH</span><h3>We sketch it.</h3><p>Every finding becomes an <b>IF/THEN rule</b> you could test — drawn out, boxes and arrows, before a rupee is risked.</p></div>
+    <div class="step"><span class="n">03 · TEST</span><h3>We test it.</h3><p>Pre-registered, walk-forward, Monte Carlo. <b>Five gates</b> — or it stays frozen, in public, with the failure on the page. Sketch 10 did.</p></div>
+  </div>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Regimes are a continuum, not labels <b>R²_OOS 0.7483</b> · <b>Batch 10</b></span><i>◆</i><span>Impact decays <b>50–60%</b> · <b>Batch 10</b></span><i>◆</i><span>Invariant execution transfers <b>zero-shot</b> · Batch 9</span><i>◆</i><span>Sketch 10 ARE test: <b>FAIL 0/5 gates</b> · Batch 8</span><i>◆</i><span>AI-ETF switching Sharpe <b>5.65 vs 0.02</b> · 14-mo window only</span><i>◆</i><span>OFI R² ≈ <b>0.59</b> · <b>Batch 6</b></span><i>◆</i><span>Naive impact bias <b>up to 68%</b></span><i>◆</i><span>EOD reversal <b>3.13 bps → 0</b> in 2020–22</span><i>◆</i><span>Irreversibility <b>0.018 vs 0.0006</b> · sim fails</span><i>◆</i><span>BOCPD regime gate · <b>Batch 5</b></span><i>◆</i><span>H0 ≈ <b>3/4</b> ties flow + impact</span><i>◆</i><span>LOB simulator · latency races</span><i>◆</i><span>Regimes in the Order Flow · <b>NASDAQ</b></span><i>◆</i><span>Dukascopy tick data back to 1997</span><i>◆</i><span>HistData free M1 + tick FX</span><i>◆</i><span>TrueFX real ECN ticks</span><i>◆</i><span>Stooq free daily OHLC</span><i>◆</i><span>SquawkFlow GLD <b>378 / 373 / 371</b></span><i>◆</i><span>PropTraderz free GEX NQ · ES · GC</span><i>◆</i><span>MarketData.app <b>100 req/day</b></span><i>◆</i><span>Massive free Basic EOD options</span><i>◆</i><span>COT Fri <b>3:30pm ET</b></span><i>◆</i><span>Meaterm free COT charts</span><i>◆</i><span>Entropy <b>2.89×</b></span><i>◆</i><span>Push-response asymmetry</span><i>◆</i><span>Round numbers don't hold</span><i>◆</i><span>Exact-match predicts <b>100ms–10min</b></span><i>◆</i><span>Alpaca free IEX</span><i>◆</i><span>Tiingo 30+ yrs EOD</span><i>◆</i><span>Databento <b>$125 credits</b></span><i>◆</i><span>Quantpedia 1,000+ strategies</span><i>◆</i><span>OpenBB Cboe <b>no key · no cap</b></span><i>◆</i><span>FRED <b>800,000+ series</b></span><i>◆</i><span>Nasdaq Data Link free datasets</span><i>◆</i><span>News echo <b>1s + 16–137s</b></span><i>◆</i><span>Rule-breaking agents <b>2,627 trades</b></span><i>◆</i><span>Bounded LLM loop · holdout opened once</span><i>◆</i><span>Wallet identity · Spearman <b>0.52</b></span><i>◆</i><span>Regimes are a continuum, not labels <b>R²_OOS 0.7483</b> · <b>Batch 10</b></span><i>◆</i><span>Impact decays <b>50–60%</b> · <b>Batch 10</b></span><i>◆</i><span>Invariant execution transfers <b>zero-shot</b> · Batch 9</span><i>◆</i><span>Sketch 10 ARE test: <b>FAIL 0/5 gates</b> · Batch 8</span><i>◆</i><span>AI-ETF switching Sharpe <b>5.65 vs 0.02</b> · 14-mo window only</span><i>◆</i><span>Dukascopy tick data back to 1997</span><i>◆</i><span>HistData free M1 + tick FX</span><i>◆</i><span>TrueFX real ECN ticks</span><i>◆</i><span>Stooq free daily OHLC</span><i>◆</i><span>SquawkFlow GLD <b>378 / 373 / 371</b></span><i>◆</i><span>PropTraderz free GEX NQ · ES · GC</span><i>◆</i><span>MarketData.app <b>100 req/day</b></span><i>◆</i><span>Massive free Basic EOD options</span><i>◆</i><span>COT Fri <b>3:30pm ET</b></span><i>◆</i><span>Meaterm free COT charts</span><i>◆</i><span>Entropy <b>2.89×</b></span><i>◆</i><span>Push-response asymmetry</span><i>◆</i><span>Round numbers don't hold</span><i>◆</i><span>Exact-match predicts <b>100ms–10min</b></span><i>◆</i><span>Alpaca free IEX</span><i>◆</i><span>Tiingo 30+ yrs EOD</span><i>◆</i><span>Databento <b>$125 credits</b></span><i>◆</i><span>Quantpedia 1,000+ strategies</span><i>◆</i><span>OpenBB Cboe <b>no key · no cap</b></span><i>◆</i><span>FRED <b>800,000+ series</b></span><i>◆</i><span>Nasdaq Data Link free datasets</span><i>◆</i><span>News echo <b>1s + 16–137s</b></span><i>◆</i><span>Rule-breaking agents <b>2,627 trades</b></span><i>◆</i><span>Bounded LLM loop · holdout opened once</span><i>◆</i><span>Wallet identity · Spearman <b>0.52</b></span><i>◆</i></div></div>
+
+
+
+  <div class="findbar" id="library">
+    <input type="search" id="lab-search" placeholder="Search the Lab — try &lsquo;GEX&rsquo;, &lsquo;gold&rsquo;, &lsquo;ORB&rsquo;, &lsquo;replay&rsquo;&hellip;" aria-label="Search the Learning Lab">
+    <div class="filters" id="batch-filters">
+      <button data-filter="all" class="active">All batches</button>
+      <button data-filter="10">Batch 10 · Latest</button><button data-filter="9">Batch 9</button><button data-filter="8">Batch 8</button><button data-filter="7">Batch 7</button><button data-filter="6">Batch 6</button><button data-filter="5">Batch 5</button><button data-filter="4">Batch 4</button><button data-filter="3">Batch 3</button><button data-filter="2">Batch 2</button><button data-filter="1">Batch 1</button>
+    </div>
+    <div class="filters" id="setup-filters">
+      <button data-filter="all" class="active">All setups</button>
+      <button data-filter="orb">ORB</button><button data-filter="gex">GEX / Gamma</button><button data-filter="vwap">VWAP / 9 EMA</button><button data-filter="execution">Execution</button><button data-filter="data">Data &amp; tools</button>
+    </div>
+    <div class="filters" id="asset-filters">
+      <button data-filter="all" class="active">All markets</button>
+      <button data-filter="fx">FX</button><button data-filter="gold">Gold</button><button data-filter="equities">Equities</button><button data-filter="futures">Futures</button>
+    </div>
+    <div class="count" id="result-count">Showing 62 of 62 cards</div>
+  </div>
+
+  <section class="latest" id="latest">
+  <p class="eyebrow">New today · 10 Nov 2026</p>
+  <h2>Latest — <span>Batch 10</span></h2>
+  <ul>
+    <li><b>43 · Diffusive Market Impact: A Consistent Microfoundation</b> — impact returns are white; impact decline confined to 50–60%. <a href="#paper-43">See card ↓</a></li>
+    <li><b>42 · Latent Continuum of Regimes in Limit Order Book Dynamics</b> — regimes are a continuum, not discrete states; one stress coordinate captures 83–85% of variation, R²_OOS 0.7483. <a href="#paper-42">See card ↓</a></li>
+    <li><b>45 · FX Replay</b> — free browser market replay, no card, never expires; CME futures are Pro-only. <a href="#source-45">See card ↓</a></li>
+    <li><b>44 · TradeZoro</b> — free futures charts, GEX+ and replay in one workspace; GEX+ is Pro, price not listed. <a href="#source-44">See card ↓</a></li>
+    <li><b>Sketch 12 · Continuum-stress ORB filter</b> — one continuous stress number, no regime labels; trade the ORB only when stress is mid-range and stable. Hypothesis only, not tested. <a href="#sketch-12">See card ↓</a></li>
+  </ul>
+</section>
+
+
+  
+<section id="tapelab">
+  <div class="sec-head"><span class="kicker">Our tool</span><h2>Tape Lab — <em>read the tape</em></h2><p>Built by us, free to try</p></div>
+  <div class="cards">
+    <article class="card wide" id="tapelab" data-batch="10" data-setup="execution" data-asset="multi">
+      <a class="img-link" href="https://tape-simulator-five.vercel.app" target="_blank" rel="noopener"><img src="../images/tape-simulator.png" alt="Tape Lab — tape-reading trainer"></a>
+      <div class="card-body">
+        <span class="no">Our tool · Live now</span>
+        <h3>Tape Lab — read the tape before you trade it</h3>
+        <div class="key">FREE · BROWSER · NO SIGN-UP</div>
+        <p>Our own tape-reading trainer: real market replay, read the tape, build the checklist. Free to try — the checklist leads to the <b>$100 Strategy Stress-Test Audit</b> and the <b>$500/mo Desk</b>.</p>
+        <p class="use"><b>Try it:</b> open the trainer, run one replay session, score yourself against the checklist.</p>
+        <p class="src"><a href="https://tape-simulator-five.vercel.app" target="_blank" rel="noopener">Try Tape Lab free &rarr;</a></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+  <section id="data">
+  <div class="sec-head"><h2>Data</h2><p>Free data providers · 13 sources</p></div>
+  <div class="cards">
+
+    <article data-batch="10" data-setup="orb vwap execution" data-asset="fx gold equities futures" class="card" id="source-45">
+      <div class="card-body">
+        <p class="no">45 · Batch 10 · Free · Instagram find</p>
+        <h3>FX Replay — Browser Market Replay</h3>
+        <div class="key">FREE PLAN · NO CARD · NEVER EXPIRES</div>
+        <p>Browser-based market replay and backtesting, 120+ assets — futures, forex, stocks, indices, metals, energy, crypto. Replay any date, multi-chart, economic calendar, Monte Carlo, seconds timeframes, VWAP / Volume Profile, built-in journal, AI trade analysis, prop-firm challenge simulator. Free plan: core backtesting, no card, never expires. Paid: Intermediate $15/mo, Pro $29.16/mo (annual billing) — extra data, unlimited sessions, futures / stocks data, seconds granularity. Found via Instagram: @tradinglikevicky, corroborated by @trade_with_israt and @trade.with.aviral. <b>Caveat:</b> CME futures (ES, GC, MES) are listed "Pro only" — the free tier is likely FX-only in practice; do not claim free ES / GC replay until a free account is tried.</p>
+        <p class="use"><b>Use —</b> replay practice for ORB / VWAP on FX and gold — a second replay trainer alongside his Tape Simulator, not a replacement.</p>
+        <p class="src"><a href="https://fxreplay.com/" target="_blank" rel="noopener">fxreplay.com ↗</a></p>
+        <p class="use"><b>Screenshot —</b> unavailable: FX Replay shows its antibot block to screenshot renderers, so no real render could be captured; the site itself loads fine in a browser.</p>
+      </div>
+    </article>
+
+    <article data-batch="10" data-setup="orb gex vwap" data-asset="futures" class="card" id="source-44">
+      <a href="https://www.tradezoro.com/" target="_blank" rel="noopener" class="img-link"><img src="../images/tradezoro.png" alt="TradeZoro free futures charts and GEX website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">44 · Batch 10 · Free · Instagram find</p>
+        <h3>TradeZoro — Free Futures Charts, GEX + Replay</h3>
+        <div class="key">FREE CHARTS + REPLAY · GEX+ IS PRO</div>
+        <p>Futures-first free workspace: ZoroCharts (free futures + crypto charts, Pine scripts, alerts, paper trading), Replay One (replay any past session bar by bar, free on every plan), JournalX, Market Stats, Liquidity Map, ZoroAcademy (64 chapters). Live futures L1 is free once the market-data agreement is signed. GEX+ — call wall, put wall, zero gamma, every level timestamped — is Pro; the Pro price is not listed on the site, so none is quoted. Found via Instagram: @thetradezoro (37 followers) — the smallest creator in the run.</p>
+        <p class="use"><b>Use —</b> free replay trainer for ORB / VWAP on NQ / ES, plus Market Stats on how often gaps, ranges and levels played out. The GEX walls are the Pro teaser, not the free tier.</p>
+        <p class="src"><a href="https://www.tradezoro.com/" target="_blank" rel="noopener">tradezoro.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="9" data-setup="orb gex" data-asset="equities" class="card" id="source-41">
+      <div class="card-body">
+        <p class="no">41 · Batch 9 · Free</p>
+        <h3>Barchart — Unusual Options Activity</h3>
+        <div class="key">FREE 50 OF 2,432 ROWS · VOL/OI ≥ 5</div>
+        <p>Free unusual-options-activity table — no login, no paywall (verified loading signed-out 10 Nov 2026): first 50 of <b>2,432 rows</b>, most recent Nov 09 2026, stocks 15-min delayed. Columns: Symbol / Price / Exp Date / Type / Strike / Moneyness / Bid / Latest / Ask / Volume / Open Int / Vol/OI / Imp Vol / IV Rank / Delta / Last Trade. Criteria: volume ≥ 1,000 contracts, volume &gt; open interest, Vol/OI ≥ 5, trade price ≥ $0.25. Free controls: sorting, symbol search, preset filters (By Volume, By Vol/OI, By Volatility), Vol/OI minimums, date/type filters. Premier $24.99/mo (full list, historical dates, custom screening) is NOT recommended — zero-spend rule.</p>
+        <p class="use"><b>Use —</b> morning flow scan for the ORB universe: a name with Vol/OI ≥ 5 the prior day goes on the watchlist with its GEX levels from The Map. The free 50 rows are enough for a daily scan; the paywall only bites for the full list.</p>
+        <p class="src"><a href="https://www.barchart.com/options/unusual-activity/stocks" target="_blank" rel="noopener">barchart.com ↗</a></p>
+        <p class="use"><b>Screenshot —</b> unavailable: Barchart shows its CloudFront 403 error page to screenshot renderers, so no real render could be captured; the site itself loads fine in a browser.</p>
+      </div>
+    </article>
+
+    <article data-batch="9" data-setup="orb execution" data-asset="equities" class="card" id="source-40">
+      <a href="https://finviz.com/screener.ashx" target="_blank" rel="noopener" class="img-link"><img src="../images/finviz-screener.png" alt="Finviz free stock screener website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">40 · Batch 9 · Free · $0</p>
+        <h3>Finviz — Free Stock Screener</h3>
+        <div class="key">5,608 TICKERS · NO ACCOUNT</div>
+        <p>Free stock screener, no account needed (verified loading 10 Nov 2026): <b>5,608 tickers</b> with market cap, P/E, price, change, volume; Overview / Valuation / Financial / Ownership / Performance / Technical / Custom / Charts / Maps tabs. Free data is delayed, not real-time; Elite $24.96/mo (real-time data + alerts) is NOT recommended — zero-spend rule. Popular, not underrated — included because it is free and directly useful, NOT an Instagram-creator find (Instagram is still not connected).</p>
+        <p class="use"><b>Use —</b> build the daily US-equities universe for any Lab sketch: filter by market cap / volume / price / performance before an ORB or execution test, instead of hand-picking tickers. Maps view for sector heat on CPI/PPI days.</p>
+        <p class="src"><a href="https://finviz.com/screener.ashx" target="_blank" rel="noopener">finviz.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="8" data-setup="data" data-asset="equities" class="card" id="source-37">
+      <div class="card-body">
+        <p class="no">37 · Batch 8 · Free</p>
+        <h3>ETF Database</h3>
+        <div class="key">ETF FACTSHEETS · FREE</div>
+        <p>Free ETF factsheets — holdings, expense ratio, volume, dividend yield — plus a screener, head-to-head comparison and category tools, for every US-listed ETF, including BUG / CLOU / BLOK / BOTZ. Verified loading in the browser 9 Nov 2026.</p>
+        <p class="use"><b>Use —</b> check any ETF's holdings and expense ratio before it enters a test universe; the screener finds alternatives to a paper's tickers.</p>
+        <p class="src"><a href="https://etfdb.com/" target="_blank" rel="noopener">etfdb.com ↗</a></p>
+        <p class="use"><b>Screenshot —</b> unavailable: etfdb.com shows its bot-verification page to screenshot renderers, so no real render could be captured; the site itself loads fine in a browser.</p>
+      </div>
+    </article>
+
+    <article data-batch="8" data-setup="data" data-asset="equities" class="card" id="source-36">
+      <a href="https://www.portfoliovisualizer.com/" target="_blank" rel="noopener" class="img-link"><img src="../images/portfolio-visualizer.png" alt="Portfolio Visualizer website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">36 · Batch 8 · Free · $0</p>
+        <h3>Portfolio Visualizer</h3>
+        <div class="key">FREE BACKTEST · NO SIGNUP</div>
+        <p>Backtest portfolios of ETFs, funds and stocks; factor analysis, efficient frontier, Monte Carlo and drawdown stats. The core backtest and optimisation tools work without an account; paid tiers add more history and features. Checked 10 Nov 2026 (HTTP 200). A first visit shows a User Agreement modal — that is what the screenshot shows.</p>
+        <p class="use"><b>Use —</b> run any Lab sketch through its backtester as a second opinion before ARE; its drawdown and rolling-return views are the quickest sanity check on a paper's numbers.</p>
+        <p class="src"><a href="https://www.portfoliovisualizer.com/" target="_blank" rel="noopener">portfoliovisualizer.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="data" data-asset="equities" id="data-7" class="card">
+      <a href="https://databento.com/pricing" target="_blank" rel="noopener" class="img-link"><img src="../images/databento.png" alt="Databento pricing website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">16 · Batch 2 · $125 credits</p>
+        <h3>Databento</h3>
+        <div class="key">$125 ONE-OFF · NOT A TIER</div>
+        <p>$125 free credits on signup — not a free tier, a one-off credit: usage-based historical data billed per GB (e.g. $12/GB for Nasdaq TotalView-ITCH 1-min bars). Rates checked 2 Nov 2026.</p>
+        <p class="use"><b>Use —</b> spend the credits on one focused pull — e.g. a month of QQQ ITCH 1-min bars — to validate the entropy filter on full-tape data before deciding whether any paid tier is ever worth it.</p>
+        <p class="src"><a href="https://databento.com/pricing" target="_blank" rel="noopener">databento.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="data" data-asset="multi" id="data-8" class="card">
+      <a href="https://www.tiingo.com/pricing" target="_blank" rel="noopener" class="img-link"><img src="../images/tiingo.png" alt="Tiingo pricing website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">15 · Batch 2 · Free · $0/mo</p>
+        <h3>Tiingo — Starter</h3>
+        <div class="key">30+ YRS EOD</div>
+        <p>50 req/hr, 1,000 req/day, 500 unique symbols/month, 1 GB/month. 30+ years of EOD history; IEX intraday bars from 1 minute, since Aug 2017. Same IEX-only caveat as Alpaca — and its real-time firehose sends trade sizes only under an IEX market-data agreement; without one it sends a reference price with no sizes. Rates checked 2 Nov 2026.</p>
+        <p class="use"><b>Use —</b> long-history daily bars for screening + 1-min IEX bars as a second source for SPY / QQQ tests.</p>
+        <p class="src"><a href="https://www.tiingo.com/pricing" target="_blank" rel="noopener">tiingo.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="data" data-asset="multi" id="data-9" class="card">
+      <a href="https://docs.alpaca.markets/us/docs/about-market-data-api" target="_blank" rel="noopener" class="img-link"><img src="../images/alpaca.png" alt="Alpaca Market Data API documentation website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">14 · Batch 2 · Free · $0/mo</p>
+        <h3>Alpaca — Basic</h3>
+        <div class="key">IEX ONLY · ~2.5% OF VOLUME</div>
+        <p>Needs account + API keys (free). Real-time IEX feed via websocket, 30 symbols max; 200 API calls/min; 7+ years of history; REST snapshots 15 minutes delayed. <b>Hard limit: IEX only</b> — roughly 2.5% of US volume, so volume and intraday highs/lows differ from the full tape. Options data on free is "indicative" only, not real OPRA quotes (those are the $99/mo Plus tier).</p>
+        <p class="use"><b>Use —</b> SPY / QQQ 1-min price bars for the entropy test (sketch 1) — price-based entropy is fine on IEX; do <b>not</b> use it for volume-delta work. For that, stay on Dukascopy ticks.</p>
+        <p class="src"><a href="https://docs.alpaca.markets/us/docs/about-market-data-api" target="_blank" rel="noopener">docs.alpaca.markets ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="data" data-asset="fx equities" id="data-10" class="card">
+      <a href="https://stooq.com/" target="_blank" rel="noopener" class="img-link"><img src="../images/stooq.png" alt="Stooq free market data website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">04 · Batch 1 · Free</p>
+        <h3>Stooq</h3>
+        <div class="key">DAILY OHLC · NO ACCOUNT</div>
+        <p>Free daily OHLC CSVs, no account.</p>
+        <p class="use"><b>Use —</b> long-history daily bars for equities / indices / FX screening.</p>
+        <p class="src"><a href="https://stooq.com/" target="_blank" rel="noopener">stooq.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="execution" data-asset="fx" id="data-11" class="card">
+      <a href="https://www.truefx.com/" target="_blank" rel="noopener" class="img-link"><img src="../images/truefx.png" alt="TrueFX free tick-level forex data website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">03 · Batch 1 · Free</p>
+        <h3>TrueFX</h3>
+        <div class="key">REAL ECN FLOW</div>
+        <p>Free tick-level FX from Integral's ECN (archives 2012–2022 still downloadable; registration). Real ECN flow, not sampled.</p>
+        <p class="use"><b>Use —</b> microstructure pre-training.</p>
+        <p class="src"><a href="https://www.truefx.com/" target="_blank" rel="noopener">truefx.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="data" data-asset="fx" id="data-12" class="card">
+      <a href="https://www.histdata.com/download-free-forex-historical-data/?/ascii/1-minute-bar-quotes/" target="_blank" rel="noopener" class="img-link"><img src="../images/histdata.png" alt="HistData free forex historical data website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">02 · Batch 1 · Free</p>
+        <h3>HistData.com</h3>
+        <div class="key">M1 + TICK · NO SIGNUP</div>
+        <p>Free M1 + tick FX, monthly ZIPs, no signup for downloads, pre-cleaned, bid/ask split. Forex-only.</p>
+        <p class="use"><b>Use —</b> spread-sensitive FX backtests.</p>
+        <p class="src"><a href="https://www.histdata.com/download-free-forex-historical-data/?/ascii/1-minute-bar-quotes/" target="_blank" rel="noopener">histdata.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="data" data-asset="fx gold" id="data-13" class="card">
+      <a href="https://www.dukascopy.com/swiss/english/marketwatch/historical/" target="_blank" rel="noopener" class="img-link"><img src="../images/dukascopy.png" alt="Dukascopy Bank historical data export website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">01 · Batch 1 · Free</p>
+        <h3>Dukascopy Bank archive</h3>
+        <div class="key">TICK · BACK TO 1997</div>
+        <p>Free tick-by-tick data back to 1997 (some series to 1986) for FX, metals (incl. gold), indices, commodities. No account needed for web downloads; scriptable via the open-source <b>dukascopy-node</b> library.</p>
+        <p class="use"><b>Use —</b> tick / M1 backtests for XAUUSD and FX pairs.</p>
+        <p class="src"><a href="https://www.dukascopy.com/swiss/english/marketwatch/historical/" target="_blank" rel="noopener">dukascopy.com ↗</a></p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="gex">
+  <div class="sec-head"><h2>GEX</h2><p>Dealer gamma — free · 6 sources</p></div>
+  <div class="cards">
+
+    <article data-batch="3" data-setup="gex" data-asset="equities futures" id="gex-1" class="card">
+      <a href="https://pypi.org/project/openbb-cboe/" target="_blank" rel="noopener" class="img-link"><img src="../images/openbb-cboe.png" alt="OpenBB documentation website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">20 · Batch 3 · Free · No key</p>
+        <h3>OpenBB Cboe provider</h3>
+        <div class="key">NO KEY · NO CAP</div>
+        <p>Free Cboe public market data as OpenBB endpoints: the delayed US options chain with IV, all five Greeks and DEX / GEX; delayed equity / index quotes; VIX futures term structure; futures settlement prices; 941 Cboe index histories. <b>pip install openbb-cboe</b>, then <b>obb.cboe.options.chains(symbol=...)</b>. Directly upgrades sketch 3 (own-GEX from MarketData.app) — no 100-requests/day cap, no free key to manage. <b>Verification 8 Nov 2026:</b> install works (openbb-cboe 2.0.0); the QQQ chain pull was <b>not</b> verified — it failed in this sandbox (SSL / proxy error to cdn.cboe.com). Re-run it on your own machine before building the puller.</p>
+        <p class="use"><b>Use —</b> morning QQQ / SPY / GLD chains, compute call wall, put wall, zero-gamma flip and score them against THE MAP's levels each day.</p>
+        <p class="src"><a href="https://pypi.org/project/openbb-cboe/" target="_blank" rel="noopener">pypi.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="data" data-asset="multi" id="gex-2" class="card">
+      <a href="https://api.squawkflow.com/api/v1/options/flow/unusual" target="_blank" rel="noopener" class="img-link"><img src="../images/squawkflow-flow.png" alt="SquawkFlow website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">13 · Batch 2 · Free</p>
+        <h3>SquawkFlow — Unusual Options Flow API</h3>
+        <div class="key">BIGGEST PREMIUM CELLS</div>
+        <p>Free, no account, no key: largest-premium cells from full-chain captures, published ≥15 min after capture. Extends Batch 1 item 5.</p>
+        <p class="use"><b>Use —</b> morning scan for where the big premium actually traded, as a second opinion on walls.</p>
+        <p class="src"><a href="https://api.squawkflow.com/api/v1/options/flow/unusual" target="_blank" rel="noopener">api.squawkflow.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="gex" data-asset="equities futures" id="gex-3" class="card">
+      <a href="https://massive.com/pricing" target="_blank" rel="noopener" class="img-link"><img src="../images/massive.png" alt="Massive pricing website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">12 · Batch 2 · Free</p>
+        <h3>Massive (formerly Polygon.io)</h3>
+        <div class="key">FREE BASIC · EOD</div>
+        <p>Options Basic free (5 API calls/min, end-of-day options data, 2 years); Stocks and Futures Basic also free EOD. Real-time and deeper history are paid ($29–$199/mo). Rates checked 2 Nov 2026.</p>
+        <p class="use"><b>Use —</b> end-of-day options history for backtesting GEX walls, not for live levels.</p>
+        <p class="src"><a href="https://massive.com/pricing" target="_blank" rel="noopener">massive.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="gex" data-asset="equities" id="gex-4" class="card">
+      <a href="https://www.marketdata.app/api/options/option-chain-api/" target="_blank" rel="noopener" class="img-link"><img src="../images/marketdata.png" alt="MarketData.app Options Chain API website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">11 · Batch 2 · Free</p>
+        <h3>MarketData.app — Options Chain API</h3>
+        <div class="key">100 REQ / DAY</div>
+        <p>Free API key, 100 requests/day; AAPL chain testable with no registration at all. Real-time OPRA chains for equities / indices, historical chains back to 2005, server-side filters (strike, side, moneyness, expiration, DTE, min open interest, min volume, max bid/ask spread). Greeks come from the separate quotes endpoint.</p>
+        <p class="use"><b>Use —</b> pull QQQ / SPY / GLD chains each morning (3 requests) and compute gamma per strike — call wall, put wall, zero-gamma flip — cross-checked against SquawkFlow and PropTraderz.</p>
+        <p class="src"><a href="https://www.marketdata.app/api/options/option-chain-api/" target="_blank" rel="noopener">marketdata.app ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="gex" data-asset="gold futures" id="gex-5" class="card">
+      <a href="https://www.proptraderz.com/ptz-gex-levels-tradingview-indicator/" target="_blank" rel="noopener" class="img-link"><img src="../images/proptraderz.png" alt="PropTraderz PTZ GEX Levels indicator website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">06 · Batch 1 · Free</p>
+        <h3>PropTraderz PTZ GEX Levels</h3>
+        <div class="key">NQ · ES · GC · EVERY MORNING</div>
+        <p>Free TradingView / GoCharting indicator + free daily levels for NQ, ES, YM, Gold (GC), Crude, SPY, QQQ, DIA (micros included). Copy levels each morning, paste into the indicator; gives GEX flip, call resistance, put support, expected move, gamma regime panel.</p>
+        <p class="use"><b>Use —</b> morning GEX levels for NQ / ES / GC without paying.</p>
+        <p class="src"><a href="https://www.proptraderz.com/ptz-gex-levels-tradingview-indicator/" target="_blank" rel="noopener">proptraderz.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="gex" data-asset="equities" id="gex-6" class="card">
+      <a href="https://squawkflow.com/ticker/GLD" target="_blank" rel="noopener" class="img-link"><img src="../images/squawkflow-gld.png" alt="SquawkFlow GLD GEX levels website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">05 · Batch 1 · Free</p>
+        <h3>SquawkFlow</h3>
+        <div class="key">$73.2M NET GEX · GLD</div>
+        <p>FREE daily GEX levels, no account: call wall, put wall, zero-gamma flip, net GEX for any US stock + GLD. GLD on 6 Nov 2026: <b>call wall 378, put wall 371, flip 373, net GEX $73.2M</b> (positive gamma). Levels post before each market open.</p>
+        <p class="use"><b>Use —</b> free cross-check for THE MAP levels on GLD / QQQ / SPY.</p>
+        <p class="src"><a href="https://squawkflow.com/ticker/GLD" target="_blank" rel="noopener">squawkflow.com ↗</a></p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="positioning">
+  <div class="sec-head"><h2>Positioning</h2><p>Free positioning data · 4 sources</p></div>
+  <div class="cards">
+
+    <article data-batch="3" data-setup="data" data-asset="equities futures" id="positioning-1" class="card">
+      <a href="https://www.algoplatforms.com/platforms/quandl" target="_blank" rel="noopener" class="img-link"><img src="../images/nasdaq-datalink.png" alt="AlgoPlatforms Quandl (Nasdaq Data Link) review website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">22 · Batch 3 · Free datasets</p>
+        <h3>Nasdaq Data Link (formerly Quandl)</h3>
+        <div class="key">FREE DATASETS · JSON / CSV</div>
+        <p>A marketplace catalogue; the free datasets include FRED economic data and select commodity / macro series, in JSON, CSV and Excel. <b>Caveat:</b> secondary sources disagree on the free rate limit (25 vs 500 requests/day) — do not rely on either figure; check the dataset page before building a pipeline on it. Premium datasets are paid and out of scope. Source for this entry is a secondary review, not the official catalogue page.</p>
+        <p class="use"><b>Use —</b> one place to pull macro + futures / commodity context alongside the FRED key.</p>
+        <p class="src"><a href="https://www.algoplatforms.com/platforms/quandl" target="_blank" rel="noopener">algoplatforms.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="3" data-setup="orb" data-asset="multi" id="positioning-2" class="card">
+      <a href="https://fred.stlouisfed.org/docs/api/api_key.html" target="_blank" rel="noopener" class="img-link"><img src="../images/fred.png" alt="FRED API Keys documentation website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">21 · Batch 3 · Free</p>
+        <h3>FRED API</h3>
+        <div class="key">800,000+ SERIES · 120 REQ/MIN</div>
+        <p>Federal Reserve Bank of St. Louis — free, no paid tier, no card. 800,000+ economic series (GDP, CPI, unemployment, Fed funds rate, 10Y yield, housing, trade) with vintage / release metadata; free API key issued immediately. Series to bookmark: <b>DFF, CPIAUCSL, UNRATE, GDP</b>. <b>Caveat:</b> the terms forbid storing or caching FRED content and forbid using the API to develop or train AI systems; attribution required.</p>
+        <p class="use"><b>Use —</b> macro context for swing positioning and flagging release days in ARE backtests (CPI / payrolls / FOMC dates). Live context only — do not archive the pulls.</p>
+        <p class="src"><a href="https://fred.stlouisfed.org/docs/api/api_key.html" target="_blank" rel="noopener">fred.stlouisfed.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="data" data-asset="gold futures" id="positioning-3" class="card">
+      <a href="https://www.cftc.gov/MarketReports/CommitmentsofTraders/index.htm" target="_blank" rel="noopener" class="img-link"><img src="../images/cftc.png" alt="CFTC Commitments of Traders report website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">07 · Batch 1 · Free</p>
+        <h3>CFTC COT report</h3>
+        <div class="key">FRI 3:30PM ET · TUE SNAPSHOT</div>
+        <p>Free weekly from cftc.gov (Fridays 3:30pm ET, Tuesday snapshot). Disaggregated report: Managed Money = funds / CTAs.</p>
+        <p class="use"><b>Strategy angle —</b> Commercial Index extremes + RSI for swing reversals in gold and index futures; Managed Money net-position z-score extremes = stretched positioning (context, not timing — 3-day lag).</p>
+        <p class="src"><a href="https://www.cftc.gov/MarketReports/CommitmentsofTraders/index.htm" target="_blank" rel="noopener">cftc.gov ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="data" data-asset="multi" id="positioning-4" class="card">
+      <a href="https://meaterm.com/cot-report" target="_blank" rel="noopener" class="img-link"><img src="../images/meaterm.png" alt="Meaterm COT report charts website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">07 · Batch 1 · Free</p>
+        <h3>Meaterm</h3>
+        <div class="key">FREE COT CHARTS</div>
+        <p>Turns the CFTC COT report into free charts and dashboards, no account. Same strategy angle as the COT report itself: z-score extremes mark stretched positioning — weekly bias only, never timing.</p>
+        <p class="use"><b>Use —</b> read Managed Money positioning at a glance instead of parsing the raw COT text files.</p>
+        <p class="src"><a href="https://meaterm.com/cot-report" target="_blank" rel="noopener">meaterm.com ↗</a></p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="papers">
+  <div class="sec-head"><h2>Papers</h2><p>arXiv + MDPI, free · 22 papers + 1 index</p></div>
+  <div class="cards">
+    <article data-batch="10" data-setup="execution" data-asset="multi" class="card" id="paper-43">
+      <a href="https://arxiv.org/abs/2610.11691" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-diffusive-impact.png" alt="arXiv paper Diffusive Market Impact: A Consistent Microfoundation" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">43 · Batch 10 · arXiv:2610.11691</p>
+        <h3>Diffusive Market Impact: A Consistent Microfoundation</h3>
+        <div class="key">IMPACT DECLINE 50–60% · IMPACT RETURNS WHITE</div>
+        <p>Julius F. Bonart, submitted 8 Oct 2026 (v2 11 Oct). Structural price diffusivity explains the square-root law and its crossover to a linear regime for low trading rates. Microfoundation: a trader plus many arbitrageurs progressively eliminating predictable returns; the impact law is j = U·w, where w is the innovation in the trading schedule and U is causal all-pass — <b>impact returns are white</b>, even though no individual arbitrageur can reconstruct the trading strategy. Under a biexponential trade-flow filter, impact decline is confined to <b>50%–60%</b>, lower than some empirical estimates. In real markets the impact phase is probably distorted in its long tails, allowing a full relaxation of the impact propagator — weak long-term mean-reversion of the impact state.</p>
+        <p class="use"><b>Use —</b> execution sizing: if about half the impact decays, do not size as if the full print cost persists; and the white-impact result is why ARE execution costs must be causal, not price-on-flow (see paper 32 — naive bias up to 68%).</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.11691" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="10" data-setup="orb" data-asset="futures" class="card" id="paper-42">
+      <a href="https://arxiv.org/abs/2610.05740" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-continuum-regimes.png" alt="arXiv paper Latent Continuum of Regimes in Limit Order Book Dynamics" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">42 · Batch 10 · arXiv:2610.05740</p>
+        <h3>Latent Continuum of Regimes in Limit Order Book Dynamics</h3>
+        <div class="key">CONTINUUM, NOT REGIMES · R²_OOS 0.7483</div>
+        <p>Anjali Thawait, submitted 5 Oct 2026 (v2 6 Oct, 45 pp). Tests whether LOB dynamics have distinct regimes or apparent regimes are discretisations of a continuum: deep LOB data for EURO STOXX 50 index futures, <b>987 clean trading days 2022–2025</b>, 30 / 45 / 60-second windows. Market states as covariance matrices under Log-Euclidean and affine-invariant geometry; the state cloud has effective dimension ~1.4. A 17-method zoo consistently favours a continuum over a discrete regime structure. One dominant latent coordinate captures <b>83.66%–85.27%</b> of variation, tracks VSTOXX without regime labels, and stays stable across years. A divisive hierarchy (macro → micro) is evaluated walk-forward: out-of-sample performance is strongest at the macro tier while finer tiers fail to generalise — discretising continuous fine-scale information causes the loss. Forecasting peaks near ten minutes, max pooled <b>R²_OOS 0.7483</b>.</p>
+        <p class="use"><b>Use —</b> regime work: stop forcing discrete bull / bear / chop labels on the ORB; track one continuous stress coordinate instead. <b>Caveat:</b> EURO STOXX 50 futures, not NQ / ES — validate the coordinate on US index futures before trusting it.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.05740" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="9" data-setup="vwap" data-asset="multi" class="card" id="paper-39">
+      <a href="https://arxiv.org/abs/2611.08528" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-price-volume.png" alt="arXiv paper Price-Volume Correlations Are Always Zero" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">39 · Batch 9 · arXiv:2611.08528</p>
+        <h3>Price-Volume Correlations Are Always Zero</h3>
+        <div class="key">ρ = 0 BY DEFINITION · CORRELATE SQUARES</div>
+        <p>Victor Olkhov, submitted 4 Nov 2026 (12 pp, cross-list econ.EM). The usual price–volume correlation, computed from the values, volumes and prices of consecutive trades in an averaging interval, <b>always gives zero by definition</b> — because VWAP depends on mean values and volumes, not on the price time series alone. The standard calculation misleads researchers. The fix the paper derives: to measure statistical dependence between price and volume series, correlate <b>prices with squares of volumes</b>, or <b>squares of prices with squares of volumes</b>. Expressions for the corrected correlations are derived in the paper. No trading rule is claimed — hypothesis only.</p>
+        <p class="use"><b>Use —</b> a don't-fool-yourself paper for tape reading: any volume/price correlation stat in his own research (VWAP, order-flow entropy, tape filters) must use the corrected form, or it is vacuous.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2611.08528" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="9" data-setup="execution" data-asset="equities" class="card" id="paper-38">
+      <a href="https://arxiv.org/abs/2611.08701" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-invariance.png" alt="arXiv paper Does a Trading Policy Need to Know What It Trades" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">38 · Batch 9 · arXiv:2611.08701</p>
+        <h3>Does a Trading Policy Need to Know What It Trades? Microstructure Invariance and Zero-Shot Transfer of Execution Policies</h3>
+        <div class="key">WITHIN 0.015 SPREADS/SHARE · ZERO-SHOT</div>
+        <p>Hieu Tran &amp; Hong Yu, submitted 5 Nov 2026 (33 pp, 10 figs, cross-list cs.LG). Execution algorithms are normally calibrated asset by asset — queues, trade rates and spreads differ by orders of magnitude. Microstructure invariance says: measured in each asset's own units of time, size and price, markets look alike. Test: exact order-by-order replay of public Nasdaq data. Policies trained once, on <b>954 stocks in 2019</b>, to choose wait-in-queue vs cross-the-spread, evaluated <b>unchanged</b> on 1,964 unseen stocks in 2020–21, 2,629 stocks in 2025–26, crypto pairs and a second exchange. A policy that sees a stock only through its recent trade rate, trade size, spread and tick costs within <b>0.015 spreads/share</b> (a fifth of what learning saves) of a policy trained with that stock's own history — the stock's own history does not help it.</p>
+        <p class="use"><b>Authors' own caveats —</b> invariant units beat raw units, z-scores and asset descriptors by <b>under one basis point</b> in mean cost before fees — most of the advantage is information + a common cost scale a learner can also take as plain inputs; <b>none</b> of the representations tested extrapolates to unseen spread regimes; a near-zero transfer gap to a pooled comparator is weak evidence a representation is right. <b>Use —</b> execution research is his job-hunt target: if invariance holds, one execution policy transfers across his whole US-equities universe instead of per-ticker calibration — and the caveat is exactly his ARE lesson: test on unseen spread regimes, not just unseen tickers.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2611.08701" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="7" data-setup="data" data-asset="equities" class="card" id="paper-35">
+      <a href="https://www.mdpi.com/1911-8074/19/11/904" target="_blank" rel="noopener" class="img-link"><img src="../images/mdpi-ai-etf-switching.png" alt="MDPI paper Investing in AI Stocks: Machine-Learning Forecasts, Portfolio Strategies, and Stress Tests" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">35 · Batch 7 · MDPI 19(11) 904</p>
+        <h3>Investing in AI Stocks: Machine-Learning Forecasts, Portfolio Strategies, and Stress Tests</h3>
+        <div class="key">SWITCHING SHARPE 5.65 · EQW 0.02</div>
+        <p>Perry Sadorsky, Schulich School of Business, York University, J. Risk Financial Manag. 2026, 19(11), 904 — published 9 Nov 2026. Daily data Nov 2019–Apr 2026 on four AI sub-sector ETFs: <b>BUG</b> (cybersecurity), <b>CLOU</b> (cloud), <b>BLOK</b> (blockchain), <b>BOTZ</b> (robotics / AI). Tree-based ensembles (bagging best) forecast price direction 1–20 days ahead from technical indicators + business-cycle variables; accuracy <b>60–74%</b> at medium horizons. Switching portfolio: hold each ETF only when its 5-day bagging forecast is positive; equal-weighted among held ETFs; weekly rebalancing; rolling 80% estimation window re-estimated each horizon; <b>100 bps</b> trading costs. Test period Mar 2025–Apr 2026 (~14 months, single window): 5-day switching <b>+87.9% annualised return, Sharpe 5.65, Omega 2.66, max drawdown 3.0%</b>; equal-weight <b>+4.5%, Sharpe 0.02, Omega 1.05, max drawdown 26.2%</b>. 10-day results are qualitatively the same. Switching pulls away after Oct 2025 by avoiding drawdowns. Stress test: a 20% market crash cuts switching ~5% vs EQW ~22%. Top SHAP features: <b>5-yr breakeven inflation, 200-day MA, on-balance volume, Williams A/D</b> — higher inflation expectations and overbought conditions lower the probability of gains.</p>
+        <p class="use"><b>Authors' own limitation —</b> "The trading evaluation covers a single out-of-sample window of about fourteen months, and the very high Sharpe ratios and smooth equity curves should be confirmed with longer samples." These are <b>reported results, not verification</b> — a 14-month window only. Do not treat the Sharpe 5.65 as a deployable claim.</p>
+        <p class="src"><a href="https://www.mdpi.com/1911-8074/19/11/904" target="_blank" rel="noopener">mdpi.com ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="6" data-setup="data" data-asset="equities" class="card" id="paper-34">
+      <a href="https://arxiv.org/abs/2610.16151" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-irreversibility.png" alt="arXiv paper Neural Estimation of Irreversibility in Real and Simulated Limit Order Book Paths" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">34 · Batch 6 · arXiv:2610.16151</p>
+        <h3>Neural Estimation of Irreversibility in Real and Simulated Limit Order Book Paths</h3>
+        <div class="key">INCREMENT 0.018 · SIM 0.0006</div>
+        <p>Yeo, Cha &amp; Hwang, submitted 12 Oct 2026 (v2 15 Oct). A path indistinguishable from its own reverse carries no arrow of time, so irreversibility is a necessary condition for a directed mechanism to be readable from trajectories alone. From three weeks of Nasdaq market-by-order data, NVDA irreversibility is <b>0.036 / 0.054 nats per event</b>; the ordering increment is <b>0.018</b>, positive for all twelve symbols on every held-out daytime date, and a surrogate preserving the one-step transition table recovers 30% less. A queue-reactive simulator matches the ordered rate (<b>0.052 vs 0.054</b>) yet scores <b>0.0006 vs 0.018</b> on the increment — it builds asymmetry from block composition, not block order. Proposed as a benchmark for order-book simulators; code linked from the abstract page. Directly relevant to the Tape Simulator and to paper 28 (Noble LOB sim).</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.16151" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="6" data-setup="data" data-asset="equities" class="card" id="paper-33">
+      <a href="https://arxiv.org/abs/2611.09286" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-eod-reversal.png" alt="arXiv paper The End-of-Day Reversal After 2019" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">33 · Batch 6 · arXiv:2611.09286</p>
+        <h3>The End-of-Day Reversal After 2019: A Pre-Registered Test on S&amp;P 500 Stocks Excluding Heavily Traded Names</h3>
+        <div class="key">3.13 BPS → 3.05 BPS · 0 IN 2020–22</div>
+        <p>Vidovich &amp; Zerjal, submitted 6 Nov 2026. Baltussen, Da and Soebhag (2025) documented an end-of-day reversal through Dec 2019: intraday losers beat winners over the last half hour. Tested on later point-in-time S&amp;P 500 members (excluding ~80 heavily traded stocks), under a private pre-registration. Dollar-volume-weighted reversal: <b>3.13 bps/day (t = 7.5)</b> in 2016–2019 and <b>3.05 bps (t = 3.0)</b> in 2023–2026 — but indistinguishable from zero in 2020–2022, 2023 carries much of the later estimate, and from 2020 onward it is 1.69 bps. On the full index it falls from 3.40 to 0.74 bps, concentrated in the very largest stocks. No pre-registered mechanism test passes. Relevance is ARE discipline, not a trade to copy: a published anomaly that survives pre-registration in one window and fades in another. <b>Caveat:</b> no claim net of costs; the authors do not trade it.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2611.09286" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="6" data-setup="execution" data-asset="equities" class="card" id="paper-32">
+      <a href="https://arxiv.org/abs/2610.12537" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-causal-impact.png" alt="arXiv paper Market Impact Estimation via Causal Foundation Models" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">32 · Batch 6 · arXiv:2610.12537</p>
+        <h3>Market Impact Estimation via Causal Foundation Models</h3>
+        <div class="key">NAIVE BIAS UP TO 68%</div>
+        <p>Thumm &amp; Chen, submitted 8 Oct 2026. Market impact is causal — what would the price have been had I not traded? — yet classical models (Almgren–Chriss, propagators) regress price on flow, biased whenever informed flow moves prices through information as well as trading. On a synthetic prior the naive estimator's bias is confirmed empirically at <b>up to 68% overestimation</b>, while their causal network tracks the unbiased oracle at high confounding. Zero-shot, it responds at ground-truth scale to metaorders in an ABIDES book (<b>+0.38 pre-onset SD</b>), replicating on ~2,300 flow bursts in BTC/ETH/SOL perpetuals and <b>3,800 on Nasdaq equities</b>. A recurrent variant raises correlation with measured metaorder impact from +0.68 to <b>+0.92–0.96</b>. Relevance: ARE execution costs regressed price-on-flow may overstate impact by up to 68% when flow is informed. <b>Caveat:</b> proof-of-concept; the authors' own wording is "consistent with, though not proof of" causal transfer.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.12537" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="6" data-setup="execution" data-asset="equities" class="card" id="paper-31">
+      <a href="https://arxiv.org/abs/2610.28753" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-ofi-foundation.png" alt="arXiv paper Understanding the Inner Workings of a State-Space Foundation Model for Limit Order Books" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">31 · Batch 6 · arXiv:2610.28753</p>
+        <h3>Understanding the Inner Workings of a State-Space Foundation Model for Limit Order Books</h3>
+        <div class="key">OFI R² ≈ 0.59</div>
+        <p>Mohl et al, submitted 20 Oct 2026; accepted ICAIF '26. An 8.2M-parameter Mamba-3 state-space model trained autoregressively on the tokenized message stream of eight large-cap US equities learns an internal representation of the market. Order-flow imbalance, a central driver of short-horizon price moves, is decodable at <b>R² ≈ 0.59</b>, far above controls and baselines. The representation extends to unseen stocks — general, not ticker-specific — and generalises across traded volume and volatility. It is causally steerable: pushing the state along a feature's axis shifts the model's next-message beliefs as that feature implies, monotonically in dose. Directly fits tape reading: OFI is the signal the order-flow platform already watches, and this gives a benchmark — a tape model that cannot decode OFI well above chance has not learned the book.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.28753" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="5" data-setup="orb execution" data-asset="multi" class="card" id="paper-30">
+      <a href="https://arxiv.org/abs/2609.11614" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-regime-mm.png" alt="arXiv paper Deep Learning of Robust Market Making under Regime-Switching Order Flow" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">30 · Batch 5 · arXiv:2609.11614</p>
+        <h3>Deep Learning of Robust Market Making under Regime-Switching Order Flow</h3>
+        <div class="key">BOCPD GATE RESCUES RLMM</div>
+        <p>Moret &amp; Lillo, submitted 10 Sep 2026. Classical market-making rules (Avellaneda-Stoikov, GLFT) rest on stationary order flow; under regime-switching flow they give negative P&amp;L. The paper builds a deep reinforcement-learning market maker (Rainbow-style distributional DQN, C51) calibrated and tested in a zero-intelligence limit order book. In the stationary setting it outperforms GLFT, but still suffers large drawdowns from inventory saturation under persistent directional imbalance. Augmenting its state with a Bayesian online change-point filter over the directional flow bias, plus a queue-adjusted quote-exposure imbalance, restores profitability. Relevance is the regime filter, not market-making itself: the same BOCPD-over-flow-bias signal that rescues the market maker is the gate his ORB needs. <b>Caveat:</b> results are in a simulated zero-intelligence book, not live markets — do not present the outperformance as a live result.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2609.11614" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="5" data-setup="execution" data-asset="multi" class="card" id="paper-29">
+      <a href="https://arxiv.org/abs/2601.23172" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-unified.png" alt="arXiv paper A unified theory of order flow, market impact, and volatility" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">29 · Batch 5 · arXiv:2601.23172</p>
+        <h3>A unified theory of order flow, market impact, and volatility</h3>
+        <div class="key">H0 ≈ 3/4</div>
+        <p>Muhle-Karbe, Ouazzani Chahdi, Rosenbaum &amp; Szymanski, submitted 30 Jan 2026 (v2 2 Feb). A microstructural model distinguishing core orders from reaction flow, both Hawkes processes, with a scaling limit that reconciles persistent signed order flow, rough trading volume and volatility, and power-law market impact. All pinned down by a single statistic H0, the persistence of the core flow: signed flow converges to a fractional process with Hurst H0; volume is rough with Hurst H0 − 1/2; volatility is rough with Hurst 2H0 − 3/2; price impact follows a power law with exponent 2 − 2H0. Signed order-flow data give <b>H0 ≈ 3/4</b> — consistent with the square-root law of market impact. Theoretical, but it gives one estimable number that ties together flow persistence, impact and volatility — the foundation under his order-flow / tape work.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2601.23172" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="5" data-setup="execution" data-asset="equities" class="card" id="paper-28">
+      <a href="https://arxiv.org/abs/2603.24137" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-lob-sim.png" alt="arXiv paper Bridging the Reality Gap in Limit Order Book Simulation" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">28 · Batch 5 · arXiv:2603.24137</p>
+        <h3>Bridging the Reality Gap in Limit Order Book Simulation</h3>
+        <div class="key">REALISTIC LOB SIM</div>
+        <p>Noble, Rosenbaum &amp; Souilmi, submitted 25 Mar 2026. A practical, interactive limit-order-book simulator for large-tick assets, designed to produce realistic execution, costs and P&amp;L. The book state is projected onto spread + volume imbalance; event timing reproduces the fine-scale structure of real markets, with a mode at exchange round-trip latency (latency races). A feedback mechanism accumulates signed trade flow through a power-law decay kernel, reproducing concave market impact during execution and partial post-trade reversion. Directly relevant to the Tape Simulator and to ARE backtest realism: a simulator that ignores impact decay and latency races flatters a strategy. <b>Caveat:</b> "several stocks" — no tickers, sample sizes or P&amp;L numbers in the abstract; check the PDF before quoting any.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2603.24137" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="5" data-setup="execution" data-asset="equities" class="card" id="paper-27">
+      <a href="https://arxiv.org/abs/2609.07989" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-regimes.png" alt="arXiv paper Regimes in the Order Flow" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">27 · Batch 5 · arXiv:2609.07989</p>
+        <h3>Regimes in the Order Flow</h3>
+        <div class="key">BOCPD · NASDAQ FLOW</div>
+        <p>Jebali, submitted 7 Sep 2026. Financial markets alternate between stability and instability, with structural breaks marking the transitions. The paper studies Bayesian Online Changepoint Detection (BOCPD) and two extensions, and applies them to the <b>signed order flow of NASDAQ-listed equities</b>. Directly fits US-equities intraday trading: a real-time regime-break detector on signed flow, the same flow tape reading watches. <b>Caveat:</b> the abstract names no accuracy numbers or detection-lag figures — do not quote any until the PDF is read.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2609.07989" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+
+
+    <article data-batch="4" data-setup="execution" data-asset="equities" id="papers-14" class="card">
+      <a href="https://arxiv.org/abs/2611.05218" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-wallet.png" alt="arXiv paper Beyond Anonymous Order Flow: Wallet Identity as a Feature for Short-Horizon Return Prediction" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">26 · Batch 4 · arXiv:2611.05218</p>
+        <h3>Beyond Anonymous Order Flow: Wallet Identity as a Feature for Short-Horizon Return Prediction</h3>
+        <div class="key">SPEARMAN ρ = 0.52 · 3.11 BPS</div>
+        <p>Ding &amp; Zhai, submitted 3 Nov 2026. Reconstructs full-depth books from Hyperliquid's Level-4 record, which exposes persistent pseudonymous wallet addresses, and tests wallet identity as a feature for short-horizon return prediction. The 1–27 Jul 2026 record covers <b>17.1 billion messages, 14.3 million aggressive orders by 147,113 wallets, and $84.3 billion in taker notional</b> across ten markets. Notional-weighted ten-second markout rankings for wallets persist across adjacent ten-day windows (Spearman ρ = <b>0.52</b>); covariate-adjusted validation markouts reach <b>3.11 basis points</b> in the top ventile. Eleven features describing previously scored top-decile wallets lift one-second out-of-sample R² from 10.88% — the abstract cuts off the second figure, so check the PDF before quoting it. Relevance here is tape-reading, not a signal to copy: the portable lesson is persistent-aggressor scoring — rank who is hitting the tape and whether the same aggressors keep winning. <b>Caveat:</b> crypto perpetuals only, on one venue; US equities have no wallet identity, so the feature itself does not port — only the persistence test does.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2611.05218" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="4" data-setup="data" data-asset="equities" id="papers-15" class="card">
+      <a href="https://arxiv.org/abs/2611.06607" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-zhang.png" alt="arXiv paper Hard to Fool: A Bounded LLM Research Loop for Quantitative Finance" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">25 · Batch 4 · arXiv:2611.06607</p>
+        <h3>Hard to Fool: A Bounded LLM Research Loop for Quantitative Finance, and What Two Dozen Campaigns Found</h3>
+        <div class="key">SHARPE ~3 → 0.26 ON HOLDOUT</div>
+        <p>Zhang, submitted 4 Nov 2026. An open-source agentic research loop built on the opposite premise to most LLM quant loops: the model proposes, and only trusted code decides — proposals are strict declarative JSON over a fixed vocabulary, so there is no model-written code to sandbox. Evaluation runs on immutable chronological stores split into discovery, validation and a final holdout that can be opened <b>exactly once</b>, after a durable receipt is written. Acceptance is a conjunction of absolute gates — positive edge and net P&amp;L after costs, a positive weekly-cluster bootstrap lower bound, survival at elevated costs, per-year stability and sample floors — never a single score. Every campaign run to date is reported, across 0DTE options, overnight SPX verticals, daily ETF rules, technical-analysis premises, Kalshi crypto binaries, earnings options, off-exchange volume and a pre-registered alternative-data campaign; most hypotheses fail, and the failures are reported. The clearest proof the loop works is a failure: an LLM survivor that passed discovery and validation with Sharpe ratios near 3 fell to <b>0.26</b> on its single holdout use. Directly validates ARE's design (pre-registered hypotheses, walk-forward + Monte Carlo, worst fold kept) — and sharpens it: ARE's holdout should be opened exactly once, and acceptance should be a conjunction of gates, not one score. <b>Caveat:</b> the abstract says the loop is open-source but gives no repository URL on the abstract page — no repo is linked until one is verified from the paper itself.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2611.06607" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="3" data-setup="execution" data-asset="multi" id="papers-16" class="card">
+      <a href="https://arxiv.org/abs/2610.26324" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-control-layer.png" alt="arXiv paper The Control Layer Behind Rule-Following Agents" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">24 · Batch 3 · arXiv:2610.26324</p>
+        <h3>The Control Layer Behind Rule-Following Agents Trading Across Market Conditions</h3>
+        <div class="key">2,627 CLOSED POSITIONS</div>
+        <p>Naja, Odtallah, Van-Praag &amp; May, submitted 19 Oct 2026 (v2 29 Oct). Tested whether four AI trading agents followed their strategies and risk rules: <b>2,627 closed positions, 12 Feb–27 Aug 2026</b>, same asset universe and execution conditions. Relevance here is discipline, not a signal: it measures rule-breaking, which is exactly what ARE's pre-registration is built to prevent. <b>Caveat:</b> primary category is cs.AI (q-fin.TR secondary); results are trade-level, not account-level returns or proof of a lasting edge.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.26324" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="3" data-setup="orb" data-asset="multi" id="papers-17" class="card">
+      <a href="https://arxiv.org/abs/2610.14948" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-news-echo.png" alt="arXiv paper Exact Phase-Type Point Processes" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">23 · Batch 3 · arXiv:2610.14948</p>
+        <h3>Exact Phase-Type Point Processes for Certified Measurement and Prediction of Event Streams</h3>
+        <div class="key">DIRECT HIT ~1S · ECHO 16–137S</div>
+        <p>Dutta, 10 Oct 2026. A phase-type Hawkes model with exact likelihoods and a closed-form shock response. Applied to six markets around <b>670 scheduled macro releases</b> (2022–2026) with a placebo test: the direct reaction to CPI, payrolls, PPI and the FOMC statement is absorbed in <b>about a second</b>, while the market's own echoes stretch half of the response to <b>16–137 s</b>. Best test likelihood on all five LOBSTER order-book streams.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.14948" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="data" data-asset="multi" id="papers-18" class="card">
+      <a href="https://arxiv.org/abs/2610.33400" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-hft.png" alt="arXiv paper Tracking High-Frequency Trading Activity in China" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">19 · Batch 2 · arXiv:2610.33400</p>
+        <h3>Tracking High-Frequency Trading Activity in China</h3>
+        <div class="key">PREDICTS 100MS–10MIN</div>
+        <p>Guo, Li, Qi &amp; Sun, 24 Oct 2026 (v2 30 Oct). Defines "active exact-match orders" — limit orders priced exactly at the prevailing best opposite quote. They respond faster to quote updates, cancel faster, concentrate when depth imbalance is favourable and spreads are narrow, and predict mid-quote returns from <b>100 ms through 10 minutes</b>. Caveat: Shenzhen data under T+1, no maker-taker — the mechanism may differ in US markets, so the proxy needs validating on US tape, not importing.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.33400" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="execution" data-asset="equities" id="papers-19" class="card">
+      <a href="https://arxiv.org/abs/2610.34787" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-round.png" alt="arXiv paper Do Round Numbers Hold Prices" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">18 · Batch 2 · arXiv:2610.34787</p>
+        <h3>Do Round Numbers Hold Prices?</h3>
+        <div class="key">THEY DON'T HOLD</div>
+        <p>Jung &amp; Lee, 26 Oct 2026. Prices cluster at round numbers, but on five Nasdaq stocks through 2025 the authors find round levels attract more liquidity yet do <b>NOT</b> hold price longer once depth is accounted for — departures are, if anything, biased away from round levels (Intel, SoFi).</p>
+        <p class="src"><a href="https://arxiv.org/abs/2610.34787" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="2" data-setup="data" data-asset="equities" id="papers-20" class="card">
+      <a href="https://quantpedia.com/screener" target="_blank" rel="noopener" class="img-link"><img src="../images/quantpedia.png" alt="Quantpedia free strategy screener website" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">17 · Batch 2 · Free screener</p>
+        <h3>Quantpedia — free Screener</h3>
+        <span class="badge">Index, not a paper</span>
+        <div class="key">1,000+ STRATEGIES</div>
+        <p>1,000+ academic strategies, 2,000+ source papers, 800+ out-of-sample backtests (QuantConnect code). Freemium — the honest split: the free strategies are the well-known systems; the lesser-known ones are Premium (paid, and the zero-spend rule says no). The free value is different: a paper-discovery index with plain-language rules, and its OOS backtests are a graveyard of ideas that died out-of-sample — e.g. the size factor's OOS backtest is slightly negative, pairs trading on country ETFs significantly negative.</p>
+        <p class="use"><b>Use —</b> the ARE way: find a paper, read its rules, re-test it on your own symbols at double costs, worst fold kept. Never trust a paper's in-sample number.</p>
+        <p class="src"><a href="https://quantpedia.com/screener" target="_blank" rel="noopener">quantpedia.com ↗</a> · <a href="https://quantpedia.com/how-it-works/faq/" target="_blank" rel="noopener">FAQ ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="execution" data-asset="multi" id="papers-21" class="card">
+      <a href="https://arxiv.org/pdf/1302.4592" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-lehalle.png" alt="arXiv paper Market Microstructure Knowledge Needed for Controlling an Intra-Day Trading Process" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">10 · Batch 1 · arXiv:1302.4592</p>
+        <h3>Market Microstructure Knowledge Needed for Controlling an Intra-Day Trading Process</h3>
+        <div class="key">ALMGREN–CHRISS</div>
+        <p>Lehalle, Nov 2024. Practitioner chapter: Almgren–Chriss optimal execution, order-flow view, smart order routing.</p>
+        <p class="src"><a href="https://arxiv.org/pdf/1302.4592" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="data" data-asset="multi" id="papers-22" class="card">
+      <a href="https://arxiv.org/html/2511.06177" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-push.png" alt="arXiv paper Push-response anomalies in high-frequency S&P 500 price series" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">09 · Batch 1 · arXiv:2511.06177</p>
+        <h3>Push-response anomalies in high-frequency S&amp;P 500 price series</h3>
+        <div class="key">SELL SHOCKS BOUNCE HARDER</div>
+        <p>Vlasiuk &amp; Smirnov, Columbia, Nov 2025. Large negative intraday pushes are followed by <b>stronger positive responses</b> than equally large positive pushes — asymmetric liquidity replenishment after sell shocks. Tradable pockets + risk controls.</p>
+        <p class="src"><a href="https://arxiv.org/html/2511.06177" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+    <article data-batch="1" data-setup="data" data-asset="multi" id="papers-23" class="card">
+      <a href="https://arxiv.org/abs/2512.15720v1" target="_blank" rel="noopener" class="img-link"><img src="../images/arxiv-entropy.png" alt="arXiv paper Hidden Order in Trades Predicts the Size of Price Moves" loading="lazy" decoding="async" onerror="this.style.display='none'"></a>
+      <div class="card-body">
+        <p class="no">08 · Batch 1 · arXiv:2512.15720</p>
+        <h3>Hidden Order in Trades Predicts the Size of Price Moves</h3>
+        <div class="key">2.89× LARGER MOVES</div>
+        <p>Singha, Dec 2025. Real-time order-flow entropy (15-state Markov, 1-second resolution) predicts the <b>SIZE</b> of intraday returns, not direction: entropy below the 5th percentile → subsequent 5-min absolute returns <b>2.89× larger</b> (t = 12.41), directional accuracy 45% (chance). 38.5M SPY trades, 5-fold walk-forward validated.</p>
+        <p class="src"><a href="https://arxiv.org/abs/2512.15720v1" target="_blank" rel="noopener">arxiv.org ↗</a></p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="strategies">
+  <div class="sec-head"><h2>Strategies</h2><p>12 sketches · all hypothesis only, not tested</p></div>
+  <div class="cards">
+    <article data-batch="10" data-setup="orb" data-asset="futures" class="card" id="sketch-12">
+      <div class="card-body">
+        <p class="no">Sketch 12 · From papers 42 + 43 · Batch 10</p>
+        <h3>Continuum-stress ORB filter</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">ONE STRESS NUMBER · NO REGIME LABELS</div>
+        <p><b>Hypothesis:</b> compute one continuous stress coordinate from the LOB covariance (Thawait's dominant coordinate — 83–85% of variation, tracks VSTOXX) during the opening range; take an ORB breakout only when stress is mid-range and stable, and stand down when stress is extreme or moving fast. Size by Bonart's impact rule: expect <b>50–60% of impact to decay</b>, so do not chase the print as if its full cost persists.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Signal</span>Stress coordinate <b>mid-range + stable</b><br>during the opening range?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Take the ORB</b> breakout</div>
+            <div class="node no"><span class="lbl">No</span><b>Stand down</b><br>extreme or shifting fast</div>
+          </div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Then</span>Size for <b>50–60% impact decay</b> · double costs</div>
+          <div class="note">Test on <b>NQ / ES</b> — the paper is EURO STOXX futures, not US</div>
+        </div>
+        <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data. Hypothesis only, NOT tested.</p>
+      </div>
+    </article>
+
+    <article data-batch="9" data-setup="execution" data-asset="equities" class="card" id="sketch-11">
+      <div class="card-body">
+        <p class="no">Sketch 11 · From paper 38 · Batch 9</p>
+        <h3>Invariant-units execution rule</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">ONE RULE · ALL TICKERS · ZERO-SHOT</div>
+        <p><b>Hypothesis:</b> express every execution decision in invariant units — time in units of the stock's own trade rate, size in units of its typical trade size, price in ticks — and use <b>one</b> wait-vs-cross rule across all US equities, instead of per-ticker thresholds. If the rule's cost gap vs a per-ticker policy stays within ~0.015 spreads/share on unseen tickers <b>and</b> unseen spread regimes, it earns a Verified candidate slot; if it breaks in a new spread regime, it joins the frozen list with the regime noted.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Signal</span>Order to execute — <b>wait in queue</b> or <b>cross the spread</b>?</div>
+          <div class="arr">↓</div>
+          <div class="node"><span class="lbl">Invariant normalisation</span>Time ÷ trade rate · size ÷ typical trade size · price in <b>ticks</b></div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Rule says wait</span><b>Wait in queue</b><br>at the invariant price</div>
+            <div class="node no"><span class="lbl">Rule says cross</span><b>Cross the spread</b><br>pay the tick cost</div>
+          </div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Cost check</span>Within <b>0.015 spreads/share</b> of a per-ticker policy?</div>
+          <div class="note">Test on unseen tickers <b>and unseen spread regimes</b> — the paper's failure mode</div>
+        </div>
+        <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data. Hypothesis only, NOT tested.</p>
+      </div>
+    </article>
+
+    <article data-batch="7" data-setup="data" data-asset="equities" class="card" id="sketch-10">
+      <div class="card-body">
+        <p class="no">Sketch 10 · From paper 35 · Batch 7</p>
+        <h3>5-day bagging switching rule for the four AI ETFs</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">HOLD ONLY WHEN FORECAST +</div>
+        <p><b>Hypothesis:</b> each week, run the bagging ensemble over <b>BUG / CLOU / BLOK / BOTZ</b> and hold only the ETFs whose 5-day direction forecast is positive, equal-weighted among the held ETFs; sit out the rest in cash. Re-estimate on a rolling window; rebalance weekly.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Gate · Weekly</span>5-day bagging forecast for <b>BUG / CLOU / BLOK / BOTZ</b> positive?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Hold it</b><br>equal-weighted among held ETFs</div>
+            <div class="node no"><span class="lbl">No</span><b>Sit out</b> that ETF<br>in cash</div>
+          </div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Then</span>Weekly rebalance · <b>rolling window</b> re-estimated</div>
+          <div class="note">14-month window only — confirm on <b>longer samples</b> in ARE · double costs</div>
+        </div>
+        <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data. Walk-forward at double costs (paper: 100 bps → ARE: 200 bps), worst fold kept. Hypothesis only, NOT tested.</p>
+      </div>
+    </article>
+
+    <article data-batch="6" data-setup="execution" data-asset="equities" class="card" id="sketch-9">
+      <div class="card-body">
+        <p class="no">Sketch 9 · From papers 31 + 34 · Batch 6</p>
+        <h3>OFI + irreversibility as the simulator acceptance test</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">PASS BOTH · OR REJECT</div>
+        <p><b>Hypothesis:</b> a tape / LOB simulator — including the Tape Simulator and the Noble simulator from paper 28 — is accepted for training only if it passes <b>both</b> checks on the same symbols / days: (1) OFI is decodable from its generated message stream well above chance (paper 31 benchmark: R² ≈ 0.59 on real US large-caps, generalising to unseen stocks); (2) its path irreversibility ordering increment is close to the real 0.018 nats/event for NVDA, not near zero.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Check 1</span>OFI decodable from the sim?<br><b>R² ≈ 0.59</b> benchmark</div>
+          <div class="arr">↓</div>
+          <div class="node q"><span class="lbl">Check 2</span>Irreversibility increment<br><b>≈ 0.018</b> nats / event?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Accept sim</b> for training</div>
+            <div class="node no"><span class="lbl">No</span><b>Reject sim</b><br>queue-reactive: 0.0006 vs 0.018</div>
+          </div>
+          <div class="note">+ Costs: never regress price-on-flow — naive bias <b>up to 68%</b></div>
+        </div>
+        <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data. Hypothesis only, NOT tested.</p>
+      </div>
+    </article>
+
+    <article data-batch="5" data-setup="orb execution" data-asset="multi" class="card" id="sketch-8">
+      <div class="card-body">
+        <p class="no">Sketch 8 · From papers 27 + 30 · Batch 5</p>
+        <h3>BOCPD regime gate for the ORB</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">NO BREAKOUT AFTER A BREAK</div>
+        <p><b>Hypothesis:</b> run Bayesian Online Changepoint Detection over signed order flow / directional flow bias during the opening range; take an ORB breakout only when no changepoint has fired in the last N minutes (regime stable), and stand down for X minutes after a changepoint fires.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Gate</span>BOCPD changepoint fired<br>in the last <b>N minutes</b>?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Take the ORB</b> breakout</div>
+            <div class="node no"><span class="lbl">No</span><b>Stand down X min</b></div>
+          </div>
+          <div class="note">Test: does the gate cut the <b>worst fold</b>?</div>
+        </div>
+        <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data. Hypothesis only, NOT tested.</p>
+      </div>
+    </article>
+
+
+
+    <article data-batch="0" data-setup="data" data-asset="multi" id="strategies-6" class="card">
+      <div class="card-body">
+        <p class="no">Sketch 7 · From paper 25</p>
+        <h3>ARE acceptance as a conjunction, holdout opened once</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">ALL GATES · HOLDOUT ×1</div>
+        <p><b>Hypothesis:</b> a strategy is accepted only if it passes <b>all</b> gates at once — positive net P&amp;L after costs, a positive weekly-cluster bootstrap lower bound, survival at double costs, per-year stability, and a sample floor — and the final holdout is opened exactly once, after the receipt is written.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">All gates must pass</span>Net P&amp;L after costs · bootstrap lower bound &gt; 0 · survives <b>double costs</b> · per-year stability · sample floor</div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Holdout</span>Opened <b>exactly once</b> · receipt written first</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Accept</b></div>
+            <div class="node no"><span class="lbl">No</span><b>Freeze</b> — not re-tuned</div>
+          </div>
+          <div class="note">Warning case: Sharpe ~3 → <b>0.26</b> on holdout</div>
+        </div>
+        <p class="use"><b>ARE test —</b> take one existing ARE candidate through the conjunction + single holdout, and record whether it survives or joins the frozen list. The Zhang paper's warning case is a Sharpe near 3 falling to 0.26 on holdout.</p>
+      </div>
+    </article>
+
+    <article data-batch="0" data-setup="orb vwap" data-asset="multi" id="strategies-7" class="card">
+      <div class="card-body">
+        <p class="no">Sketch 6 · From paper 23</p>
+        <h3>News-echo ORB filter</h3>
+        <span class="badge">Failed — frozen, not re-tuned</span>
+        <div class="key">SKIP FIRST 3 MIN</div>
+        <p><b>Hypothesis:</b> the first ~1 second after a scheduled release is the direct reaction; the next 16–137 s are the market echoing itself. ORB breakouts taken inside the echo window on release days are echo-chasing, not directional flow.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Release day?</span><b>CPI / payrolls / FOMC</b></div>
+          <div class="arr">↓</div>
+          <div class="node"><span class="lbl">Skip</span>First <b>3 minutes</b> after the release — echo window 16–137s</div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Then</span>Take the breakout that <b>survives the echo</b> · or a VWAP reclaim after it</div>
+          <div class="note">Compare follow-through vs <b>non-release days</b></div>
+        </div>
+        <p class="use"><b>ARE test —</b> tested 10 Nov 2026, 14:04 IST — FAILED 4 of 5 gates. Only max drawdown passed. Net return −14.15%, Sharpe −0.87, worst fold −6.04%, Monte Carlo p = 0.499. The release-day ORB has no edge even before costs (gross −1.14%). Frozen, not re-tuned. Full report: <span class="mono">verified/sketch-6-test-report.md</span>.</p>
+      </div>
+    </article>
+
+    <article data-batch="0" data-setup="orb" data-asset="multi" id="strategies-8" class="card">
+      <div class="card-body">
+        <p class="no">Sketch 5 · From paper 19</p>
+        <h3>Exact-match flow as a tape filter</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">70TH PERCENTILE</div>
+        <p><b>Hypothesis:</b> a burst of active exact-match orders (limit orders repriced exactly onto the best opposite quote) during the opening range signals informed flow, and predicts 1–10 minute continuation in that direction.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Filter</span>Exact-match share &gt; <b>70th %ile</b><br>+ depth imbalance agrees?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Take the ORB</b> breakout</div>
+            <div class="node no"><span class="lbl">No</span><b>Skip</b></div>
+          </div>
+          <div class="note">Validate on <b>US tape first</b> — paper is China data</div>
+        </div>
+        <p class="use"><b>ARE test —</b> pre-register in ARE; validate the proxy on US tape before trusting it.</p>
+      </div>
+    </article>
+
+    <article data-batch="0" data-setup="orb gex" data-asset="multi" id="strategies-9" class="card">
+      <div class="card-body">
+        <p class="no">Sketch 4 · From paper 18</p>
+        <h3>Round-number ORB test</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">WITHIN 0.1% OF ROUND</div>
+        <p><b>Hypothesis:</b> ORB breakouts through round-number levels do <b>not</b> follow through better than breakouts elsewhere, once depth is accounted for — so stop treating round GEX / ORB levels as magnets.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Split</span>Breakout level within <b>0.1%</b><br>of a round number?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Round</b> breakouts</div>
+            <div class="node no"><span class="lbl">No</span><b>Not round</b> breakouts</div>
+          </div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Compare</span>Next <b>30-min follow-through</b> · double costs</div>
+          <div class="note">No edge? Drop the round habit — size on <b>GEX flip + entropy</b> only</div>
+        </div>
+        <p class="use"><b>ARE test —</b> pre-register in ARE before touching live data.</p>
+      </div>
+    </article>
+
+    <article data-batch="0" data-setup="gex" data-asset="multi" id="strategies-10" class="card">
+      <div class="card-body">
+        <p class="no">Sketch 3 · From source 11</p>
+        <h3>Own-GEX from MarketData.app</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">3 REQ / MORNING · $0</div>
+        <p><b>Hypothesis:</b> a gamma flip computed from the free morning chain predicts the day's magnet / pinning behaviour as well as THE MAP's levels do.</p>
+        <div class="diagram">
+          <div class="node"><span class="lbl">Step 1 · Morning</span>Pull <b>QQQ / SPY / GLD</b> chains<br>3 of 100 daily requests</div>
+          <div class="arr">↓</div>
+          <div class="node out"><span class="lbl">Step 2</span><b>Call wall · put wall · zero-gamma flip</b></div>
+          <div class="arr">↓</div>
+          <div class="node"><span class="lbl">Step 3</span>Trade only setups that <b>agree with the flip</b></div>
+          <div class="note">Log every day vs <b>THE MAP</b> — score which called high / low better</div>
+        </div>
+        <p class="use"><b>First check —</b> confirm the quotes endpoint returns Greeks on the free key before writing the puller. Cost: $0.</p>
+      </div>
+    </article>
+
+    <article data-batch="0" data-setup="orb gex vwap" data-asset="multi" id="strategies-11" class="card">
+      <div class="card-body">
+        <p class="no">Sketch 2 · From source 7</p>
+        <h3>COT extremes as swing context</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">|z| &gt; 2</div>
+        <p><b>Hypothesis:</b> Managed Money net-position z-score extremes flag stretched positioning.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Signal</span>Managed Money z-score <b>|z| &gt; 2</b><br>3-year window + price diverges?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Swing-reversal watch</b><br>entries still ORB / VWAP / GEX</div>
+            <div class="node no"><span class="lbl">No</span>No bias change</div>
+          </div>
+          <div class="note">COT is <b>context, not timing</b> — 3-day lag</div>
+        </div>
+        <p class="use"><b>ARE test —</b> pre-register in ARE. COT is context, not timing (3-day lag).</p>
+      </div>
+    </article>
+
+    <article data-batch="0" data-setup="orb" data-asset="futures" id="strategies-12" class="card">
+      <div class="card-body">
+        <p class="no">Sketch 1 · From paper 8</p>
+        <h3>Entropy-collapse ORB filter</h3>
+        <span class="badge">Hypothesis — not tested</span>
+        <div class="key">5TH %ILE → ~3× MOVE</div>
+        <p><b>Hypothesis:</b> when 1-second order-flow entropy falls below its 5th percentile during the opening range, the next 5-minute move is ~3× larger than average.</p>
+        <div class="diagram">
+          <div class="node q"><span class="lbl">Signal</span>1-sec order-flow entropy<br>below its <b>5th %ile</b>?</div>
+          <div class="arr">↓</div>
+          <div class="branch">
+            <div class="node yes"><span class="lbl">Yes</span><b>Take ORB</b> · wider targets</div>
+            <div class="node no"><span class="lbl">No</span><b>Skip</b> · choppy, no edge</div>
+          </div>
+          <div class="note">Next 5-min move ~<b>3× larger</b> on collapse days</div>
+        </div>
+        <p class="use"><b>ARE test —</b> walk-forward on NQ (Dukascopy index CFD ticks) and SPY / QQQ, Monte Carlo reshuffle, worst fold kept.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section id="verified">
+  <div class="sec-head"><h2>Verified Strategies</h2><p>0 verified · 5 gates · pre-registered</p></div>
+  <div class="cards">
+
+    <article data-batch="8" data-setup="orb" data-asset="equities futures" class="card wide" id="verified-standard">
+      <div class="card-body">
+        <p class="no">The bar · Batch 8</p>
+        <h3>What "verified" means here</h3>
+        <div class="key">5 GATES · ALL MUST PASS</div>
+        <p>A strategy is verified only if it passes <b>all five gates at once</b>, on a test written down <b>before</b> the test runs: (1) out-of-sample Sharpe ≥ 1.0; (2) max drawdown ≤ 15%; (3) worst walk-forward fold return ≥ −5%; (4) Monte Carlo p &lt; 0.05 (1,000 block-bootstraps); (5) positive total return net of <b>double costs</b> (200 bps a switch). Walk-forward, worst fold kept, final 3-month fold is a holdout opened once. A pass is still a backtest — not a promise of future returns, and not financial advice.</p>
+        <p class="use"><b>Live count —</b> 0 verified. Two candidates tested and failed: Sketch 10 (9 Nov 2026) and Sketch 6 (10 Nov 2026, below). Next in the queue: Sketch 8 (BOCPD regime gate). <b>Tonight, Tue 10 Nov, 7:00pm IST —</b> October CPI lands about an hour before the US open. Sketch 6 is already tested and frozen, so tonight's print is observation only — it does not change the verdict. The release-day ORB had no edge even before costs (gross −1.14%); the plain ORB's gross edge (+44.61%) was entirely consumed by costs.</p>
+      </div>
+    </article>
+
+    <article data-batch="8" data-setup="data" data-asset="equities" class="card wide" id="verified-sketch-10">
+      <div class="card-body">
+        <p class="no">Candidate 1 · Sketch 10 · Batch 8 · FAILED 0/5</p>
+        <h3>5-day bagging switching, AI ETFs — NOT verified</h3>
+        <span class="badge">Failed — frozen, not re-tuned</span>
+        <div class="key">SHARPE −1.01 · MAX DD −88.99%</div>
+        <p>Pre-registered 9 Nov 2026, 23:47 IST; run 23:51 IST. 24 walk-forward folds of 3 months, Nov 2020 → Nov 2026, BUG / CLOU / BLOK / BOTZ, technical features only, weekly rebalance, 200 bps a switch. <b>Results:</b> total return −86.94%, Sharpe −1.01, max drawdown −88.99%, worst fold −26.68% (Nov 2021–Jan 2022), Monte Carlo p = 0.487, holdout fold (Aug–Nov 2026) −0.05%. Classifier right 51.4% of the time — near chance. Gross before costs +118.48% (Sharpe 0.60): the signal roughly tracks the market, but the technical-only variant flips holdings almost weekly and 200 bps a switch compounds that churn into −87% net. The paper's 5.65 Sharpe was one 14-month window — exactly the limitation its author flagged.</p>
+        <p class="use"><b>What next —</b> frozen. No deployment kit, no re-tune with different gates. Full per-fold table, Monte Carlo and reproducibility notes: <span class="mono">verified/sketch-10-test-report.md</span> (pre-registration: <span class="mono">verified/sketch-10-preregistration.md</span>).</p>
+      </div>
+    </article>
+
+    <article data-batch="10" data-setup="orb" data-asset="multi" class="card wide" id="verified-sketch-6">
+      <div class="card-body">
+        <p class="no">Candidate 2 · Sketch 6 · Batch 10 · FAILED 1/5</p>
+        <h3>News-echo ORB filter — NOT verified</h3>
+        <span class="badge">Failed — frozen, not re-tuned</span>
+        <div class="key">SHARPE −0.87 · MAX DD −14.15%</div>
+        <p>Pre-registered 10 Nov 2026, 11:56 IST; run 14:04 IST. 18 walk-forward folds of 3 months, May 2022 → Nov 2026, 81 Nasdaq-100 tickers, HF Data Library Clean 1-min, 15-min ORB, 5 bps a trade. <b>Results:</b> total return −14.15%, Sharpe −0.87, max drawdown −14.15%, worst fold −6.04% (May–Jul 2022), Monte Carlo p = 0.499, holdout fold (Aug–Nov 2026) −1.72%. Gross before costs −1.14% (Sharpe −0.05): the release-day ORB has no edge even before costs. The control leg (non-release days) is −46.49% net but +44.61% gross (Sharpe 1.18) — a real gross edge entirely consumed by the 10 bps round trip over 994 days. The paper's echo (16–137 s) is absorbed before the open, so by the time the 09:30–09:45 range forms the release move is already priced in.</p>
+        <p class="use"><b>What next —</b> frozen. No deployment kit, no re-tune with different gates. Full per-fold table, Monte Carlo and reproducibility notes: <span class="mono">verified/sketch-6-test-report.md</span> (pre-registration: <span class="mono">verified/sketch-6-preregistration.md</span>).</p>
+      </div>
+    </article>
+
+    <article data-batch="8" data-setup="data" data-asset="futures" class="card wide" id="verified-warning">
+      <div class="card-body">
+        <p class="no">Deployment · Batch 8</p>
+        <h3>Your own account only — never a prop account</h3>
+        <div class="key">PROP FIRMS BAN THIRD-PARTY TRADING</div>
+        <p>Every verified strategy here is for <b>your own trading account only</b>. Prop firms ban third-party trading outright — verified 8 Nov 2026 across FTMO, The5ers, Topstep, Apex Trader Funding, FundedNext and E8 Markets — and FundedNext charges a <b>$25,000 contractual penalty per breach</b>. No copier, no signals into someone else's account, no passing or managing a funded account for anyone. Not financial advice; a passed backtest is not a promise of future returns.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+  <section id="feedback" class="reveal">
+    <div class="kicker" style="text-align:center;display:block">Feedback</div>
+    <h2>Tell us what to <em>find.</em></h2>
+    <p class="fb-sub">Something missing? A market, a dataset, a tool you can&rsquo;t find for free? Say it here, in your own words.</p>
+    <div class="fb-card">
+      <div class="pills">
+        <button type="button" data-type="Data" class="active">Data</button>
+        <button type="button" data-type="Paper">Paper</button>
+        <button type="button" data-type="Tool">Tool</button>
+        <button type="button" data-type="Something else">Something else</button>
+      </div>
+      <form id="fb-form">
+        <label for="fb-what">What should the Lab find next?</label>
+        <textarea id="fb-what" rows="3" placeholder="I wish it covered&hellip;" required></textarea>
+        <label for="fb-email">Want a reply? Leave an email (optional)</label>
+        <input id="fb-email" type="email" placeholder="you@example.com">
+        <button class="send" type="submit">Send</button>
+      </form>
+      <p class="fb-note">Arya reads every note. The most-wanted requests get hunted for the next batch.</p>
+    </div>
+  </section>
+
+  <footer>
+  <h2>Next to check</h2>
+  <ul>
+    <li><b>OpenBB Cboe chain pull</b> — re-verify <span class="mono">obb.cboe.options.chains(symbol="QQQ")</span> on a non-sandbox machine before writing the puller (the sandbox blocks cdn.cboe.com).</li>
+    <li><b>arXiv q-fin.TR new listings, weekly</b> — Dutta (10 Oct) and Naja (19 Oct) were both under a month old when found; the loop should scan weekly.</li>
+    <li><b>Verification queue</b> — Sketch 8 (BOCPD regime gate) is next for the ARE test. Sketch 6 failed 4 of 5 gates on 10 Nov 2026 and is frozen; Sketch 10 failed all 5 gates on 9 Nov 2026 and is frozen.</li>
+  </ul>
+  <p class="note">All items were checked 7–10 Nov 2026 against the provider's own docs or a dated comparison that cites them — not Google's sponsored first page. <b>Free tiers change; recheck the vendor's pricing page before building on any of these.</b> Nothing here is tested except what passes the Verified Strategies section's 5 gates: the twelve sketches are hypotheses to pre-register in ARE and run walk-forward + Monte Carlo on before any live use. Sketch 10 was tested 9 Nov 2026 and failed all 5 gates — it stays a hypothesis.</p>
+  <p class="top"><a href="#top">Back to top ↑</a> · Learning Lab · 10 Nov 2026 · $0 spent</p>
+</footer>
+  <p class="top"><a href="#hero-scroll">Back to the top &uarr;</a></p>
+</div>
+
+<button id="ask-fab" type="button">&#9679; Ask the Lab</button>
+<div id="ask-panel" role="dialog" aria-label="Ask the Lab">
+  <button class="close-x" id="ask-close" type="button" aria-label="Close">&times;</button>
+  <h3>Ask the Lab</h3>
+  <p>Hey — I&rsquo;m the thread that runs this page. Where do you want to go?</p>
+  <button class="chip" type="button" data-goto="#demo">Show me one idea working</button>
+  <button class="chip" type="button" data-goto="#library">Show me the library</button>
+  <button class="chip" type="button" data-goto="#verified">What does &ldquo;Verified&rdquo; mean?</button>
+  <button class="chip" type="button" data-goto="#tapelab">What is Tape Lab?</button>
+  <button class="chip" type="button" data-goto="#feedback">I can&rsquo;t find what I need</button>
+</div>
+
+<script>
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- the thread — scroll-scrubbed hero ---------- */
+const STAGES = [
+  { h: 'A finding <em>arrives.</em>', s: 'Every day, one underrated source — free data, a research paper, a tool. Nothing sponsored, nothing paid.' },
+  { h: 'We <em>sketch</em> it.', s: 'The finding becomes a rule you can test. An IF/THEN, not a claim — drawn out, boxes and arrows, before a rupee is risked.' },
+  { h: 'We <em>test</em> it.', s: 'Pre-registered. Walk-forward. Monte Carlo. Five gates — or it stays frozen, in public, with the failure on the page.' },
+  { h: 'It becomes a <em>trade.</em>', s: 'Only then does it earn the name Verified. Everything else stays honestly labelled — hypothesis, not tested.' }
+];
+const heroTitle = document.getElementById('hero-title');
+const heroSub = document.getElementById('hero-sub');
+const dots = [...document.querySelectorAll('#hero .stage-dots i')];
+const threadCanvas = document.getElementById('thread-canvas');
+const tctx = threadCanvas.getContext('2d');
+let TW = 0, TH = 0;
+function sizeThread(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  TW = threadCanvas.clientWidth; TH = threadCanvas.clientHeight;
+  threadCanvas.width = TW * dpr; threadCanvas.height = TH * dpr;
+  tctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+sizeThread();
+window.addEventListener('resize', () => { sizeThread(); drawThread(heroProgress()); });
+function heroProgress(){
+  const sc = document.getElementById('hero-scroll');
+  const r = sc.getBoundingClientRect();
+  const total = r.height - window.innerHeight;
+  return Math.max(0, Math.min(1, -r.top / total));
+}
+function drawThread(p){
+  tctx.clearRect(0, 0, TW, TH);
+  const y0 = TH * 0.62, amp = TH * 0.10;
+  // faint stars
+  tctx.fillStyle = 'rgba(242,237,227,0.35)';
+  for (let i = 0; i < 40; i++) {
+    const x = ((i * 97.3) % 100) / 100 * TW, y = ((i * 57.7) % 100) / 100 * TH * 0.5;
+    tctx.fillRect(x, y, 1.5, 1.5);
+  }
+  // the thread
+  tctx.beginPath();
+  for (let x = 0; x <= TW; x += 8) {
+    const t = x / TW;
+    const y = y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
+    if (x === 0) tctx.moveTo(x, y); else tctx.lineTo(x, y);
+  }
+  tctx.strokeStyle = 'rgba(209,167,95,0.55)';
+  tctx.lineWidth = 1.5;
+  tctx.stroke();
+  // stations: data → paper → sketch → test → trade
+  const labels = ['DATA', 'PAPER', 'SKETCH', 'TEST', 'TRADE'];
+  for (let i = 0; i < 5; i++) {
+    const t = 0.08 + i * 0.21;
+    const x = t * TW;
+    const y = y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
+    const lit = p >= t - 0.02;
+    tctx.beginPath(); tctx.arc(x, y, lit ? 5 : 3.5, 0, Math.PI * 2);
+    tctx.fillStyle = lit ? '#d1a75f' : 'rgba(154,167,199,0.5)';
+    tctx.fill();
+    tctx.font = '11px "JetBrains Mono", monospace';
+    tctx.fillStyle = lit ? '#f2ede3' : '#6b7896';
+    tctx.textAlign = 'center';
+    tctx.fillText(labels[i], x, y + 22);
+  }
+  // the glowing point travelling the thread
+  const px = Math.max(0.02, Math.min(0.98, p)) * TW;
+  const t = px / TW;
+  const py = y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
+  const g = tctx.createRadialGradient(px, py, 0, px, py, 26);
+  g.addColorStop(0, 'rgba(209,167,95,0.9)');
+  g.addColorStop(1, 'rgba(209,167,95,0)');
+  tctx.beginPath(); tctx.arc(px, py, 26, 0, Math.PI * 2); tctx.fillStyle = g; tctx.fill();
+  tctx.beginPath(); tctx.arc(px, py, 6, 0, Math.PI * 2); tctx.fillStyle = '#d1a75f'; tctx.fill();
+}
+let lastStage = -1, ticking = false;
+function onScroll(){
+  if (ticking) return; ticking = true;
+  requestAnimationFrame(() => {
+    ticking = false;
+    const p = heroProgress();
+    drawThread(p);
+    const stage = Math.min(3, Math.floor(p * 4));
+    if (stage !== lastStage) {
+      lastStage = stage;
+      heroTitle.innerHTML = STAGES[stage].h;
+      heroSub.textContent = STAGES[stage].s;
+      dots.forEach((d, i) => d.classList.toggle('on', i <= stage));
+    }
+  });
+}
+if (REDUCED) { drawThread(1); heroTitle.innerHTML = STAGES[3].h; heroSub.textContent = STAGES[3].s; dots.forEach(d => d.classList.add('on')); }
+else { drawThread(0); window.addEventListener('scroll', onScroll, { passive: true }); onScroll(); }
+
+/* ---------- the echo demo — Sketch 6, working ---------- */
+const echo = document.getElementById('echo-canvas');
+const ectx = echo.getContext('2d');
+let seed = 20261110;
+const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+const N = 320, prices = [];
+let px0 = 100;
+for (let i = 0; i < N; i++) {
+  px0 += (rnd() - 0.5) * 0.55;
+  if (i === 120) px0 += 3.4;            // CPI prints
+  if (i > 120 && i < 132) px0 -= 0.28;  // first-minute noise
+  if (i >= 132) px0 += 0.06;            // the echo drift
+  prices.push(px0);
+}
+const orbHi = Math.max(...prices.slice(100, 116));
+const orbLo = Math.min(...prices.slice(100, 116));
+const ECHO_FROM = 132, ECHO_TO = 196;
+const tapeEl = document.getElementById('echo-tape');
+const statusEl = document.getElementById('echo-status');
+let EW = 0, EH = 0, playhead = 0, playing = false, rafId = null;
+function sizeEcho(){
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  EW = echo.clientWidth; EH = echo.clientHeight;
+  echo.width = EW * dpr; echo.height = EH * dpr;
+  ectx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawEcho();
+}
+function drawEcho(){
+  ectx.clearRect(0, 0, EW, EH);
+  const padL = 46, padR = 16, padT = 18, padB = 26;
+  const w = EW - padL - padR, h = EH - padT - padB;
+  const lo = Math.min(...prices) - 0.6, hi = Math.max(...prices) + 0.6;
+  const X = i => padL + (i / (N - 1)) * w;
+  const Y = v => padT + (1 - (v - lo) / (hi - lo)) * h;
+  // echo window
+  ectx.fillStyle = 'rgba(209,167,95,0.10)';
+  ectx.fillRect(X(ECHO_FROM), padT, X(ECHO_TO) - X(ECHO_FROM), h);
+  ectx.fillStyle = '#d1a75f';
+  ectx.font = '11px "JetBrains Mono", monospace';
+  ectx.textAlign = 'left';
+  ectx.fillText('ECHO 16–137s', X(ECHO_FROM) + 6, padT + 16);
+  // ORB lines
+  ectx.strokeStyle = 'rgba(122,162,255,0.7)';
+  ectx.setLineDash([5, 4]); ectx.lineWidth = 1;
+  ectx.beginPath(); ectx.moveTo(padL, Y(orbHi)); ectx.lineTo(EW - padR, Y(orbHi)); ectx.stroke();
+  ectx.beginPath(); ectx.moveTo(padL, Y(orbLo)); ectx.lineTo(EW - padR, Y(orbLo)); ectx.stroke();
+  ectx.setLineDash([]);
+  ectx.fillStyle = '#7aa2ff';
+  ectx.fillText('ORB HIGH', padL + 4, Y(orbHi) - 6);
+  ectx.fillText('ORB LOW', padL + 4, Y(orbLo) + 14);
+  // CPI marker
+  ectx.strokeStyle = 'rgba(242,237,227,0.5)';
+  ectx.beginPath(); ectx.moveTo(X(120), padT); ectx.lineTo(X(120), padT + h); ectx.stroke();
+  ectx.fillStyle = '#f2ede3';
+  ectx.fillText('CPI 7:00 PM', X(120) + 6, padT + h - 6);
+  // price line up to playhead
+  const upto = Math.max(2, Math.floor(playhead));
+  ectx.beginPath();
+  for (let i = 0; i < upto; i++) { const x = X(i), y = Y(prices[i]); if (i === 0) ectx.moveTo(x, y); else ectx.lineTo(x, y); }
+  ectx.strokeStyle = '#f2ede3'; ectx.lineWidth = 1.8; ectx.stroke();
+  // playhead
+  if (upto > 1 && upto < N) {
+    const x = X(upto - 1), y = Y(prices[upto - 1]);
+    const g = ectx.createRadialGradient(x, y, 0, x, y, 14);
+    g.addColorStop(0, 'rgba(209,167,95,0.9)'); g.addColorStop(1, 'rgba(209,167,95,0)');
+    ectx.beginPath(); ectx.arc(x, y, 14, 0, Math.PI * 2); ectx.fillStyle = g; ectx.fill();
+    ectx.beginPath(); ectx.arc(x, y, 4, 0, Math.PI * 2); ectx.fillStyle = '#d1a75f'; ectx.fill();
+  }
+  // axes
+  ectx.fillStyle = '#6b7896';
+  ectx.fillText('6:30 PM', padL, EH - 8);
+  ectx.fillText('8:00 PM', EW - padR - 52, EH - 8);
+}
+function tapeRow(i){
+  i = Math.min(i, N - 1);
+  const up = i > 0 && prices[i] >= prices[i - 1];
+  const t = 18 * 60 + 30 + Math.floor(i / (N - 1) * 90);
+  const hh = Math.floor(t / 60), mm = t % 60;
+  return '<div class="tk"><b>' + String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0') + '</b> · ' + prices[i].toFixed(2) + ' <span class="' + (up ? 'up' : '') + '">' + (up ? '▲' : '▼') + '</span></div>';
+}
+function setStatus(){
+  if (playhead < 100) statusEl.innerHTML = '<b>Pre-open.</b> The range is forming — nothing to do yet.';
+  else if (playhead < 120) statusEl.innerHTML = '<b>Opening range set.</b> High ' + orbHi.toFixed(2) + ' · Low ' + orbLo.toFixed(2) + '. CPI lands at 7:00 PM.';
+  else if (playhead < 132) statusEl.innerHTML = '<b>CPI printed.</b> First 3 minutes: noise. Sketch 6 says — do not chase the breakout.';
+  else if (playhead < ECHO_TO) statusEl.innerHTML = '<b>The echo.</b> 16–137 seconds after the print, the move continues in the direction of the pre-open drift.';
+  else statusEl.innerHTML = '<b>Done.</b> The echo window is closed. The full rule — with its gates — is Sketch 6 in the Strategies section.';
+}
+function stepEcho(){
+  if (!playing) return;
+  playhead = Math.min(N, playhead + 0.5);
+  drawEcho();
+  const cur = Math.min(Math.floor(playhead), N - 1);
+  const start = Math.max(0, cur - 5);
+  let rows = '';
+  for (let i = cur; i > start; i--) rows += tapeRow(i);
+  tapeEl.innerHTML = rows || '<div class="tk">Press play.</div>';
+  setStatus();
+  if (playhead >= N) { playing = false; document.getElementById('echo-play').textContent = '▶ Play again'; return; }
+  rafId = requestAnimationFrame(stepEcho);
+}
+document.getElementById('echo-play').addEventListener('click', function(){
+  if (playhead >= N) { playhead = 0; playing = false; }
+  playing = !playing;
+  this.textContent = playing ? '❚❚ Pause' : '▶ Play';
+  if (playing) stepEcho();
+});
+document.getElementById('echo-restart').addEventListener('click', function(){
+  playing = false; playhead = 0;
+  document.getElementById('echo-play').textContent = '▶ Play';
+  drawEcho(); tapeEl.innerHTML = '<div class="tk">Press play.</div>'; setStatus();
+});
+sizeEcho();
+window.addEventListener('resize', sizeEcho);
+if (REDUCED) { playhead = N; drawEcho(); setStatus(); }
+
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---------- search + combined filters (fixed: only sections WITH cards can hide) ---------- */
+const cards = [...document.querySelectorAll('article.card')];
+const sections = [...document.querySelectorAll('section[id]')];
+const state = { batch: 'all', setup: 'all', asset: 'all', q: '' };
+const countEl = document.getElementById('result-count');
+function applyFilters(){
+  let shown = 0;
+  for (const c of cards) {
+    const okBatch = state.batch === 'all' || c.dataset.batch === state.batch;
+    const okSetup = state.setup === 'all' || (c.dataset.setup || '').split(' ').includes(state.setup);
+    const okAsset = state.asset === 'all' || (c.dataset.asset || '').split(' ').includes(state.asset) || (c.dataset.asset || '').split(' ').includes('multi');
+    const okQ = !state.q || c.textContent.toLowerCase().includes(state.q);
+    const ok = okBatch && okSetup && okAsset && okQ;
+    c.classList.toggle('hidden', !ok);
+    if (ok) shown++;
+  }
+  for (const s of sections) {
+    const cs = [...s.querySelectorAll('article.card')];
+    if (!cs.length) continue; // sections without cards (hero extras) never hide
+    s.classList.toggle('hidden-sec', !cs.some(c => !c.classList.contains('hidden')));
+  }
+  if (countEl) countEl.textContent = 'Showing ' + shown + ' of ' + cards.length + ' cards';
+}
+function wirePills(id, key){
+  const bar = document.getElementById(id);
+  if (!bar) return;
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    bar.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    state[key] = b.dataset.filter;
+    applyFilters();
+  });
+}
+wirePills('batch-filters', 'batch');
+wirePills('setup-filters', 'setup');
+wirePills('asset-filters', 'asset');
+const searchInput = document.getElementById('lab-search');
+if (searchInput) searchInput.addEventListener('input', () => { state.q = searchInput.value.trim().toLowerCase(); applyFilters(); });
+applyFilters();
+
+/* ---------- ask the lab ---------- */
+const askFab = document.getElementById('ask-fab');
+const askPanel = document.getElementById('ask-panel');
+if (askFab && askPanel) {
+  askFab.addEventListener('click', () => askPanel.classList.toggle('open'));
+  document.getElementById('ask-close').addEventListener('click', () => askPanel.classList.remove('open'));
+  askPanel.addEventListener('click', e => {
+    const chip = e.target.closest('[data-goto]');
+    if (!chip) return;
+    askPanel.classList.remove('open');
+    const el = document.querySelector(chip.dataset.goto);
+    if (el) el.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' });
+  });
+}
+
+/* ---------- feedback form ---------- */
+let fbType = 'Data';
+document.querySelectorAll('#feedback .pills button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#feedback .pills button').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  fbType = b.dataset.type;
+}));
+document.getElementById('fb-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const what = document.getElementById('fb-what').value.trim();
+  const email = document.getElementById('fb-email').value.trim();
+  const subject = encodeURIComponent('Learning Lab — find me: ' + fbType + ' — ' + (what.slice(0, 50) || 'new request'));
+  const body = encodeURIComponent('Type: ' + fbType + '\n\nWhat I want the Lab to find:\n' + what + (email ? '\n\nMy email: ' + email : '') + '\n\n(sent from the Learning Lab feedback card)');
+  window.location.href = 'mailto:aryapavan0369@gmail.com?subject=' + subject + '&body=' + body;
+});
+</script>
+</body>
+</html>
