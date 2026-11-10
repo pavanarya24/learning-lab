@@ -1379,9 +1379,10 @@ function drawEcho(){
   ectx.fillText('8:00 PM', EW - padR - 52, EH - 8);
 }
 function tapeRow(i){
+  i = Math.min(i, N - 1);
   const up = i > 0 && prices[i] >= prices[i - 1];
   const t = 18 * 60 + 30 + Math.floor(i / (N - 1) * 90);
-  const hh = 18 + Math.floor(t / 60), mm = t % 60;
+  const hh = Math.floor(t / 60), mm = t % 60;
   return '<div class="tk"><b>' + String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0') + '</b> · ' + prices[i].toFixed(2) + ' <span class="' + (up ? 'up' : '') + '">' + (up ? '▲' : '▼') + '</span></div>';
 }
 function setStatus(){
@@ -1395,9 +1396,10 @@ function stepEcho(){
   if (!playing) return;
   playhead = Math.min(N, playhead + 0.5);
   drawEcho();
-  const start = Math.max(0, Math.floor(playhead) - 5);
+  const cur = Math.min(Math.floor(playhead), N - 1);
+  const start = Math.max(0, cur - 5);
   let rows = '';
-  for (let i = Math.floor(playhead); i > start; i--) rows += tapeRow(i);
+  for (let i = cur; i > start; i--) rows += tapeRow(i);
   tapeEl.innerHTML = rows || '<div class="tk">Press play.</div>';
   setStatus();
   if (playhead >= N) { playing = false; document.getElementById('echo-play').textContent = '▶ Play again'; return; }
