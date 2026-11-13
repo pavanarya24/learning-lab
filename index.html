@@ -36,11 +36,6 @@ nav .cta:hover{background:var(--gold);color:var(--ink)}
 #hero h1{font-size:clamp(48px,7.4vw,96px);max-width:820px}
 #hero .hero-sub{margin-top:20px;font-size:18px;color:var(--mist);max-width:560px;line-height:1.6}
 #hero .hero-sub b{color:var(--cream)}
-.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
-.hero-actions a{display:inline-block;border-radius:999px;padding:11px 20px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border:1px solid var(--line);color:var(--cream);transition:border-color .2s,background .2s,color .2s}
-.hero-actions a.btn-primary{background:var(--gold);border-color:var(--gold);color:var(--ink)}
-.hero-actions a.btn-primary:hover{background:var(--cream);border-color:var(--cream)}
-.hero-actions a.btn-ghost:hover{border-color:var(--cream)}
 #hero .hero-meta{margin-top:22px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 #hero .hero-meta b{color:var(--cream)}
 #hero .scroll-hint{position:absolute;left:24px;bottom:26px;z-index:2;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
@@ -223,15 +218,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     <div class="hero-inner">
       <div class="kicker">A trader&rsquo;s research room · Updated daily</div>
       <h1 id="hero-title">A finding <em>arrives.</em></h1>
-      <p class="hero-sub" id="hero-sub">Every day, one underrated source — free data, a research paper, a tool. Each becomes a rule, and each rule gets a pre-registered test. <b>Nothing sponsored, nothing paid, nothing called “verified” until it passes all 5 gates.</b></p>
-      <div class="hero-actions"><a class="btn-primary" href="#verified">See what we tested</a><a class="btn-ghost" href="#library">Browse the library</a><a class="btn-ghost" href="#tapelab">Try Tape Lab — free</a></div>
+      <p class="hero-sub" id="hero-sub">Every day, one underrated source — free data, a research paper, a tool. Nothing sponsored, nothing paid.</p>
       <p class="hero-meta">Source: <b>underrated-quant-sources.md</b> · All items checked 7–10 Nov 2026 against the provider's own docs · Free tiers change — recheck pricing before building</p>
       <div class="stats">
   <div class="stat"><div class="num">47</div><div class="lbl">Sources</div></div>
   <div class="stat"><div class="num">12</div><div class="lbl">Sketches</div></div>
-  <div class="stat"><div class="num">2</div><div class="lbl">Tested</div></div>
+  <div class="stat"><div class="num">12</div><div class="lbl">Batches</div></div>
   <div class="stat"><div class="num">0</div><div class="lbl">Verified</div></div>
   <div class="stat"><div class="num">$0</div><div class="lbl">Spent</div></div>
+  <div class="stat"><div class="num">2.89×</div><div class="lbl">Entropy move</div></div>
+  <div class="stat"><div class="num">$73.2M</div><div class="lbl">GLD net GEX</div></div>
+  <div class="stat"><div class="num">100/day</div><div class="lbl">Free options API</div></div>
 </div>
 
 
@@ -1269,7 +1266,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- the thread — scroll-scrubbed hero ---------- */
 const STAGES = [
-  { h: 'A finding <em>arrives.</em>', s: 'Every day, one underrated source — free data, a research paper, a tool. Each becomes a rule, and each rule gets a pre-registered test. <b>Nothing sponsored, nothing paid, nothing called “verified” until it passes all 5 gates.</b>' },
+  { h: 'A finding <em>arrives.</em>', s: 'Every day, one underrated source — free data, a research paper, a tool. Nothing sponsored, nothing paid.' },
   { h: 'We <em>sketch</em> it.', s: 'The finding becomes a rule you can test. An IF/THEN, not a claim — drawn out, boxes and arrows, before a rupee is risked.' },
   { h: 'We <em>test</em> it.', s: 'Pre-registered. Walk-forward. Monte Carlo. Five gates — or it stays frozen, in public, with the failure on the page.' },
   { h: 'It becomes a <em>trade.</em>', s: 'Only then does it earn the name Verified. Everything else stays honestly labelled — hypothesis, not tested.' }
@@ -1349,12 +1346,12 @@ function onScroll(){
     if (stage !== lastStage) {
       lastStage = stage;
       heroTitle.innerHTML = STAGES[stage].h;
-      heroSub.innerHTML = STAGES[stage].s;
+      heroSub.textContent = STAGES[stage].s;
       dots.forEach((d, i) => d.classList.toggle('on', i <= stage));
     }
   });
 }
-if (REDUCED) { drawThread(1); heroTitle.innerHTML = STAGES[3].h; heroSub.innerHTML = STAGES[3].s; dots.forEach(d => d.classList.add('on')); }
+if (REDUCED) { drawThread(1); heroTitle.innerHTML = STAGES[3].h; heroSub.textContent = STAGES[3].s; dots.forEach(d => d.classList.add('on')); }
 else { drawThread(0); window.addEventListener('scroll', onScroll, { passive: true }); onScroll(); }
 
 /* ---------- the echo demo — Sketch 6, working ---------- */
