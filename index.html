@@ -39,11 +39,12 @@ nav .cta:hover{background:var(--gold);color:var(--ink)}
 #hero .hero-meta{margin-top:22px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 #hero .hero-meta b{color:var(--cream)}
 #hero .scroll-hint{position:absolute;left:24px;bottom:26px;z-index:2;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
-#hero .stage-dots{position:absolute;right:28px;bottom:26px;z-index:2;display:flex;gap:8px}
-#hero .stage-dots i{width:8px;height:8px;border-radius:50%;background:var(--dim);opacity:.5}
-#hero .stage-dots i.on{background:var(--gold);opacity:1}
+#hero .stage-dots{position:absolute;right:28px;bottom:76px;z-index:2;display:flex;gap:8px}
+#hero .stage-dots i{width:8px;height:8px;border-radius:50%;background:transparent;border:1.5px solid var(--mist);opacity:.9}
+#hero .stage-dots i.on{background:var(--gold);border-color:var(--gold);opacity:1}
 /* stats strip */
 .stats{display:flex;flex-wrap:wrap;gap:0;background:rgba(13,19,34,.8);border:1px solid var(--line);border-radius:var(--radius);margin:34px 0 0;padding:8px 0;backdrop-filter:blur(6px)}
+@media(max-width:760px){.stats{background:transparent;backdrop-filter:none}#hero .scroll-hint{bottom:76px}}
 .stat{flex:1 1 120px;padding:12px 20px;border-left:1px solid var(--line)}
 .stat:first-child{border-left:0}
 .stat .num{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:26px;font-weight:500;color:var(--gold);line-height:1.1;white-space:nowrap}
@@ -89,9 +90,26 @@ nav .cta:hover{background:var(--gold);color:var(--ink)}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 /* findbar */
 .findbar{position:sticky;top:68px;z-index:20;background:rgba(7,11,20,.92);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:28px}
-.findbar input[type=search]{width:100%;background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:999px;padding:13px 18px;font-size:15px;font-family:'Inter',system-ui,sans-serif;outline:none}
-.findbar input[type=search]:focus{border-color:var(--gold)}
-.findbar input[type=search]::placeholder{color:var(--dim)}
+.search-trigger{display:flex;align-items:center;gap:10px;width:100%;background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:999px;padding:13px 18px;font-size:15px;font-family:'Inter',system-ui,sans-serif;cursor:pointer;text-align:left}
+.search-trigger:hover,.search-trigger:focus-visible{border-color:var(--gold);outline:none}
+.search-trigger .hint{margin-left:auto;flex:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;color:var(--dim)}
+.search-trigger kbd{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+.search-trigger .trig-short{display:none}
+/* command palette */
+.palette-overlay{position:fixed;inset:0;z-index:60;background:rgba(7,11,20,.72);display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 16px}
+.palette-overlay.open{display:flex}
+.palette{width:100%;max-width:560px;background:var(--ink2);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.5)}
+.palette input[type=search]{width:100%;background:transparent;color:var(--cream);border:0;border-bottom:1px solid var(--line);padding:16px 18px;font-size:16px;font-family:'Inter',system-ui,sans-serif;outline:none}
+.palette input[type=search]::placeholder{color:var(--dim)}
+.palette-list{list-style:none;margin:0;padding:6px;max-height:320px;overflow-y:auto}
+.palette-item{display:block;width:100%;text-align:left;background:transparent;color:var(--cream);border:0;border-radius:10px;padding:10px 12px;font-family:'Inter',system-ui,sans-serif;font-size:14px;cursor:pointer}
+.palette-item .no{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:var(--gold);margin-right:8px}
+.palette-item .tag{float:right;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:var(--dim)}
+.palette-item.selected{background:rgba(209,167,95,.14)}
+.palette-empty{padding:16px 18px;color:var(--dim);font-size:14px}
+.palette-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:10px 12px}
+.palette-foot .keys{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;color:var(--dim)}
+.palette-ok{background:var(--gold);color:var(--ink);border:0;border-radius:999px;padding:9px 20px;font-family:'Inter',system-ui,sans-serif;font-size:14px;font-weight:600;cursor:pointer}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}
 .filters button{background:var(--panel);color:var(--cream);border:1px solid var(--line);border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:11px 16px;cursor:pointer}
 .filters button:hover{border-color:var(--cream)}
@@ -185,6 +203,22 @@ footer li b{color:var(--cream)}
 footer .note{margin-top:20px;font-size:13px;color:var(--dim);line-height:1.6}
 footer .note b{color:var(--gold)}
 .top{margin-top:28px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+/* mobile: filter rows become sideways-scroll strips (findbar was 659px / 78% of a 390px viewport) — keep this block last so it wins over the base rules above */
+@media(max-width:760px){
+.findbar{padding:10px 12px;margin-bottom:20px}
+.search-trigger{padding:11px 14px;font-size:14px}
+.search-trigger .trig-full{display:none}
+.search-trigger .trig-short{display:inline}
+.search-trigger .hint{display:none}
+.filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:8px 0 0;padding-bottom:2px}
+.filters::-webkit-scrollbar{display:none}
+.filters button{flex:none;padding:8px 12px;font-size:11px}
+.findbar .count{margin-top:8px}
+.palette-overlay{padding:8vh 12px 12px}
+.palette-item .tag{display:none}
+.palette-foot .keys{display:none}
+.palette-foot{justify-content:flex-end}
+}
 /* ask the lab */
 #ask-fab{position:fixed;right:18px;bottom:18px;z-index:60;background:var(--gold);color:var(--ink);border:0;border-radius:999px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 20px;cursor:pointer;box-shadow:0 8px 28px rgba(209,167,95,.35)}
 #ask-fab:hover{background:#e0bc7d}
@@ -265,7 +299,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 
 
   <div class="findbar" id="library">
-    <input type="search" id="lab-search" placeholder="Search the Lab — try &lsquo;GEX&rsquo;, &lsquo;gold&rsquo;, &lsquo;ORB&rsquo;, &lsquo;replay&rsquo;&hellip;" aria-label="Search the Learning Lab">
+    <button type="button" id="search-trigger" class="search-trigger" aria-haspopup="dialog" aria-controls="palette-overlay"><span class="trig-full">Search the Lab — try &lsquo;GEX&rsquo;, &lsquo;gold&rsquo;, &lsquo;ORB&rsquo;&hellip;</span><span class="trig-short">Search the Lab</span><span class="hint"><kbd>Ctrl</kbd> + <kbd>K</kbd></span></button>
     <div class="filters" id="batch-filters">
       <button data-filter="all" class="active">All batches</button>
       <button data-filter="12">Batch 12 · Latest</button><button data-filter="11">Batch 11</button><button data-filter="10">Batch 10</button><button data-filter="9">Batch 9</button><button data-filter="8">Batch 8</button><button data-filter="7">Batch 7</button><button data-filter="6">Batch 6</button><button data-filter="5">Batch 5</button><button data-filter="4">Batch 4</button><button data-filter="3">Batch 3</button><button data-filter="2">Batch 2</button><button data-filter="1">Batch 1</button>
@@ -283,6 +317,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
       <button data-filter="fx">FX</button><button data-filter="gold">Gold</button><button data-filter="equities">Equities</button><button data-filter="futures">Futures</button>
     </div>
     <div class="count" id="result-count">Showing 64 of 64 cards</div>
+  </div>
+
+  <div class="palette-overlay" id="palette-overlay" role="dialog" aria-modal="true" aria-label="Search the Learning Lab">
+    <div class="palette">
+      <input type="search" id="palette-input" placeholder="Search the Lab — try &lsquo;GEX&rsquo;, &lsquo;gold&rsquo;, &lsquo;ORB&rsquo;&hellip;" aria-label="Search the Learning Lab" autocomplete="off">
+      <ul class="palette-list" id="palette-list" role="listbox" aria-label="Results"></ul>
+      <div class="palette-foot">
+        <span class="keys">↑↓ select · Enter open · Esc close</span>
+        <button type="button" id="palette-ok" class="palette-ok">OK</button>
+      </div>
+    </div>
   </div>
 
   <section class="latest" id="latest">
@@ -1300,14 +1345,21 @@ function drawThread(p){
     const x = ((i * 97.3) % 100) / 100 * TW, y = ((i * 57.7) % 100) / 100 * TH * 0.5;
     tctx.fillRect(x, y, 1.5, 1.5);
   }
-  // the thread
+  // the thread — travelled part bright, ahead part a faint trace; point clamped so the glow never clips
+  const threadY = t => y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
+  const M = Math.min(32, TW / 4);
+  const px = M + Math.max(0, Math.min(1, p)) * (TW - 2 * M);
+  const pt = px / TW;
   tctx.beginPath();
-  for (let x = 0; x <= TW; x += 8) {
-    const t = x / TW;
-    const y = y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
-    if (x === 0) tctx.moveTo(x, y); else tctx.lineTo(x, y);
-  }
-  tctx.strokeStyle = 'rgba(209,167,95,0.55)';
+  for (let x = 0; x <= px; x += 8) { const t = x / TW; if (x === 0) tctx.moveTo(x, threadY(t)); else tctx.lineTo(x, threadY(t)); }
+  tctx.lineTo(px, threadY(pt));
+  tctx.strokeStyle = 'rgba(209,167,95,0.95)';
+  tctx.lineWidth = 2;
+  tctx.stroke();
+  tctx.beginPath();
+  tctx.moveTo(px, threadY(pt));
+  for (let x = px; x <= TW; x += 8) { const t = x / TW; tctx.lineTo(x, threadY(t)); }
+  tctx.strokeStyle = 'rgba(209,167,95,0.14)';
   tctx.lineWidth = 1.5;
   tctx.stroke();
   // stations: data → paper → sketch → test → trade
@@ -1325,10 +1377,9 @@ function drawThread(p){
     tctx.textAlign = 'center';
     tctx.fillText(labels[i], x, y + 22);
   }
-  // the glowing point travelling the thread
-  const px = Math.max(0.02, Math.min(0.98, p)) * TW;
+  // the glowing point travelling the thread (px set above)
   const t = px / TW;
-  const py = y0 + Math.sin(t * Math.PI * 2.2 + 0.6) * amp * (0.4 + 0.6 * t) - t * TH * 0.18;
+  const py = threadY(t);
   const g = tctx.createRadialGradient(px, py, 0, px, py, 26);
   g.addColorStop(0, 'rgba(209,167,95,0.9)');
   g.addColorStop(1, 'rgba(209,167,95,0)');
@@ -1528,9 +1579,68 @@ wirePills('batch-filters', 'batch');
 wirePills('setup-filters', 'setup');
 wirePills('asset-filters', 'asset');
 wirePills('evidence-filters', 'evidence');
-const searchInput = document.getElementById('lab-search');
-if (searchInput) searchInput.addEventListener('input', () => { state.q = searchInput.value.trim().toLowerCase(); applyFilters(); });
 applyFilters();
+
+/* ---------- command palette (Ctrl+K) ---------- */
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+const paletteIndex = cards.map(c => {
+  const no = (c.querySelector('.no') || {}).textContent || '';
+  const title = (c.querySelector('h3') || {}).textContent || '';
+  const src = c.querySelector('.src a');
+  const img = c.querySelector('.img-link');
+  return { id: c.id, no: no.trim(), title: title.trim(), tag: no.split('·')[1] ? no.split('·')[1].trim() : '', href: (src && src.href) || (img && img.href) || '', hay: (no + ' ' + title + ' ' + c.textContent).toLowerCase() };
+});
+const trigger = document.getElementById('search-trigger');
+const overlay = document.getElementById('palette-overlay');
+const palInput = document.getElementById('palette-input');
+const palList = document.getElementById('palette-list');
+const palOk = document.getElementById('palette-ok');
+let palItems = [], palSel = 0;
+function palHighlight(){
+  palList.querySelectorAll('.palette-item').forEach((b, i) => {
+    b.classList.toggle('selected', i === palSel);
+    b.setAttribute('aria-selected', i === palSel ? 'true' : 'false');
+  });
+}
+function palRender(){
+  const q = palInput.value.trim().toLowerCase();
+  palItems = (q ? paletteIndex.filter(p => p.hay.includes(q)) : paletteIndex.slice(0, 6)).slice(0, 8);
+  palSel = 0;
+  if (!palItems.length) { palList.innerHTML = '<li class="palette-empty">No match — try another word.</li>'; return; }
+  palList.innerHTML = palItems.map((p, i) =>
+    '<li><button type="button" class="palette-item" data-i="' + i + '" role="option"><span class="no">' + esc(p.no.split(' ')[0]) + '</span>' + esc(p.title) + '<span class="tag">' + esc(p.tag) + '</span></button></li>'
+  ).join('');
+  palHighlight();
+}
+function palOpen(){ overlay.classList.add('open'); palInput.value = ''; palRender(); palInput.focus(); }
+function palClose(){ overlay.classList.remove('open'); if (trigger) trigger.focus(); }
+function palGo(){
+  const p = palItems[palSel]; if (!p) return;
+  palClose();
+  if (p.href) { window.location.href = p.href; }
+  else { const el = document.getElementById(p.id); if (el) el.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' }); }
+}
+if (trigger) trigger.addEventListener('click', palOpen);
+if (palInput) palInput.addEventListener('input', palRender);
+if (palList) palList.addEventListener('click', e => {
+  const b = e.target.closest('.palette-item'); if (!b) return;
+  palSel = +b.dataset.i; palGo();
+});
+if (palOk) palOk.addEventListener('click', palGo);
+if (overlay) overlay.addEventListener('click', e => { if (e.target === overlay) palClose(); });
+if (palInput) palInput.addEventListener('keydown', e => {
+  if (!palItems.length) { if (e.key === 'Escape') palClose(); return; }
+  if (e.key === 'ArrowDown') { e.preventDefault(); palSel = Math.min(palSel + 1, palItems.length - 1); palHighlight(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); palSel = Math.max(palSel - 1, 0); palHighlight(); }
+  else if (e.key === 'Enter') { e.preventDefault(); palGo(); }
+  else if (e.key === 'Escape') { e.preventDefault(); palClose(); }
+});
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    if (overlay.classList.contains('open')) palClose(); else palOpen();
+  } else if (e.key === 'Escape' && overlay.classList.contains('open')) palClose();
+});
 
 /* ---------- ask the lab ---------- */
 const askFab = document.getElementById('ask-fab');
